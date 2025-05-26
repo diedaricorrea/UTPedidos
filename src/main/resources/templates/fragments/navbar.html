@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="https://www.thymeleaf.org">
+
+<body>
+
+    <!-- Barra lateral -->
+    <div th:fragment="navbar(activeTab)" class="col-md-3 sidebar">
+        <div class="sidebar-header">
+            <h3>Lorem</h3>
+            <p>Panel de Administración</p>
+        </div>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == 'inicio' ? 'active' : ''}" th:href="@{/platos}"><i
+                        class="fas fa-utensils me-2"></i> Gestión de Platos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == 'pendientes' ? 'active' : ''}"
+                    th:href="@{/pedidos}"><i class="fas fa-list me-2"></i>Pedidos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == 'espera' ? 'active' : ''}" href="#"><i
+                        class="fas fa-list me-2"></i> Lista de Espera</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == 'ventas' ? 'active' : ''}" th:href="@{/ventas}"><i
+                        class="fas fa-chart-bar me-2"></i>Ventas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == 'config' ? 'active' : ''}" href="#"><i
+                        class="fas fa-cog me-2"></i> Configuración</a>
+            </li>
+        </ul>
+    </div>
+
+</body>
+
+</html>

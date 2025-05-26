@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="https://www.thymeleaf.org"
+    th:replace="~{fragments/layout :: layout(~{::title}, 'pendientes' ,~{::main}, ~{::script})}">
+
+<header>
+    <title>Pedidos Pendientes</title>
+</header>
+
+<body>
+    <main class="container-fluid text-center">
+        <div>
+            <h1>Pedidos Recibidos</h1>
+            <span id="mensajecancel" style="display:none; color: red; font-weight: bold;">Pedido cancelado</span>
+            <span id="mensajeacept" style="display:none; color: green; font-weight: bold;">Pedido entregado con
+                exito</span>
+            <table class="table table-responsive">
+                <thead class="text-center">
+                    <tr>
+                        <th>N°</th>
+                        <th>Nombre</th>
+                        <th>Persona</th>
+                        <th>Descripcion</th>
+                        <th>Precio</th>
+                        <th>Acciones</th>
+                        <th>Tiempo</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    <tr th:each="pedido : ${pedidos}" th:if="${pedidos != null}">
+                        <td th:text="${pedido.id}"></td>
+                        <td th:text="${pedido.name}"></td>
+                        <td th:text="${pedido.person}"></td>
+                        <td th:text="${pedido.description}"></td>
+                        <td th:text="${pedido.price}"></td>
+                        <td>
+                            <button type="button" class="btn btn-success"
+                                th:onclick="aceptarPedido(${pedido.id})">Entregar</button>
+                            <button type="button" class="btn btn-danger"
+                                th:onclick="cancelarPedido(${pedido.id})">Cancelar</button>
+                        </td>
+                        <td th:text="${pedido.time}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+
+    <script></script>
+</body>
+
+</html>
