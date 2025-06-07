@@ -11,7 +11,7 @@
         </div>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'inicio' ? 'active' : ''}" th:href="@{/platos}"><i
+                <a class="nav-link" th:classappend="${activeTab == 'inicio' ? 'active' : ''}" href="#"><i
                         class="fas fa-utensils me-2"></i> Gestión de Platos</a>
             </li>
             <li class="nav-item">
@@ -23,12 +23,20 @@
                         class="fas fa-list me-2"></i> Lista de Espera</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'ventas' ? 'active' : ''}" th:href="@{/ventas}"><i
+                <a class="nav-link" th:classappend="${activeTab == 'ventas' ? 'active' : ''}" href="#"><i
                         class="fas fa-chart-bar me-2"></i>Ventas</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == 'config' ? 'active' : ''}" href="#"><i
                         class="fas fa-cog me-2"></i> Configuración</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == 'productos' ? 'active' : ''}" th:href="@{/productos}"><i
+                        class="fas fa-cog me-2"></i>Productos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == 'usuarios' ? 'active' : ''}" th:href="@{/usuarios}"><i
+                        class="fas fa-cog me-2"></i>Usuarios</a>
             </li>
         </ul>
     </div>

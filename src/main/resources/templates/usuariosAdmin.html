@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, 'usuarios' ,~{::main}, ~{::script})}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar usuarios</title>
+</head>
+<body>
+
+    <main class="container">
+        <h1>Gestion de Usuarios</h1>
+        <div>
+            <h2>Acciones</h2>
+            <!-- Contenedor del mensaje -->
+            <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" id="mensaje-alerta" role="alert">
+                <span th:text="${mensaje}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <!-- Barra de acciones-->
+            <div class="container p-6  d-flex gap-3">
+                <!-- Modal de agregar-->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregar">Agregar nuevo usuario</button>
+                <div class="modal fade" id="agregar" tabindex="-1" aria-labelledby="tituloModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <!-- Encabezado del modal -->
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloModal">Agregar nuevo usuario</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+
+                            <!-- Formulario -->
+                            <form id="agregarUsuario" th:object="${usuario}" th:action="@{/usuarios/save/}" method="POST">
+                                <div class="modal-body">
+
+                                    <!-- Nombre -->
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label">Nombre de usuario</label>
+                                        <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ingrese el nombre" required>
+                                    </div>
+
+                                    <!-- Correo -->
+                                    <div class="mb-3">
+                                        <label for="correo" class="form-label">Correo electrónico</label>
+                                        <input type="email" name="correo" id="correo" class="form-control" placeholder="ejemplo@correo.com" required>
+                                    </div>
+
+                                    <!-- Rol -->
+                                    <div class="mb-3">
+                                        <label for="roles" class="form-label">Rol</label>
+                                        <select name="rol" id="roles" class="form-select" required>
+                                            <option value="">-- SELECCIONE --</option>
+                                            <option value="TRABAJADOR">TRABAJADOR</option>
+                                            <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Contraseña -->
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Contraseña</label>
+                                        <input type="password" name="password" id="password" class="form-control" placeholder="********" required>
+                                    </div>
+
+                                </div>
+
+                                <!-- Pie del modal -->
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!--modal de eliminar usuario-->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eliminar">Eliminar usuario</button>
+                <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="tituloModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloModal">Título del Modal</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                Este es el contenido del modal.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-primary">Guardar cambios</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+<!--                modal de actualizar usuario-->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Actualizar usuario</button>
+                <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="tituloModal" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="tituloModal">Título del Modal</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                Este es el contenido del modal.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-primary">Guardar cambios</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--barra de busqueda-->
+                <div class="">
+                    <form action="">
+                        <input type="text">
+                        <button>buscar</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        <table class="table table-responsive mt-3   ">
+            <thead>
+            <tr>
+                <th>N°</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Fecha de ingreso</th>
+                <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="usuario : ${usuarios}">
+                    <td th:text="${usuario.idUsuario}"></td>
+                    <td th:text="${usuario.nombre}"></td>
+                    <td th:text="${usuario.correo}"></td>
+                    <td th:text="${usuario.rol}"></td>
+                    <td th:text="${usuario.fechaIngreso}"></td>
+                    <td th:text="${usuario.estado}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+
+    <script th:if="${mensaje}">
+        document.addEventListener("DOMContentLoaded", function () {
+            const alerta = document.getElementById('mensaje-alerta');
+            setTimeout(() => {
+                // Usa Bootstrap para cerrar con animación
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alerta);
+                bsAlert.close();
+            }, 1000); // 1 segundos
+        });
+    </script>
+</body>
+</html>

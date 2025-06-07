@@ -35,8 +35,6 @@
                         <td>
                             <button type="button" class="btn btn-success"
                                 th:onclick="aceptarPedido(${pedido.id})">Entregar</button>
-                            <button type="button" class="btn btn-danger"
-                                th:onclick="cancelarPedido(${pedido.id})">Cancelar</button>
                         </td>
                         <td th:text="${pedido.time}"></td>
                     </tr>

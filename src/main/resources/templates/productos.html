@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, 'productos' ,~{::main}, ~{::script})}">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Productos</title>
+</head>
+<body>
+    <main>
+        <div th:each="producto : ${productos}" th:if="${productos != null}">
+            <h1 th:text="${producto.nombre}"></h1>
+        </div>
+    </main>
+    <script></script>
+</body>
+</html>

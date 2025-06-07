@@ -1,0 +1,23 @@
+package com.example.Ejemplo.controllers;
+
+
+import com.example.Ejemplo.services.ProductosServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
+@Controller
+public class ProductosController {
+    @Autowired
+    public ProductosServiceImpl productosServiceImpl;
+
+    @GetMapping("/productos")
+    public String index(Model model) {
+        model.addAttribute("productos", productosServiceImpl.findAllProductos());
+        return "productos";
+    }
+
+
+}
