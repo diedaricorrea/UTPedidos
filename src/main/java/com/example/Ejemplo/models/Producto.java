@@ -16,7 +16,7 @@ public class Producto {
     @JoinColumn(name = "id_categoria", nullable = false)
     private Categoria categoria;
 
-    @Column(nullable = false, length = 30)
+    @Column(name="nombre",nullable = false, length = 30)
     private String nombre;
 
     @Column(nullable = false, precision = 6, scale = 2)
