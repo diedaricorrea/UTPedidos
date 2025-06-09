@@ -1,19 +1,32 @@
 package com.example.Ejemplo.services;
 
 import com.example.Ejemplo.models.Usuario;
+import com.example.Ejemplo.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.security.Provider;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class UsuarioServiceImpl implements UsuarioService {
-    @Override
-    public List<Usuario> findAllUsuarios() {
-        return List.of();
+
+    private final UsuarioRepository usuarioRepository;
+
+    @Autowired
+    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Override
-    public Optional<Usuario> findUsuarioById(Long id) {
-        return Optional.empty();
+    public List<Usuario> findAllUsuarios() {
+        return usuarioRepository.findAll();
+    }
+
+    @Override
+    public Optional<Usuario> findUsuarioById(Integer id) {
+        return usuarioRepository.findById(id);
     }
 
     @Override
@@ -23,11 +36,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario saveUser(Usuario usuario) {
-        return null;
+        return usuarioRepository.save(usuario);
+    }
+
+    public void updateUsuario(Integer id) {
+
     }
 
     @Override
-    public void deleteUserById(Long id) {
-
+    public void deleteUserById(Integer id, boolean deleted) {
+        usuarioRepository.updateEstadoUsuarioByIdUsuario(deleted,id);
     }
+
 }

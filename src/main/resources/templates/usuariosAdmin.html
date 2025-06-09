@@ -81,46 +81,60 @@
                 <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="tituloModal" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="tituloModal">Título del Modal</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                            </div>
-                            <div class="modal-body">
-                                Este es el contenido del modal.
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-primary">Guardar cambios</button>
-                            </div>
+                            <form th:action="@{/usuarios/delete/}" method="POST">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="tituloModal">Eliminar usuario</h5>
+                                    <input type="text" class="form-control" placeholder = "id de usuario" id="id" name="id" >
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit"
+                                            class="btn btn-primary">
+                                        Guardar cambios
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
 <!--                modal de actualizar usuario-->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#actualizar">Actualizar usuario</button>
                 <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="tituloModal" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="tituloModal">Título del Modal</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                            </div>
-                            <div class="modal-body">
-                                Este es el contenido del modal.
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                <button type="button" class="btn btn-primary">Guardar cambios</button>
-                            </div>
+                            <form th:action="@{/usuarios/update}" method="post">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="tituloModal">Actualizar Usuario</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="actId" name="actId">
+                                    <div class="mb-3">
+                                        <label for="actNombre" class="form-label">Nombre</label>
+                                        <input type="text" class="form-control" id="actNombre" name="actNombre">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="actRol" class="form-label">Rol</label>
+                                        <input type="text" class="form-control" id="actRol" name="actRol">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
+
                 <!--barra de busqueda-->
                 <div class="">
-                    <form action="">
-                        <input type="text">
-                        <button>buscar</button>
+                    <form th:action="@{/usuario/search/}" method="GET" class="d-flex gap-3 form-control  ">
+                        <input type="text" class="form-control" placeholder="Buscar" name="id" id="id">
+                        <button type="submit" class="btn btn-primary">buscar</button>
                     </form>
                 </div>
+                <a th:href="@{/usuarios}" class="fs-4 btn btn-primary"><i class="fa-solid fa-arrows-rotate"></i></a>
             </div>
 
         </div>
@@ -134,6 +148,7 @@
                 <th>Rol</th>
                 <th>Fecha de ingreso</th>
                 <th>Estado</th>
+                <th>Opciones</th>
             </tr>
             </thead>
             <tbody>
@@ -144,12 +159,20 @@
                     <td th:text="${usuario.rol}"></td>
                     <td th:text="${usuario.fechaIngreso}"></td>
                     <td th:text="${usuario.estado}"></td>
+                    <td>
+                        <button class="btn btn-primary btn-actualizar"
+                                type="button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#actualizar">
+                            Actualizar
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
     </main>
 
-
+    <script th:src="@{/js/modalActualizar.js}"></script>r
     <script th:if="${mensaje}">
         document.addEventListener("DOMContentLoaded", function () {
             const alerta = document.getElementById('mensaje-alerta');
@@ -157,7 +180,7 @@
                 // Usa Bootstrap para cerrar con animación
                 const bsAlert = bootstrap.Alert.getOrCreateInstance(alerta);
                 bsAlert.close();
-            }, 1000); // 1 segundos
+            }, 1500); // 1 segundos
         });
     </script>
 </body>

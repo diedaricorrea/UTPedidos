@@ -47,7 +47,7 @@
                 <form method="POST" th:object="${menuDia}" th:action="@{/menuDia/guardar/}">
                     <div class="modal-body">
                         <div class="mb-3">
-                            <input type="text" id ="modalId" name="producto.id" for="id_producto" >
+                            <input hidden type="text" id ="modalId" name="producto.id" for="id_producto" >
                             <label id="modalNombre" class="form-control"></label>
                             <label id="modalPrecio" class="form-control"></label>
                             <label for="fecha" class="form-label">Fecha:</label>
