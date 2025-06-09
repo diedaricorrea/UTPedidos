@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="https://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>carrito</title>
+</head>
+<body>
+  <div>
+    <form action="/carrito/subir">
+      <label th:text="'id de usuario '+ ${usuario}"></label>
+      <label for="precio">Precio</label>
+      <input type="text" name="precio" id="precio">
+      <button type="submit">subir</button>
+    </form>
+  </div>
+</body>
+</html>

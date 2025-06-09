@@ -1,6 +1,5 @@
 package com.example.Ejemplo.models;
-
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,31 +15,24 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "carrito")
+@Table(name = "menu_dia")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Carrito {
+public class MenuDia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_carrito")
+    @Column(name = "id_menu_dia")
     private Integer id;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
-
     @Column(nullable = false)
-    private Integer cantidad;
+    private LocalDateTime fecha;
 
-    @Column(nullable = false, precision = 6, scale = 3)
-    private BigDecimal total;
 
     public Integer getId() {
         return id;
@@ -48,14 +40,6 @@ public class Carrito {
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
     }
 
     public Producto getProducto() {
@@ -66,20 +50,12 @@ public class Carrito {
         this.producto = producto;
     }
 
-    public Integer getCantidad() {
-        return cantidad;
+    public LocalDateTime getFecha() {
+        return fecha;
     }
 
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
     }
 
 

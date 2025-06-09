@@ -1,12 +1,10 @@
 package com.example.Ejemplo.repository;
 
+import com.example.Ejemplo.models.MenuDia;
 import com.example.Ejemplo.models.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
-public interface ProductosRepository extends JpaRepository<Producto, Integer> {
-    List<Producto> findAllByCategoriaNombre(String nombre);
+public interface MenuDiaRepository extends JpaRepository<MenuDia, Integer> {
 }

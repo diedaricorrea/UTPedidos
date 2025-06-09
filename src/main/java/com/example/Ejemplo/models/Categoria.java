@@ -2,6 +2,8 @@ package com.example.Ejemplo.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "categorias")
 public class Categoria {
@@ -11,7 +13,10 @@ public class Categoria {
     @Column(name = "id_categoria")
     private Integer id;
 
-    @Column(nullable = false, length = 30)
+    @OneToMany(mappedBy = "categoria")
+    private List<Producto> productos;
+
+    @Column(nullable = false, length = 20)
     private String nombre;
 
     // Constructor vacío

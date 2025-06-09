@@ -25,9 +25,10 @@ public class ProductosServiceImpl implements ProductosService{
     }
 
     @Override
-    public Optional<Producto> findProductoById(Long id) {
-        return Optional.empty();
+    public Optional<Producto> findProductoById(Integer id) {
+        return productosRepository.findById(id);
     }
+
 
     @Override
     public Optional<Producto> findProductoPorNombre(String nombre) {
@@ -42,5 +43,9 @@ public class ProductosServiceImpl implements ProductosService{
     @Override
     public void deleteUserById(Long id) {
 
+    }
+
+    public List<Producto> findAllByCategoriaNombre(String nombre){
+        return productosRepository.findAllByCategoriaNombre(nombre);
     }
 }

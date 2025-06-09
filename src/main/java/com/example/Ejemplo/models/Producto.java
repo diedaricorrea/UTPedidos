@@ -2,6 +2,7 @@ package com.example.Ejemplo.models;
 
 import java.math.BigDecimal;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "productos")
@@ -31,8 +32,17 @@ public class Producto {
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private Boolean estado;
 
+    @Column(name = "imagen_url")
+    @Size(max = 255)
+    private String imagenUrl;
+
+
     // Constructor vacío
     public Producto() {
+    }
+
+    public Producto(Integer id) {
+        this.id = id;
     }
 
     // Constructor completo
@@ -44,6 +54,25 @@ public class Producto {
         this.descripcion = descripcion;
         this.stock = stock;
         this.estado = estado;
+    }
+
+    public Producto(Integer id, Categoria categoria, String nombre, BigDecimal precio, String descripcion, String imagenUrl ,Integer stock, Boolean estado) {
+        this.id = id;
+        this.categoria = categoria;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.descripcion = descripcion;
+        this.imagenUrl = imagenUrl;
+        this.stock = stock;
+        this.estado = estado;
+    }
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
     }
 
     // Getters y setters

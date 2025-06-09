@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="https://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::title}, 'menuDia' ,~{::main}, ~{::script})}">
+
+<head>
+    <title>Menu del dia</title>
+    <link rel="stylesheet" th:href="@{/css/modal.css}">
+</head>
+
+<body>
+
+<main class="container">
+    <h1>Menu del dia</h1>
+    <h3>Menus Economicos</h3>
+    <!-- Cards de productos -->
+    <div class="container mt-4">
+        <div class="row ">
+            <div class="col-md-4 mb-4" th:each="menu : ${menusEconomicos}">
+                <div class="card w-75 h-100 shadow-sm">
+                    <img th:src="@{${menu.imagenUrl}}" class="card-img-top" alt="Imagen del producto"
+                         style="height: 200px; object-fit: cover;">
+                    <div class="card-body d-flex flex-column text-center">
+                        <h5 class="card-title" th:text="${menu.nombre}"></h5>
+                        <p class="card-text text-muted">S/. <span th:text="${menu.precio}"></span></p>
+                    </div>
+                    <button class="btn btn-outline-primary"
+                            th:attr="data-nombre=${menu.nombre}, data-precio=${menu.precio},data-id=${menu.id}"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalFecha">
+                        Agregar Dia de venta
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para seleccionar una fecha -->
+    <div class="modal fade" id="modalFecha" tabindex="-1" aria-labelledby="modalFechaLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalFechaLabel">Seleccionar fecha</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <form method="POST" th:object="${menuDia}" th:action="@{/menuDia/guardar/}">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <input type="text" id ="modalId" name="producto.id" for="id_producto" >
+                            <label id="modalNombre" class="form-control"></label>
+                            <label id="modalPrecio" class="form-control"></label>
+                            <label for="fecha" class="form-label">Fecha:</label>
+                            <input type="datetime-local" class="form-control"
+                                   id="fecha"
+                                   name="fecha"
+                                   th:attr="min=${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Guardar fecha</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+</main>
+<script>
+
+</script>
+</body>
+
+</html>
