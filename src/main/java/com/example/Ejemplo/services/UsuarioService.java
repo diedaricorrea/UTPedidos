@@ -1,5 +1,6 @@
 package com.example.Ejemplo.services;
 
+import com.example.Ejemplo.models.Rol;
 import com.example.Ejemplo.models.Usuario;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface UsuarioService {
     Optional<Usuario> findUsuarioById(Integer id);
     Optional<Usuario> findUsuarioPorNombre(String nombre);
     Usuario saveUser(Usuario usuario);
-    void deleteUserById(Integer id,boolean deleted);
+    List<Usuario> findAllUsuariosByNotRol(Rol rol);
 }

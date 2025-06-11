@@ -12,7 +12,7 @@
         <h1>Gestion de Usuarios</h1>
         <div>
             <h2>Acciones</h2>
-            <!-- Contenedor del mensaje -->
+            <!-- Contenedor de los errores -->
             <div th:if="${mensaje}" class="alert alert-success alert-dismissible fade show" id="mensaje-alerta" role="alert">
                 <span th:text="${mensaje}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -38,19 +38,20 @@
                                     <!-- Nombre -->
                                     <div class="mb-3">
                                         <label for="nombre" class="form-label">Nombre de usuario</label>
-                                        <input type="text" name="nombre" id="nombre" class="form-control" placeholder="Ingrese el nombre" required>
+                                        <input type="text" th:field="*{nombre}" name="nombre" id="nombre" class="form-control" placeholder="Ingrese el nombre" required>
+                                        <div class="text-danger" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">Error</div>
                                     </div>
 
                                     <!-- Correo -->
                                     <div class="mb-3">
                                         <label for="correo" class="form-label">Correo electrónico</label>
-                                        <input type="email" name="correo" id="correo" class="form-control" placeholder="ejemplo@correo.com" required>
+                                        <input type="email" th:field="*{correo}" name="correo" id="correo" class="form-control" placeholder="ejemplo@correo.com" required>
                                     </div>
 
                                     <!-- Rol -->
                                     <div class="mb-3">
                                         <label for="roles" class="form-label">Rol</label>
-                                        <select name="rol" id="roles" class="form-select" required>
+                                        <select name="rol" th:field="*{rol}" id="roles" class="form-select" required>
                                             <option value="">-- SELECCIONE --</option>
                                             <option value="TRABAJADOR">TRABAJADOR</option>
                                             <option value="ADMINISTRADOR">ADMINISTRADOR</option>
@@ -60,7 +61,7 @@
                                     <!-- Contraseña -->
                                     <div class="mb-3">
                                         <label for="password" class="form-label">Contraseña</label>
-                                        <input type="password" name="password" id="password" class="form-control" placeholder="********" required>
+                                        <input type="password" th:field="*{password}" name="password" id="password" class="form-control" placeholder="********" required>
                                     </div>
 
                                 </div>
@@ -76,51 +77,40 @@
                     </div>
                 </div>
 
-                <!--modal de eliminar usuario-->
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#eliminar">Eliminar usuario</button>
-                <div class="modal fade" id="eliminar" tabindex="-1" aria-labelledby="tituloModal" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <form th:action="@{/usuarios/delete/}" method="POST">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="tituloModal">Eliminar usuario</h5>
-                                    <input type="text" class="form-control" placeholder = "id de usuario" id="id" name="id" >
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit"
-                                            class="btn btn-primary">
-                                        Guardar cambios
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
 <!--                modal de actualizar usuario-->
                 <div class="modal fade" id="actualizar" tabindex="-1" aria-labelledby="tituloModal" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <form th:action="@{/usuarios/update}" method="post">
+                            <form th:action="@{/usuarios/update}"  method="post">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="tituloModal">Actualizar Usuario</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <input type="hidden" id="actId" name="actId">
+                                    <input hidden  id="actId" name="actId">
                                     <div class="mb-3">
                                         <label for="actNombre" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="actNombre" name="actNombre">
+                                        <input type="text" t class="form-control" id="actNombre"  name="actNombre">
+                                        <label class="text-danger" id="actNombreIsEmpty"></label>
                                     </div>
                                     <div class="mb-3">
                                         <label for="actRol" class="form-label">Rol</label>
-                                        <input type="text" class="form-control" id="actRol" name="actRol">
+                                        <select name="actRol" class="form-control" id="actRol">
+                                            <option value="TRABAJADOR">TRABAJADOR</option>
+                                            <option value="ADMINISTRADOR">ADMINISTRADOR</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="actRol" class="form-label">Estado</label>
+                                        <select name="actEstado" class="form-control" id="actEstado">
+                                            <option value="true">TRABAJA</option>
+                                            <option value="false">NO TRABAJA</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                    <button type="submit" id="actButton" class="btn btn-primary">Guardar cambios</button>
                                 </div>
                             </form>
                         </div>
@@ -142,7 +132,7 @@
         <table class="table table-responsive mt-3   ">
             <thead>
             <tr>
-                <th>N°</th>
+                <th>Id</th>
                 <th>Nombre</th>
                 <th>Correo</th>
                 <th>Rol</th>
@@ -158,7 +148,7 @@
                     <td th:text="${usuario.correo}"></td>
                     <td th:text="${usuario.rol}"></td>
                     <td th:text="${usuario.fechaIngreso}"></td>
-                    <td th:text="${usuario.estado}"></td>
+                    <td th:text="${usuario.estado ? 'TRABAJA' : 'NO TRABAJA'}"></td>
                     <td>
                         <button class="btn btn-primary btn-actualizar"
                                 type="button"
@@ -172,7 +162,23 @@
         </table>
     </main>
 
-    <script th:src="@{/js/modalActualizar.js}"></script>r
+    <script th:src="@{/js/modalActualizar.js}"></script>
+    <script th:if="${showModal}" th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", function() {
+            var modal = new bootstrap.Modal(document.getElementById('agregar'));
+            modal.show();
+        });
+    </script>
+    <script th:inline="javascript">
+    const btnActualizar = document.getElementById('actButton');
+    btnActualizar.addEventListener('click', (e) =>{
+        e.preventDefault();
+        let nombre = document.getElementById('actNombre').value;
+        if (nombre.trim() === '') {
+            document.getElementById('actNombreIsEmpty').innerText = 'El nombre es obligatorio';
+        }
+    })
+    </script>
     <script th:if="${mensaje}">
         document.addEventListener("DOMContentLoaded", function () {
             const alerta = document.getElementById('mensaje-alerta');

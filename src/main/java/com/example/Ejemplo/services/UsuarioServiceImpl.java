@@ -1,5 +1,6 @@
 package com.example.Ejemplo.services;
 
+import com.example.Ejemplo.models.Rol;
 import com.example.Ejemplo.models.Usuario;
 import com.example.Ejemplo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario saveUser(Usuario usuario) {
+
         return usuarioRepository.save(usuario);
     }
 
@@ -43,9 +45,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     }
 
+
     @Override
-    public void deleteUserById(Integer id, boolean deleted) {
-        usuarioRepository.updateEstadoUsuarioByIdUsuario(deleted,id);
+    public List<Usuario> findAllUsuariosByNotRol(Rol rol) {
+        return usuarioRepository.findByRolNot(rol);
     }
 
 }

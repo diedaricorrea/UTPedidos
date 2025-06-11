@@ -5,10 +5,12 @@ import com.example.Ejemplo.models.Producto;
 import com.example.Ejemplo.repository.ProductosRepository;
 import com.example.Ejemplo.services.MenuDiaServiceImpl;
 import com.example.Ejemplo.services.ProductosServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,8 +26,6 @@ public class MenuDiaController {
     private ProductosServiceImpl productosServiceImpl;
     @Autowired
     private MenuDiaServiceImpl menuDiaServiceImpl;
-    @Autowired
-    private ProductosRepository productosRepository;
 
     @GetMapping("/menuDia")
     public String menuDia(Model model) {
@@ -35,7 +35,10 @@ public class MenuDiaController {
     }
 
     @PostMapping("/menuDia/guardar/")
-    public String guardar(@ModelAttribute MenuDia menuDia, RedirectAttributes redirectAttributes) {
+    public String guardar(@Valid @ModelAttribute MenuDia menuDia, RedirectAttributes redirectAttributes, BindingResult resultado) {
+        if (resultado.hasErrors()) {
+            return "menuDia";
+        }
         menuDiaServiceImpl.saveMenudia(menuDia);
         redirectAttributes.addFlashAttribute("mensaje","Menu Economico guardado correctamente");
         return "redirect:/menuDia";
