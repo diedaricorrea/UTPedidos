@@ -91,7 +91,7 @@
                                     <div class="mb-3">
                                         <label for="actNombre" class="form-label">Nombre</label>
                                         <input type="text" t class="form-control" id="actNombre"  name="actNombre">
-                                        <label class="text-danger" id="actNombreIsEmpty"></label>
+                                        <label class="text-danger" hidden id="actNombreIsEmpty"></label>
                                     </div>
                                     <div class="mb-3">
                                         <label for="actRol" class="form-label">Rol</label>
@@ -119,10 +119,12 @@
 
                 <!--barra de busqueda-->
                 <div class="">
-                    <form th:action="@{/usuario/search/}" method="GET" class="d-flex gap-3 form-control  ">
+                    <form th:action="@{/usuario/search/}"  method="GET" class="d-flex gap-3 form-control  ">
                         <input type="text" class="form-control" placeholder="Buscar" name="id" id="id">
+                        <div class="text-danger" th:if="${errorId}">Error el id no puede estar vacio</div>
                         <button type="submit" class="btn btn-primary">buscar</button>
                     </form>
+
                 </div>
                 <a th:href="@{/usuarios}" class="fs-4 btn btn-primary"><i class="fa-solid fa-arrows-rotate"></i></a>
             </div>
@@ -169,16 +171,16 @@
             modal.show();
         });
     </script>
-    <script th:inline="javascript">
-    const btnActualizar = document.getElementById('actButton');
-    btnActualizar.addEventListener('click', (e) =>{
-        e.preventDefault();
-        let nombre = document.getElementById('actNombre').value;
-        if (nombre.trim() === '') {
-            document.getElementById('actNombreIsEmpty').innerText = 'El nombre es obligatorio';
-        }
-    })
-    </script>
+<!--    <script th:inline="javascript">-->
+<!--    const btnActualizar = document.getElementById('actButton');-->
+<!--    btnActualizar.addEventListener('click', (e) =>{-->
+<!--        e.preventDefault();-->
+<!--        let nombre = document.getElementById('actNombre').value;-->
+<!--        if (nombre.trim() === '') {-->
+<!--            document.getElementById('actNombreIsEmpty').innerText = 'El nombre es obligatorio';-->
+<!--        }-->
+<!--    })-->
+<!--    </script>-->
     <script th:if="${mensaje}">
         document.addEventListener("DOMContentLoaded", function () {
             const alerta = document.getElementById('mensaje-alerta');

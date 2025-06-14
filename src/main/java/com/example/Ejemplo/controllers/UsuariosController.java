@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
-
+import java.util.List;
 @Controller
 public class UsuariosController {
 
@@ -23,7 +23,7 @@ public class UsuariosController {
 
     @GetMapping("/usuarios")
     public String usuarios(Model model) {
-        model.addAttribute("usuario",new Usuario());
+        model.addAttribute("usuario", new Usuario());
         model.addAttribute("usuarios",usuarioServiceImpl.findAllUsuariosByNotRol(Rol.USUARIO));
         return "usuariosAdmin";
     }
@@ -66,8 +66,19 @@ public class UsuariosController {
     }
 
     @GetMapping("/usuario/search/")
-    public String usuariosSearch(@RequestParam Integer id, Model model) {
-        model.addAttribute("usuarios",usuarioServiceImpl.findUsuarioById(id).orElse(null));
+    public String usuariosSearch(@RequestParam(required = false) Integer id, Model model) {
+        if (id == null) {
+            model.addAttribute("errorId", "El id no puede ser vacio");
+            model.addAttribute("usuario", new Usuario());
+            model.addAttribute("usuarios",usuarioServiceImpl.findAllUsuariosByNotRol(Rol.USUARIO));
+            return "usuariosAdmin";
+        }
+        Usuario usuario = usuarioServiceImpl.findUsuarioById(id).orElse(null);
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("usuarios",usuario);
+
+
+
         return "usuariosAdmin";
     }
 }
