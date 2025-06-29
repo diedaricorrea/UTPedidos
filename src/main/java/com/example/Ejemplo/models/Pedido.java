@@ -3,10 +3,14 @@ package com.example.Ejemplo.models;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "pedidos")
 public class Pedido {
 

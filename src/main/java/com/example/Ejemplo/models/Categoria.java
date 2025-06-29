@@ -1,12 +1,16 @@
 package com.example.Ejemplo.models;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "categorias")
 public class Categoria {
 
@@ -21,30 +25,5 @@ public class Categoria {
     @Column(nullable = false, length = 20)
     private String nombre;
 
-    // Constructor vacío
-    public Categoria() {
-    }
 
-    // Constructor completo
-    public Categoria(Integer id, String nombre) {
-        this.id = id;
-        this.nombre = nombre;
-    }
-
-    // Getters y setters
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
 }

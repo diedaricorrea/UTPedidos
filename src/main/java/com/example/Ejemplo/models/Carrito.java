@@ -16,10 +16,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "carrito")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "carrito")
 public class Carrito {
 
     @Id
@@ -35,52 +35,10 @@ public class Carrito {
     @JoinColumn(name = "id_producto", nullable = false)
     private Producto producto;
 
-
     @Column(nullable = false)
     private Integer cantidad;
 
     @Column(nullable = false, precision = 6, scale = 3)
     private BigDecimal total;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
-    public Integer getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(Integer cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
 
 }

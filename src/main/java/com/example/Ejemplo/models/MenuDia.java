@@ -15,10 +15,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "menu_dia")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "menu_dia")
 public class MenuDia {
 
     @Id
@@ -32,31 +32,5 @@ public class MenuDia {
 
     @Column(nullable = false)
     private LocalDateTime fecha;
-
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
-    public LocalDateTime getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDateTime fecha) {
-        this.fecha = fecha;
-    }
-
 
 }
