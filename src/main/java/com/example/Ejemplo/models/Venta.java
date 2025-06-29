@@ -1,5 +1,12 @@
 package com.example.Ejemplo.models;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+@Entity
+@Data
+@Table(name = "ventas")
 public class Venta {
     private long id_venta;
     private long id_detalle_venta;

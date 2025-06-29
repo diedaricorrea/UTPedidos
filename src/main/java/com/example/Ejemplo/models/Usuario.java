@@ -2,13 +2,15 @@ package com.example.Ejemplo.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import com.example.Ejemplo.models.Rol;
 
 @Entity
+@Data
 @Table(name = "usuarios")
 public class Usuario {
     @Id

@@ -3,8 +3,10 @@ package com.example.Ejemplo.models;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "pedidos")
 public class Pedido {
 

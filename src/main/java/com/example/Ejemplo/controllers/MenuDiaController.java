@@ -2,7 +2,6 @@ package com.example.Ejemplo.controllers;
 
 import com.example.Ejemplo.models.MenuDia;
 import com.example.Ejemplo.models.Producto;
-import com.example.Ejemplo.repository.ProductosRepository;
 import com.example.Ejemplo.services.MenuDiaServiceImpl;
 import com.example.Ejemplo.services.ProductosServiceImpl;
 import jakarta.validation.Valid;

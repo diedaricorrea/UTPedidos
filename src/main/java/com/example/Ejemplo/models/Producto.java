@@ -3,8 +3,10 @@ package com.example.Ejemplo.models;
 import java.math.BigDecimal;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "productos")
 public class Producto {
 
