@@ -6,7 +6,6 @@ import com.example.Ejemplo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.security.Provider;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +43,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     public void updateUsuario(Integer id) {
 
     }
-
 
     @Override
     public List<Usuario> findAllUsuariosByNotRol(Rol rol) {

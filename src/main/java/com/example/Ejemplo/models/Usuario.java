@@ -7,7 +7,6 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import com.example.Ejemplo.models.Rol;
 
 @Entity
 @Data
@@ -22,10 +21,10 @@ public class Usuario {
     @Size(min = 3, max = 50, message = "El nombre debe tener minimo 3 caracteres")
     private String nombre;
 
-    @Column(name = "correo",unique = true,nullable = false)
+    @Column(name = "correo", unique = true, nullable = false)
     private String correo;
 
-    @Column(name = "password",nullable = false)
+    @Column(name = "password", nullable = false)
     @NotBlank(message = "Debes rellenar este campo")
     @Size(min = 8, max = 50, message = "La contraseña debe ser de minimo 8 digitos")
     private String password;
@@ -47,7 +46,8 @@ public class Usuario {
     @OneToMany(mappedBy = "usuario")
     private List<Pedido> pedidos;
 
-    public Usuario() {}
+    public Usuario() {
+    }
 
     public Usuario(LocalDateTime fechaIngreso, Rol rol, boolean estado, String password, String correo, String nombre) {
         this.fechaIngreso = fechaIngreso;
@@ -57,14 +57,16 @@ public class Usuario {
         this.correo = correo;
         this.nombre = nombre;
     }
-    public Usuario(String nombre, String correo, String password ,Rol rol) {
+
+    public Usuario(String nombre, String correo, String password, Rol rol) {
         this.rol = rol;
         this.password = password;
         this.correo = correo;
         this.nombre = nombre;
     }
 
-    public Usuario(int idUsuario, LocalDateTime fechaIngreso, Rol rol, boolean estado, String password, String correo, String nombre) {
+    public Usuario(int idUsuario, LocalDateTime fechaIngreso, Rol rol, boolean estado, String password, String correo,
+            String nombre) {
         this.idUsuario = idUsuario;
         this.fechaIngreso = fechaIngreso;
         this.rol = rol;
