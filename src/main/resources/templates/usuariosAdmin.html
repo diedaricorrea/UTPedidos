@@ -171,16 +171,6 @@
             modal.show();
         });
     </script>
-<!--    <script th:inline="javascript">-->
-<!--    const btnActualizar = document.getElementById('actButton');-->
-<!--    btnActualizar.addEventListener('click', (e) =>{-->
-<!--        e.preventDefault();-->
-<!--        let nombre = document.getElementById('actNombre').value;-->
-<!--        if (nombre.trim() === '') {-->
-<!--            document.getElementById('actNombreIsEmpty').innerText = 'El nombre es obligatorio';-->
-<!--        }-->
-<!--    })-->
-<!--    </script>-->
     <script th:if="${mensaje}">
         document.addEventListener("DOMContentLoaded", function () {
             const alerta = document.getElementById('mensaje-alerta');
