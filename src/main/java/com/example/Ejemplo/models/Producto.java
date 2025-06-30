@@ -42,4 +42,13 @@ public class Producto {
     @Size(max = 255)
     private String imagenUrl;
 
+    public Producto(Categoria categoria, String nombre, BigDecimal precio, String descripcion, Integer stock, Boolean estado, String imagenUrl) {
+        this.categoria = categoria;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.descripcion = descripcion;
+        this.stock = stock;
+        this.estado = estado;
+        this.imagenUrl = imagenUrl;
+    }
 }

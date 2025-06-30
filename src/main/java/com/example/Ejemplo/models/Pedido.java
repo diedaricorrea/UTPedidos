@@ -25,7 +25,7 @@ public class Pedido {
     @Column(name = "fecha_pedido")
     private LocalDateTime fechaPedido;
     @Column(name = "fecha_entrega")
-    private String fechaEntrega;
+    private LocalDateTime fechaEntrega;
     @Column(name = "estado")
     private boolean estado;
 
