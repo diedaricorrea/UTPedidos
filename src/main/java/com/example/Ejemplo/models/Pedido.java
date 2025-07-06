@@ -1,6 +1,7 @@
 package com.example.Ejemplo.models;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,6 +29,9 @@ public class Pedido {
     private LocalDateTime fechaEntrega;
     @Column(name = "estado")
     private boolean estado;
+
+    @OneToMany(mappedBy = "pedido")
+    private List<DetallePedido> detallePedido;
 
     @PrePersist
     protected void onCreate() {

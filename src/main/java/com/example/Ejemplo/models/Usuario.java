@@ -30,7 +30,7 @@ public class Usuario {
 
     @Column(name = "password", nullable = false)
     @NotBlank(message = "Debes rellenar este campo")
-    @Size(min = 8, max = 50, message = "La contraseña debe ser de minimo 8 digitos")
+    @Size(min = 8, message = "La contraseña debe ser de minimo 8 digitos")
     private String password;
 
     @Enumerated(EnumType.STRING)

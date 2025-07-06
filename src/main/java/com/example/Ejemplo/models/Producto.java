@@ -17,7 +17,7 @@ public class Producto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_producto")
-    private Integer id;
+    private Integer idProducto;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_categoria", nullable = false)
@@ -41,14 +41,4 @@ public class Producto {
     @Column(name = "imagen_url")
     @Size(max = 255)
     private String imagenUrl;
-
-    public Producto(Categoria categoria, String nombre, BigDecimal precio, String descripcion, Integer stock, Boolean estado, String imagenUrl) {
-        this.categoria = categoria;
-        this.nombre = nombre;
-        this.precio = precio;
-        this.descripcion = descripcion;
-        this.stock = stock;
-        this.estado = estado;
-        this.imagenUrl = imagenUrl;
-    }
 }

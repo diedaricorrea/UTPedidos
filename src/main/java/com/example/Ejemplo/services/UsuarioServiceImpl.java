@@ -49,4 +49,10 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findByRolNot(rol);
     }
 
+    @Override
+    public boolean isExistUsuario(String correo, String password) {
+        Usuario u = usuarioRepository.findByCorreoAndPassword(correo, password);
+        return u != null;
+    }
+
 }

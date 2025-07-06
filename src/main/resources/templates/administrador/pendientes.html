@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es" xmlns="http://www.thymeleaf.org"
+    th:replace="~{administrador/fragments/layout :: layout(~{::title}, 'pendientes' ,~{::main}, ~{::script})}">
+
+<header>
+    <title>Pedidos Pendientes</title>
+</header>
+
+<body>
+    <main class="container-fluid text-center">
+        <div>
+            <h1>Pedidos Recibidos</h1>
+            <table class="table table-responsive">
+                <thead class="text-center">
+                    <tr>
+                        <th>Id pedido</th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                        <th>Productos</th>
+                        <th>Tiempo</th>
+                        <td>Acciones</td>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                <tr th:each="pedido : ${pedidos}">
+                    <td>1</td>
+                    <td th:text="${pedido.getNombreUsuario()}"></td>
+                    <td th:text="${pedido.estado ? 'ENTREGADO' : 'PENDIENTE'}"></td>
+                    <td th:text="${pedido.getProductos()}"></td>
+                    <td th:text="${pedido.fechaEntrega != null} ? ${#temporals.format(pedido.fechaEntrega,'dd-MM-YY HH:mm')} : 'No programada'">
+                    <td>
+                        <button class="btn btn-primary">Enviar notifiacion</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+
+    <script></script>
+</body>
+
+</html>

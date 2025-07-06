@@ -12,16 +12,32 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequestMapping("/usuarios")
 public class UsuariosController {
 
     @Autowired
     private UsuarioServiceImpl usuarioServiceImpl;
 
-    @GetMapping("/usuarios")
+
+    @GetMapping("/login")
+    public String login(@RequestParam String correo, @RequestParam String password, Model model) {
+        if(usuarioServiceImpl.isExistUsuario(correo, password)){
+            model.addAttribute("usuario",new Usuario());
+            return "administrador/usuariosAdmin";
+        }
+        return "usuario/login";
+    }
+
+    @GetMapping("/loginU")
+    public String loginU() {
+        return "usuario/login";
+    }
+
+    @GetMapping("/")
     public String usuarios(Model model) {
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("usuarios",usuarioServiceImpl.findAllUsuariosByNotRol(Rol.USUARIO));
-        return "usuariosAdmin";
+        return "administrador/usuariosAdmin";
     }
 
     @PostMapping("/usuarios/save/")
@@ -30,15 +46,15 @@ public class UsuariosController {
         if(resultado.hasErrors()) {
             model.addAttribute("showModal", true); // 🔸 Esto activa el modal
             model.addAttribute("usuarios",usuarioServiceImpl.findAllUsuariosByNotRol(Rol.USUARIO));
-            return "usuariosAdmin";
+            return "administrador/usuariosAdmin";
         }
         usuario.setEstado(true);
         usuarioServiceImpl.saveUser(usuario);
         redirectAttributes.addFlashAttribute("mensaje", "Usuario guardado correctamente");
-        return "redirect:/usuarios";
+        return "redirect:/usuarios/";
     }
 
-    @PostMapping("/usuarios/update")
+    @PostMapping("/update")
     public String updateUsuario(
             @RequestParam Integer actId,
             @RequestParam String actNombre,
@@ -58,23 +74,21 @@ public class UsuariosController {
         }
 
         redirectAttributes.addFlashAttribute("mensaje", "Usuario actualizado correctamente");
-        return "redirect:/usuarios";
+        return "redirect:/usuarios/";
     }
 
-    @GetMapping("/usuario/search/")
+    @GetMapping("/search/")
     public String usuariosSearch(@RequestParam(required = false) Integer id, Model model) {
         if (id == null) {
             model.addAttribute("errorId", "El id no puede ser vacio");
             model.addAttribute("usuario", new Usuario());
             model.addAttribute("usuarios",usuarioServiceImpl.findAllUsuariosByNotRol(Rol.USUARIO));
-            return "usuariosAdmin";
+            return "administrador/usuariosAdmin";
         }
         Usuario usuario = usuarioServiceImpl.findUsuarioById(id).orElse(null);
         model.addAttribute("usuario", new Usuario());
         model.addAttribute("usuarios",usuario);
 
-
-
-        return "usuariosAdmin";
+        return "administrador/usuariosAdmin";
     }
 }
