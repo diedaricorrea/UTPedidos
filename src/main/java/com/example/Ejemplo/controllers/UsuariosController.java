@@ -25,7 +25,7 @@ public class UsuariosController {
             model.addAttribute("usuario",new Usuario());
             return "administrador/usuariosAdmin";
         }
-        return "usuario/login";
+        return "login/login";
     }
 
     @GetMapping("/loginU")

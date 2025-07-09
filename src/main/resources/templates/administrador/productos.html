@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns="https://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout(~{::title}, 'productos' ,~{::main}, ~{::script})}">
+      th:replace="~{/fragments/layout :: layout(~{::title}, 'productos' ,~{::main}, ~{::script})}">
 
 <head>
     <meta charset="UTF-8">
@@ -12,6 +12,12 @@
             <h1 th:text="${producto.nombre}"></h1>
         </div>
     </main>
-    <script></script>
+    <script>
+
+        fetch('http://localhost:8080/prueba').then(response => response.text()).then(producto => {
+            console.log(producto);
+        })
+
+    </script>
 </body>
 </html>

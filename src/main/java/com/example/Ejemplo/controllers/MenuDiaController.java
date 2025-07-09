@@ -27,14 +27,14 @@ public class MenuDiaController {
     public String menuDia(Model model) {
         List<Producto> productosMenuEconomico = productosServiceImpl.findAllByCategoriaNombre("MENU ECONOMICO");
         model.addAttribute("menusEconomicos", productosMenuEconomico);
-        return "menuDia";
+        return "administrador/menuDia";
     }
 
     @PostMapping("/menuDia/guardar/")
     public String guardar(@Valid @ModelAttribute MenuDia menuDia, RedirectAttributes redirectAttributes,
             BindingResult resultado) {
         if (resultado.hasErrors()) {
-            return "menuDia";
+            return "administrador/menuDia";
         }
         menuDiaServiceImpl.saveMenudia(menuDia);
         redirectAttributes.addFlashAttribute("mensaje", "Menu Economico guardado correctamente");
