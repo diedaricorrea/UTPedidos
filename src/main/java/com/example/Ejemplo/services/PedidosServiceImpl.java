@@ -26,18 +26,24 @@ public class PedidosServiceImpl implements PedidosService {
         return pedidosRepository.findAllByEstado(false);
     }
 
+    @Override
+    public int deletePedido(int idUsuario) {
+        return pedidosRepository.deleteByUsuarioId(idUsuario);
+    }
+
     public List<PedidoResumenDTO> obtenerDetallePedidos() {
-        List<Pedido> pedidos = pedidosRepository.findAll();
+        List<Pedido> pedidos = pedidosRepository.findAllByEstado(false);
 
         return pedidos.stream().map(pedido -> {
             String nombreUsuario = pedido.getUsuario().getNombre();
+            int idUsuario = pedido.getUsuario().getIdUsuario();
             LocalDateTime fechaEntrega = pedido.getFechaEntrega();
             boolean estado = pedido.isEstado();
             List<String> productos = pedido.getDetallePedido().stream()
                     .map(d -> d.getProducto().getNombre())
                     .collect(Collectors.toList());
 
-            return new PedidoResumenDTO(nombreUsuario, productos, fechaEntrega,estado);
+            return new PedidoResumenDTO(idUsuario,nombreUsuario, productos, fechaEntrega,estado);
         }).collect(Collectors.toList());
     }
 }

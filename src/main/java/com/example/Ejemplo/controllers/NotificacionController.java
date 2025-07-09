@@ -1,4 +1,29 @@
 package com.example.Ejemplo.controllers;
 
+import com.example.Ejemplo.services.NotificacionServiceImpl;
+import com.example.Ejemplo.services.PedidosServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+@Controller
+@RequestMapping("/notificacion")
 public class NotificacionController {
+
+    @Autowired
+    private NotificacionServiceImpl notificacionServiceImpl;
+    @Autowired
+    private PedidosServiceImpl pedidosServiceImpl;
+
+    @PostMapping("/notificar")
+    public String notificar(@RequestParam("idUsuario") int idUsuario) {
+        String message = "Tu pedido esta listo";
+        //envio de notificacion al usuario
+        notificacionServiceImpl.sendNotificacion(idUsuario, message);
+        //eliminacion del pedido de la lista de pendientes del usuario
+        pedidosServiceImpl.deletePedido(idUsuario);
+        return "redirect:/pedidos/";
+    }
 }

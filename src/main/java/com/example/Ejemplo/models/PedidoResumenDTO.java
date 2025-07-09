@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PedidoResumenDTO {
+    private int idUsuario;
     private String nombreUsuario;
     private List<String> productos;
     private LocalDateTime fechaEntrega;
