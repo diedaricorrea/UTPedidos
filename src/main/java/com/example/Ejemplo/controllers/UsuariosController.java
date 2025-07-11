@@ -24,10 +24,10 @@ public class UsuariosController {
         Usuario user = usuarioServiceImpl.isExistUsuario(correo, password);
         if(user.getRol() == Rol.ADMINISTRADOR){
             model.addAttribute("usuario",new Usuario());
-            return "redirect:/panelAdmin/usuariosAdmin";
+            return "redirect:/usuarios/panelAdmin";
         }else{
             model.addAttribute("usuario",new Usuario());
-            return "redirect:/usuarios/catalogo";
+            return "redirect:/catalogo/";
         }
     }
 

@@ -2,6 +2,7 @@ package com.example.Ejemplo.controllers;
 
 import java.util.List;
 
+import com.example.Ejemplo.models.Carrito;
 import com.example.Ejemplo.models.Producto;
 import com.example.Ejemplo.services.CarritoServiceImpl;
 import com.example.Ejemplo.services.ProductoServiceImpl;
@@ -13,11 +14,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 @Controller
+@RequestMapping("/catalogo")
 public class ProductoController {
 
     @Autowired
@@ -26,8 +29,7 @@ public class ProductoController {
     @Autowired
     private CarritoServiceImpl carritoServiceImpl;
 
-    @GetMapping("/catalogo")
-
+    @GetMapping("/")
     public String index(
             @RequestParam(required = false) String categoria,
             @RequestParam(required = false) String busqueda,
@@ -55,10 +57,10 @@ public class ProductoController {
         model.addAttribute("busquedaActual", busqueda);
         model.addAttribute("noResultados", productosPage.getContent().isEmpty());
 
-        return "catalogo";
+        return "usuario/catalogo";
     }
 
-    @PostMapping("/catalogo/subir")
+    @PostMapping("/subir")
     public String subirAlCarrito(
             @RequestParam Integer idProducto,
             @RequestParam Integer idUsuario,
@@ -77,9 +79,9 @@ public class ProductoController {
         double total = cantidad * producto.getPrecio();
         List<Carrito> carrito = carritoServiceImpl.obtenerCarritosPorUsuario(idUsuario);
         for (Carrito carro : carrito) {
-            if (carro.getProducto().getId() == idProducto) {
+            if (carro.getIdProducto().getIdProducto() == idProducto) {
                 nuevaCantidad = carro.getCantidad() + cantidad;
-                nuevoTotal = nuevaCantidad * carro.getProducto().getPrecio();
+                nuevoTotal = nuevaCantidad * carro.getIdProducto().getPrecio();
                 if (carritoServiceImpl.actualizarProductoAgregado(idUsuario, idProducto, nuevaCantidad,
                         nuevoTotal) > 0) {
                     redirectAttributes.addFlashAttribute("message", "Se añadió al carrito correctamente");
@@ -90,7 +92,7 @@ public class ProductoController {
 
         carritoServiceImpl.saveCarrito(idUsuario, idProducto, cantidad, total);
         redirectAttributes.addFlashAttribute("message", "Se añadió al carrito correctamente");
-        return "redirect:/catalogo";
+        return "redirect:/catalogo/";
     }
 
 

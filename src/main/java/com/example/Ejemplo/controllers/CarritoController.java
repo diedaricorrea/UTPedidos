@@ -18,7 +18,7 @@ public class CarritoController {
     @GetMapping("/{idUsuario}")
     public String verCarrito(@PathVariable Integer idUsuario, Model model) {
         model.addAttribute("carrito", carritoServiceImpl.obtenerCarritosPorUsuario(idUsuario));
-        return "carrito";
+        return "usuario/carrito";
     }
 
     @PostMapping("/eliminar/{idUsuario}/{idProducto}")

@@ -5,6 +5,8 @@ import com.example.Ejemplo.models.Producto;
 import com.example.Ejemplo.repository.CarritoRepository;
 import com.example.Ejemplo.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -61,7 +63,7 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public List<Carrito> obtenerCarritosPorUsuario(int id) {
-        return carritoRepository.findByUsuarioId(id);
+        return carritoRepository.findByIdUsuario_IdUsuario(id);
     }
 
 
@@ -78,5 +80,41 @@ public class ProductoServiceImpl implements ProductoService {
     @Override
     public int eliminarProductoAgregado(int idUsuario, int idProducto){
         return carritoRepository.deleteByUsuarioIdAndProductoId(idUsuario,idProducto);
+    }
+
+    @Override
+    public Producto saveProduct(Producto producto) {
+        if (producto.getImagenUrl().isEmpty()) {
+            producto.setImagenUrl("/imagenes/imagenpordefecto.png");
+        }
+        return productoRepository.save(producto);
+    }
+
+    @Override
+    public Page<Producto> findAllProductosPaginado(Pageable pageable) {
+        return productoRepository.findAll(pageable);
+    }
+
+    @Override
+    public Page<Producto> obtenerProductosPorCategoriaPaginado(String categoria, Pageable pageable) {
+        return productoRepository.findByCategoriaNombre(categoria, pageable);
+    }
+
+    @Override
+    public void deleteProductById(Integer id) {
+        throw new UnsupportedOperationException("Unimplemented method 'deleteUserById'");
+    }
+
+    @Override
+    public Page<Producto> buscarPorCategoriaYNombre(String categoria, String nombre, Pageable pageable) {
+        if ((categoria == null || categoria.isEmpty()) && (nombre == null || nombre.isEmpty())) {
+            return productoRepository.findAll(pageable);
+        } else if (categoria != null && !categoria.isEmpty() && (nombre == null || nombre.isEmpty())) {
+            return productoRepository.findByCategoriaNombre(categoria, pageable);
+        } else if ((categoria == null || categoria.isEmpty()) && nombre != null && !nombre.isEmpty()) {
+            return productoRepository.findByNombreContainingIgnoreCase(nombre, pageable);
+        } else {
+            return productoRepository.findByCategoriaNombreAndNombreContainingIgnoreCase(categoria, nombre, pageable);
+        }
     }
 }

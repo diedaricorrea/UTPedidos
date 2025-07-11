@@ -2,6 +2,8 @@ package com.example.Ejemplo.services;
 
 import com.example.Ejemplo.models.Carrito;
 import com.example.Ejemplo.models.Producto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +24,14 @@ public interface ProductoService {
     int actualizarProductoAgregado(int idUsuario, int idProducto, int cantidad, double subTotal);
 
     int eliminarProductoAgregado(int idUsuario, int idProducto);
+
+    Producto saveProduct(Producto producto);
+
+    Page<Producto> findAllProductosPaginado(Pageable pageable);
+
+    Page<Producto> obtenerProductosPorCategoriaPaginado(String categoria, Pageable pageable);
+
+    void deleteProductById(Integer id);
+
+    Page<Producto> buscarPorCategoriaYNombre(String categoria, String nombre, Pageable pageable);
 }

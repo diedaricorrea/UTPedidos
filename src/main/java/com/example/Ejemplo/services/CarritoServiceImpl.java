@@ -36,7 +36,7 @@ public class CarritoServiceImpl implements CarritoService {
 
     @Override
     public List<Carrito> obtenerCarritosPorUsuario(int id) {
-        return carritoRepository.findByUsuarioId(id);
+        return carritoRepository.findByIdUsuario_IdUsuario(id);
     }
 
 
