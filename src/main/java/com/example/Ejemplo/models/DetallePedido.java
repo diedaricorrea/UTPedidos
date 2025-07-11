@@ -7,10 +7,8 @@ import lombok.Data;
 @Data
 @Table(name = "detalle_pedido")
 public class DetallePedido {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_detalle_pedido")
-    private int id;
+    @EmbeddedId
+    private DetallePedidoId detallepedidoId;
 
     @ManyToOne
     @JoinColumn(name = "id_pedido")
