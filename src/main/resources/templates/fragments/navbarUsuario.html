@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>navbar</title>
+</head>
+
+<body>
+<header th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg custom-navbar">
+        <div class="container-fluid">
+            <!-- LOGO -->
+            <a class="navbar-brand d-flex align-items-center me-4" href="#">
+                <span class="logo-coffee">Coffee</span>
+                <span class="logo-utpedidos">UTPedidos</span>
+            </a>
+            <!-- Botón responsive -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Contenido navbar -->
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                <!-- Enlaces a la izquierda -->
+                <ul class="navbar-nav gap-4">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" th:href="@{/catalogo}">MENÚ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" th:href="@{/carrito/2}">CARRITO</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom" href="#">PEDIDOS</a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center ms-auto">
+                    <!-- Icono de campana -->
+                    <div class="notification-bell" onclick="toggleNotifications()" style="cursor: pointer;">
+                        <i class="bi bi-bell-fill"></i>
+                    </div>
+                    <!-- Ícono de usuario a la derecha -->
+                    <div class="dropdown ms-auto">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle"
+                           id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-person-fill"></i> <!-- Ícono -->
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end text-small shadow"
+                            aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" href="/perfil">Editar cuenta</a></li>
+                            <li><a class="dropdown-item" href="/mis-pedidos">Mis pedidos</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item text-danger" href="/logout">Cerrar sesión</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+    </nav>
+    <!-- Modal lateral derecho de notificaciones -->
+    <div id="notification-modal" class="notification-modal hidden" onclick="closeNotifications(event)">
+        <div class="notification-content" onclick="event.stopPropagation()">
+            <div class="notification-header">
+                <h5 class="mb-0">Notificaciones</h5>
+                <span onclick="closeNotifications(event)" style="cursor: pointer;">&times;</span>
+            </div>
+            <div class="notification-body">
+                <!-- Puedes iterar con Thymeleaf aquí -->
+            </div>
+        </div>
+    </div>
+
+</header>
+</body>
+
+</html>

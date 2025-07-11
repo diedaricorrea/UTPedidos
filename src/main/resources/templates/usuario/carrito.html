@@ -1,10 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layoutUsuario :: layout(~{::title},~{::main},~{::script} )}">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Carrito</title>
 </head>
+
 <body>
 
+<main class="">
+    <div class="container ">
+        <div class="row">
+            <div class="mt-6 col-md-12">
+                <div class="tabla-contenedor">
+                    <div class="table-responsive">
+                        <table class="align-middle text-center w-100">
+
+                            <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio unitario</th>
+                                <th>Subtotal</th>
+                                <th>Acciones</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <tr th:each="item : ${carrito}">
+                                <td><img th:src="@{${item.producto.imagenUrl}}" style="width: 60px;" alt="">
+                                </td>
+                                <td th:text="${item.producto.nombre}"></td>
+                                <td th:text="${item.cantidad}"></td>
+                                <td th:text="${item.producto.precio}"></td>
+                                <td class="subtotal" th:text="${item.total}"></td>
+                                <td>
+                                    <form th:action="@{/carrito/eliminar/{usuarioId}/{productoId}(
+                                                                                            usuarioId=${item.usuario.id},
+                                                                                            productoId=${item.producto.id})}"
+                                          method="POST">
+                                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            </tbody>
+
+                            <tfoot>
+                            <tr>
+                                <td colspan="5"><strong>Total:</strong></td>
+                                <td><strong id="totalCarrito">S/ 0.00</strong></td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                        <div class="botones d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                            <a class="btn1 btn w-100 w-md-auto" th:href="@{/catalogo}">Añadir producto</a>
+                            <button type="button" class="btn btn-success btn-lg"
+                                    onclick="abrirModal()">Pagar</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalDetalle" class="modal-custom">
+            <div class="modal-content-custom">
+                <span class="close" onclick="cerrarModal()">&times;</span>
+                <h5>Confirmar Pago</h5>
+                <form th:action="@{'/carrito/' + 1}" method="post" id="formPago" onsubmit="return false;">
+                    <div th:if="${error}" class="alert alert-danger text-center">
+                        <span th:text="${error}"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="metodo" class="form-label">Método de Pago</label>
+                        <select class="form-select" name="metodo" id="metodo" required>
+                            <option value="Yape">Yape</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label">Número de Teléfono</label>
+                        <input type="tel" class="form-control" name="telefono" id="telefono" pattern="[0-9]{9}"
+                               required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="codigo" class="form-label">Código de Verificación</label>
+                        <input type="text" class="form-control" name="codigo" id="codigo" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="horaRecojo" class="form-label">Hora de recojo</label>
+                        <input type="time" class="form-control" name="horaRecojo" id="horaRecojo" required />
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
+                        <button type="submit" class="btn btn-success">Confirmar pago</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+</main>
+<script></script>
 </body>
-</html>
