@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class PedidosServiceImpl implements PedidosService {
 
-    private PedidosRepository pedidosRepository;
+    private final PedidosRepository pedidosRepository;
 
     @Autowired
     public PedidosServiceImpl(PedidosRepository pedidosRepository) {

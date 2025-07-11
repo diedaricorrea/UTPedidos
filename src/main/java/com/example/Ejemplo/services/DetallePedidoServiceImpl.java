@@ -10,8 +10,12 @@ import java.util.List;
 @Service
 public class DetallePedidoServiceImpl implements DetallePedidoService {
 
+    private final DetallePedidoRepository detallePedidoRepository;
+
     @Autowired
-    private DetallePedidoRepository detallePedidoRepository;
+    public DetallePedidoServiceImpl(DetallePedidoRepository detallePedidoRepository) {
+        this.detallePedidoRepository = detallePedidoRepository;
+    }
 
     @Override
     public List<DetallePedido> findAllDetallePedido() {

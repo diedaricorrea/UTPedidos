@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class NotificacionServiceImpl implements NotificacionService {
 
-    NotificacionRepository notificacionRepository;
+    private final NotificacionRepository notificacionRepository;
 
     @Autowired
     public NotificacionServiceImpl(NotificacionRepository notificacionRepository) {
