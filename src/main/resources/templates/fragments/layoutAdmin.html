@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title,activeTab, content, scripts)">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:fragment="layoutA(title,activeTab, content, scripts)">
 
 <head>
     <meta charset="UTF-8">
@@ -18,7 +18,7 @@
 
 <body>
     <!-- Barra de navegación -->
-    <div th:replace="~{/fragments/navbarAdmin :: navbar(${activeTab})}"></div>
+    <div th:replace="~{/fragments/navbarAdmin :: navbarA(${activeTab})}"></div>
 
     <!-- Contenido principal -->
     <div th:replace="${content}" class="contenido"></div>

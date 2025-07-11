@@ -12,5 +12,5 @@ public interface UsuarioService {
     Optional<Usuario> findUsuarioPorNombre(String nombre);
     Usuario saveUser(Usuario usuario);
     List<Usuario> findAllUsuariosByNotRol(Rol rol);
-    boolean isExistUsuario(String correo,String password);
+    Usuario isExistUsuario(String correo,String password);
 }

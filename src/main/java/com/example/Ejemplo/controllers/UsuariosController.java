@@ -21,19 +21,41 @@ public class UsuariosController {
 
     @GetMapping("/login")
     public String login(@RequestParam String correo, @RequestParam String password, Model model) {
-        if(usuarioServiceImpl.isExistUsuario(correo, password)){
+        Usuario user = usuarioServiceImpl.isExistUsuario(correo, password);
+        if(user.getRol() == Rol.ADMINISTRADOR){
             model.addAttribute("usuario",new Usuario());
-            return "administrador/usuariosAdmin";
+            return "redirect:/panelAdmin/usuariosAdmin";
+        }else{
+            model.addAttribute("usuario",new Usuario());
+            return "redirect:/usuarios/catalogo";
         }
-        return "login/login";
     }
+
+
+    @GetMapping("/panelAdmin")
+    public String panelAdmin(Model model) {
+        model.addAttribute("usuario",new Usuario());
+        return "administrador/platos";
+    }
+
+    @GetMapping("/catalogo")
+    public String catalogo(Model model) {
+        model.addAttribute("usuario",new Usuario());
+        return "usuario/catalogo";
+    }
+
 
     @GetMapping("/")
     public String usuarios(Model model) {
-        model.addAttribute("usuario", new Usuario());
-        model.addAttribute("usuarios",usuarioServiceImpl.findAllUsuariosByNotRol(Rol.USUARIO));
-        return "administrador/usuariosAdmin";
+        return "login/login";
     }
+
+//    @GetMapping("/")
+//    public String usuarios(Model model) {
+//        model.addAttribute("usuario", new Usuario());
+//        model.addAttribute("usuarios",usuarioServiceImpl.findAllUsuariosByNotRol(Rol.USUARIO));
+//        return "administrador/usuariosAdmin";
+//    }
 
     @PostMapping("/usuarios/save/")
     public String saveUsuario(@ModelAttribute @Valid Usuario usuario,BindingResult resultado, RedirectAttributes redirectAttributes,Model model) {

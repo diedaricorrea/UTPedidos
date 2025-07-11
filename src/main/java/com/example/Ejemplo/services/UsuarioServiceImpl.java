@@ -50,9 +50,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public boolean isExistUsuario(String correo, String password) {
-        Usuario u = usuarioRepository.findByCorreoAndPassword(correo, password);
-        return u != null;
+    public Usuario isExistUsuario(String correo, String password) {
+        return  usuarioRepository.findByCorreoAndPassword(correo, password);
     }
 
 }
