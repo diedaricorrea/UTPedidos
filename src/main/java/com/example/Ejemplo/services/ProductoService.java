@@ -1,5 +1,6 @@
 package com.example.Ejemplo.services;
 
+import com.example.Ejemplo.models.Carrito;
 import com.example.Ejemplo.models.Producto;
 
 import java.util.List;
@@ -11,4 +12,14 @@ public interface ProductoService {
     Optional<Producto> findProductoPorNombre(String nombre);
     Producto saveUser(Producto producto);
     void deleteUserById(Long id);
+
+    List<Producto> findAllProductosById(int id);
+
+    List<Carrito> obtenerCarritosPorUsuario(int id);
+
+    void saveCarrito(int id, int idProducto, int cantidad, double total);
+
+    int actualizarProductoAgregado(int idUsuario, int idProducto, int cantidad, double subTotal);
+
+    int eliminarProductoAgregado(int idUsuario, int idProducto);
 }

@@ -1,7 +1,9 @@
 package com.example.Ejemplo.services;
 
+import com.example.Ejemplo.models.Carrito;
 import com.example.Ejemplo.models.Producto;
-import com.example.Ejemplo.repository.ProductosRepository;
+import com.example.Ejemplo.repository.CarritoRepository;
+import com.example.Ejemplo.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,21 +12,20 @@ import java.util.Optional;
 
 @Service
 public class ProductoServiceImpl implements ProductoService {
-    private final ProductosRepository productosRepository;
+
+    private final CarritoRepository carritoRepository;
+
+    private final ProductoRepository productoRepository;
 
     @Autowired
-    public ProductoServiceImpl(ProductosRepository productosRepository) {
-        this.productosRepository = productosRepository;
-    }
-
-    @Override
-    public List<Producto> findAllProductos() {
-        return productosRepository.findAll();
+    public ProductoServiceImpl(ProductoRepository productosRepository, CarritoRepository carritoRepository) {
+        this.productoRepository = productosRepository;
+        this.carritoRepository = carritoRepository;
     }
 
     @Override
     public Optional<Producto> findProductoById(Integer id) {
-        return productosRepository.findById(id);
+        return productoRepository.findById(id);
     }
 
     @Override
@@ -43,6 +44,39 @@ public class ProductoServiceImpl implements ProductoService {
     }
 
     public List<Producto> findAllByCategoriaNombre(String nombre) {
-        return productosRepository.findAllByCategoriaNombre(nombre);
+        return productoRepository.findAllByCategoriaNombre(nombre);
+    }
+
+    @Override
+    public List<Producto> findAllProductos() {
+        return productoRepository.findAll();
+    }
+
+    @Override
+    public List<Producto> findAllProductosById(int id) {
+        Optional<Producto> producto = productoRepository.findById(id);
+        return producto.map(List::of).orElse(List.of());
+    }
+
+
+    @Override
+    public List<Carrito> obtenerCarritosPorUsuario(int id) {
+        return carritoRepository.findByUsuarioId(id);
+    }
+
+
+    @Override
+    public void saveCarrito(int id, int idProducto, int cantidad, double total) {
+        carritoRepository.saveCarritoByIdUsuario(id, idProducto,cantidad,total);
+    }
+
+    @Override
+    public int actualizarProductoAgregado(int idUsuario, int idProducto, int cantidad, double subTotal){
+        return carritoRepository.updateCantidadCarrito(idUsuario,idProducto,cantidad,subTotal);
+    }
+
+    @Override
+    public int eliminarProductoAgregado(int idUsuario, int idProducto){
+        return carritoRepository.deleteByUsuarioIdAndProductoId(idUsuario,idProducto);
     }
 }
