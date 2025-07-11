@@ -3,7 +3,7 @@ package com.example.Ejemplo.controllers;
 import com.example.Ejemplo.models.MenuDia;
 import com.example.Ejemplo.models.Producto;
 import com.example.Ejemplo.services.MenuDiaServiceImpl;
-import com.example.Ejemplo.services.ProductosServiceImpl;
+import com.example.Ejemplo.services.ProductoServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/menuDia")
 public class MenuDiaController {
     @Autowired
-    private ProductosServiceImpl productosServiceImpl;
+    private ProductoServiceImpl productosServiceImpl;
     @Autowired
     private MenuDiaServiceImpl menuDiaServiceImpl;
 

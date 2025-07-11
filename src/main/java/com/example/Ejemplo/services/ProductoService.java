@@ -5,7 +5,7 @@ import com.example.Ejemplo.models.Producto;
 import java.util.List;
 import java.util.Optional;
 
-public interface ProductosService {
+public interface ProductoService {
     List<Producto> findAllProductos();
     Optional<Producto> findProductoById(Integer id);
     Optional<Producto> findProductoPorNombre(String nombre);

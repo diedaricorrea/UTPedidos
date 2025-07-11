@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ProductosServiceImpl implements ProductosService {
+public class ProductoServiceImpl implements ProductoService {
     private final ProductosRepository productosRepository;
 
     @Autowired
-    public ProductosServiceImpl(ProductosRepository productosRepository) {
+    public ProductoServiceImpl(ProductosRepository productosRepository) {
         this.productosRepository = productosRepository;
     }
 
