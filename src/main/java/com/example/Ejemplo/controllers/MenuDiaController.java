@@ -12,25 +12,27 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
 @Controller
+@RequestMapping("/menuDia")
 public class MenuDiaController {
     @Autowired
     private ProductosServiceImpl productosServiceImpl;
     @Autowired
     private MenuDiaServiceImpl menuDiaServiceImpl;
 
-    @GetMapping("/menuDia")
+    @GetMapping("/")
     public String menuDia(Model model) {
         List<Producto> productosMenuEconomico = productosServiceImpl.findAllByCategoriaNombre("MENU ECONOMICO");
         model.addAttribute("menusEconomicos", productosMenuEconomico);
         return "administrador/menuDia";
     }
 
-    @PostMapping("/menuDia/guardar/")
+    @PostMapping("/guardar")
     public String guardar(@Valid @ModelAttribute MenuDia menuDia, RedirectAttributes redirectAttributes,
             BindingResult resultado) {
         if (resultado.hasErrors()) {

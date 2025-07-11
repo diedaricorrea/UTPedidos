@@ -28,11 +28,6 @@ public class UsuariosController {
         return "login/login";
     }
 
-    @GetMapping("/loginU")
-    public String loginU() {
-        return "usuario/login";
-    }
-
     @GetMapping("/")
     public String usuarios(Model model) {
         model.addAttribute("usuario", new Usuario());

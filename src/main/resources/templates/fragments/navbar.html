@@ -15,8 +15,8 @@
                         class="fas fa-utensils me-2"></i> Gestión de Platos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'pendientes' ? 'active' : ''}"
-                    th:href="@{/pedidos}"><i class="fas fa-list me-2"></i>Pedidos</a>
+                <a class="nav-link" th:classappend="${activeTab == 'pendientes' ? 'active' : ''}" th:href="@{/pedidos/}"><i
+                        class="fas fa-list me-2"></i>Pedidos</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == 'espera' ? 'active' : ''}" href="#"><i
@@ -31,15 +31,15 @@
                         class="fas fa-cog me-2"></i> Configuración</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'productos' ? 'active' : ''}" th:href="@{/productos}"><i
+                <a class="nav-link" th:classappend="${activeTab == 'productos' ? 'active' : ''}" th:href="@{/productos/}"><i
                         class="fas fa-cog me-2"></i>Productos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'usuarios' ? 'active' : ''}" th:href="@{/usuarios}"><i
+                <a class="nav-link" th:classappend="${activeTab == 'usuarios' ? 'active' : ''}" th:href="@{/usuarios/}"><i
                         class="fas fa-cog me-2"></i>Usuarios</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'menuDia' ? 'active' : ''}" th:href="@{/menuDia}"><i
+                <a class="nav-link" th:classappend="${activeTab == 'menuDia' ? 'active' : ''}" th:href="@{/menuDia/}"><i
                         class="fas fa-cog me-2"></i>Menu del dia</a>
             </li>
         </ul>

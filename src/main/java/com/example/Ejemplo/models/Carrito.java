@@ -18,12 +18,14 @@ public class Carrito {
     private CarritoId carritoid;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("idUsuario")
     @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
+    private Usuario idUsuario;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("idProducto")
     @JoinColumn(name = "id_producto", nullable = false)
-    private Producto producto;
+    private Producto idProducto;
 
     @Column(nullable = false)
     private Integer cantidad;

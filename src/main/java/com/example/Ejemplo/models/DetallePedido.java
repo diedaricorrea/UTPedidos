@@ -11,10 +11,12 @@ public class DetallePedido {
     private DetallePedidoId detallepedidoId;
 
     @ManyToOne
+    @MapsId("idPedido")
     @JoinColumn(name = "id_pedido")
     private Pedido pedido;
 
     @ManyToOne
+    @MapsId("idProducto")
     @JoinColumn(name = "id_producto")
-    private Producto Producto;
+    private Producto producto;
 }

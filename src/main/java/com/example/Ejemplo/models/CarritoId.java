@@ -1,5 +1,6 @@
 package com.example.Ejemplo.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
@@ -8,7 +9,10 @@ import java.util.Objects;
 @Embeddable
 public class CarritoId implements Serializable {
 
+    @Column(name = "id_usuario")
     private Integer idUsuario;
+
+    @Column(name = "id_producto")
     private Integer idProducto;
 
     public CarritoId() {}
