@@ -85,7 +85,7 @@ public class ProductoController {
                 if (carritoServiceImpl.actualizarProductoAgregado(idUsuario, idProducto, nuevaCantidad,
                         nuevoTotal) > 0) {
                     redirectAttributes.addFlashAttribute("message", "Se añadió al carrito correctamente");
-                    return "redirect:/catalogo";
+                    return "redirect:/catalogo/";
                 }
             }
         }

@@ -79,7 +79,7 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public int eliminarProductoAgregado(int idUsuario, int idProducto){
-        return carritoRepository.deleteByUsuarioIdAndProductoId(idUsuario,idProducto);
+        return carritoRepository.deleteCarritoByUsuarioIdAndProductoId(idUsuario,idProducto);
     }
 
     @Override

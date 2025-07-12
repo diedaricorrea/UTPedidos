@@ -52,7 +52,7 @@ public class CarritoServiceImpl implements CarritoService {
 
     @Override
     public int eliminarProductoAgregado(int idUsuario,int idProducto){
-        return carritoRepository.deleteByUsuarioIdAndProductoId(idUsuario,idProducto);
+        return carritoRepository.deleteCarritoByUsuarioIdAndProductoId(idUsuario,idProducto);
     }
 
 }

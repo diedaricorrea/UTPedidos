@@ -24,9 +24,8 @@ public interface CarritoRepository extends JpaRepository<Carrito, Integer> {
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Carrito c WHERE c.idUsuario = :usuarioId AND c.idProducto = :productoId")
-    int deleteByUsuarioIdAndProductoId(@Param("usuarioId") int usuarioId,
-                                       @Param("productoId") int productoId);
+    @Query("DELETE FROM Carrito c WHERE c.idUsuario.idUsuario = :usuarioId AND c.idProducto.idProducto = :productoId")
+    int deleteCarritoByUsuarioIdAndProductoId(@Param("usuarioId") int usuarioId, @Param("productoId") int productoId);
 
     List<Carrito> findByIdUsuario_IdUsuario(Integer idUsuario);
 

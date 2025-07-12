@@ -13,8 +13,8 @@
             <div class="mt-6 col-md-12">
                 <div class="tabla-contenedor">
                     <div class="table-responsive">
+                        <span class="text-warning" th:if="${carrito.isEmpty()}">No tienes productos en tu carrito agrega uno</span>
                         <table class="align-middle text-center w-100">
-
                             <thead>
                             <tr>
                                 <th>Imagen</th>
@@ -28,17 +28,16 @@
 
                             <tbody>
                             <tr th:each="item : ${carrito}">
-                                <td><img th:src="@{${item.producto.imagenUrl}}" style="width: 60px;" alt="">
+                                <td><img th:src="@{${item.getIdProducto().imagenUrl}}" style="width: 60px;" alt="">
                                 </td>
-                                <td th:text="${item.producto.nombre}"></td>
+                                <td th:text="${item.getIdProducto().nombre}"></td>
                                 <td th:text="${item.cantidad}"></td>
-                                <td th:text="${item.producto.precio}"></td>
+                                <td th:text="${item.getIdProducto().precio}"></td>
                                 <td class="subtotal" th:text="${item.total}"></td>
                                 <td>
-                                    <form th:action="@{/carrito/eliminar/{usuarioId}/{productoId}(
-                                                                                            usuarioId=${item.usuario.id},
-                                                                                            productoId=${item.producto.id})}"
-                                          method="POST">
+                                    <form th:action="@{/carrito/eliminar}" method="POST">
+                                        <input type="text" hidden name="idUsuario" th:value="${item.getIdUsuario().idUsuario}">
+                                        <input type="text" hidden name="idProducto" th:value="${item.getIdProducto().idProducto}">
                                         <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                                     </form>
                                 </td>
@@ -53,7 +52,7 @@
                             </tfoot>
                         </table>
                         <div class="botones d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                            <a class="btn1 btn w-100 w-md-auto" th:href="@{/catalogo}">Añadir producto</a>
+                            <a class="btn1 btn w-100 w-md-auto" th:href="@{/catalogo/}">Añadir producto</a>
                             <button type="button" class="btn btn-success btn-lg"
                                     onclick="abrirModal()">Pagar</button>
 

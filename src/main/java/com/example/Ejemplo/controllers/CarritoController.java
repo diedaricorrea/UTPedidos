@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-@RequestMapping("carrito")
+@RequestMapping("/carrito")
 public class CarritoController {
 
     @Autowired
@@ -21,9 +21,9 @@ public class CarritoController {
         return "usuario/carrito";
     }
 
-    @PostMapping("/eliminar/{idUsuario}/{idProducto}")
-    public String eliminarDelCarrito(@PathVariable int idProducto,
-                                     @PathVariable int idUsuario,
+    @PostMapping("/eliminar")
+    public String eliminarDelCarrito(@RequestParam int idUsuario,
+                                     @RequestParam int idProducto,
                                      RedirectAttributes redirectAttributes) {
         try {
             carritoServiceImpl.eliminarProductoAgregado(idUsuario,idProducto);
@@ -32,7 +32,7 @@ public class CarritoController {
             redirectAttributes.addFlashAttribute("error", "Error al eliminar el producto: " + e.getMessage());
         }
 
-        return "redirect:/carrito/2";
+        return "redirect:/carrito/1";
     }
 
 }
