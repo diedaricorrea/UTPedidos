@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -14,6 +15,6 @@ public class PedidoResumenDTO {
     private int idUsuario;
     private String nombreUsuario;
     private List<String> productos;
-    private LocalDateTime fechaEntrega;
+    private LocalTime fechaEntrega;
     private boolean estado;
 }

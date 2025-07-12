@@ -22,6 +22,7 @@ public class UsuariosController {
     @GetMapping("/login")
     public String login(@RequestParam String correo, @RequestParam String password, Model model) {
         Usuario user = usuarioServiceImpl.isExistUsuario(correo, password);
+        System.out.println(user.getRol());
         if(user.getRol() == Rol.ADMINISTRADOR){
             model.addAttribute("usuario",new Usuario());
             return "redirect:/usuarios/panelAdmin";
@@ -29,13 +30,6 @@ public class UsuariosController {
             model.addAttribute("usuario",new Usuario());
             return "redirect:/catalogo/";
         }
-    }
-
-
-    @GetMapping("/panelAdmin")
-    public String panelAdmin(Model model) {
-        model.addAttribute("usuario",new Usuario());
-        return "administrador/platos";
     }
 
     @GetMapping("/catalogo")

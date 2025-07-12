@@ -5,6 +5,11 @@ import com.example.Ejemplo.models.Pedido;
 import java.util.List;
 
 public interface PedidosService {
+    Pedido guardarPedido(Pedido pedido);
+
     List<Pedido> findAllPedidos();
+    
+    List<Pedido> findByUsuario_Id(int id);
+
     int deletePedido(int idUsuario);
 }

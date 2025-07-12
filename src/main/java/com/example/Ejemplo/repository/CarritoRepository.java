@@ -29,6 +29,9 @@ public interface CarritoRepository extends JpaRepository<Carrito, Integer> {
 
     List<Carrito> findByIdUsuario_IdUsuario(Integer idUsuario);
 
+    @Transactional
+    int deleteCarritoByIdUsuario_IdUsuario(Integer idUsuario);
+
     @Modifying
     @Transactional
     @Query(value = "INSERT INTO carrito (id_usuario, id_producto, cantidad, total) VALUES (:idUsuario, :idProducto, :cantidad, :total)", nativeQuery = true)

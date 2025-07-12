@@ -55,4 +55,8 @@ public class CarritoServiceImpl implements CarritoService {
         return carritoRepository.deleteCarritoByUsuarioIdAndProductoId(idUsuario,idProducto);
     }
 
+    @Override
+    public int limpiarCarrito(int idUsuario) {
+        return carritoRepository.deleteCarritoByIdUsuario_IdUsuario(idUsuario);
+    }
 }

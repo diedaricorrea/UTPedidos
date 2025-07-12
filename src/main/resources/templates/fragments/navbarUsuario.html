@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="https://www.thymeleaf.org">
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
 
 <head>
     <title>navbar</title>
@@ -30,7 +30,7 @@
                         <a class="nav-link nav-link-custom" th:href="@{/carrito/1}">CARRITO</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" href="#">PEDIDOS</a>
+                        <a class="nav-link nav-link-custom" th:href="@{/pedidos/pedido/1}">PEDIDOS</a>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center ms-auto">

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="es" xmlns="http://www.thymeleaf.org"
-    th:replace="~{/fragments/layoutAdmin :: layout(~{::title}, 'pendientes' ,~{::main}, ~{::script})}">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{/fragments/layoutAdmin :: layoutA(~{::title}, 'pendientes' ,~{::main}, ~{::script})}">
 
 <header>
     <title>Pedidos Pendientes</title>
@@ -22,15 +21,15 @@
                     </tr>
                 </thead>
                 <tbody class="text-center">
-                    <tr th:each="pedido : ${pedidos}">
+                    <tr th:each="pedido : ${pedidosPendientes}">
                         <td>1</td>
-                        <td th:text="${pedido.getNombreUsuario()}"></td>
+                        <td th:text="${pedido.}"></td>
                         <td th:text="${pedido.estado ? 'ENTREGADO' : 'PENDIENTE'}"></td>
-                        <td th:text="${pedido.getProductos()}"></td>
-                        <td th:text="${pedido.fechaEntrega != null} ? ${#temporals.format(pedido.fechaEntrega,'dd-MM-YY HH:mm')} : 'No programada'">
+                        <td th:text="${pedido.getDetallePedido()}"></td>
+                        <td th:text="${pedido.fechaEntrega != null} ? ${#temporals.format(pedido.fechaEntrega,'HH:mm')} : 'No programada'">
                         <td>
                             <form th:action="@{/notificacion/notificar}" method="POST">
-                                <input type="hidden" name="idUsuario" th:value="${pedido.idUsuario}">
+                                <input type="hidden" name="idUsuario" th:value="${pedido.getUsuario().idUsuario}">
                                 <button class="btn btn-primary" type="submit">Enviar notifiacion</button>
                             </form>
                         </td>

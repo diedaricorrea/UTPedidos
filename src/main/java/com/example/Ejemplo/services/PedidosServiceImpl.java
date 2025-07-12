@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,12 +21,20 @@ public class PedidosServiceImpl implements PedidosService {
         this.pedidosRepository = pedidosRepository;
     }
 
+    @Override
+    public Pedido guardarPedido(Pedido pedido) {
+        return pedidosRepository.save(pedido);
+    }
 
     @Override
     public List<Pedido> findAllPedidos() {
         return pedidosRepository.findAllByEstado(false);
     }
 
+    @Override
+    public List<Pedido> findByUsuario_Id(int id){
+        return pedidosRepository.findAllByUsuario_IdUsuario(id);
+    }
     @Override
     public int deletePedido(int idUsuario) {
         return pedidosRepository.deleteByUsuarioId(idUsuario);
@@ -34,10 +43,20 @@ public class PedidosServiceImpl implements PedidosService {
     public List<PedidoResumenDTO> obtenerDetallePedidos() {
         List<Pedido> pedidos = pedidosRepository.findAllByEstado(false);
 
+        return getPedidoResumenDTOS(pedidos);
+    }
+
+    public List<PedidoResumenDTO> obtenerDetallePedidosPorId(int id) {
+        List<Pedido> pedidos = pedidosRepository.findAllByUsuario_IdUsuario(id);
+
+        return getPedidoResumenDTOS(pedidos);
+    }
+
+    private List<PedidoResumenDTO> getPedidoResumenDTOS(List<Pedido> pedidos) {
         return pedidos.stream().map(pedido -> {
             String nombreUsuario = pedido.getUsuario().getNombre();
             int idUsuario = pedido.getUsuario().getIdUsuario();
-            LocalDateTime fechaEntrega = pedido.getFechaEntrega();
+            LocalTime fechaEntrega = pedido.getFechaEntrega();
             boolean estado = pedido.isEstado();
             List<String> productos = pedido.getDetallePedido().stream()
                     .map(d -> d.getProducto().getNombre())

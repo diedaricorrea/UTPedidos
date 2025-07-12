@@ -18,6 +18,14 @@ public class DetallePedidoServiceImpl implements DetallePedidoService {
     }
 
     @Override
+    public int saveDetallePedido(DetallePedido detallePedido) {
+        if (detallePedidoRepository.save(detallePedido) == null) {
+            return 0;
+        }
+        return 1;
+    }
+
+    @Override
     public List<DetallePedido> findAllDetallePedido() {
         return detallePedidoRepository.findAll();
     }

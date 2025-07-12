@@ -14,6 +14,7 @@
                 <div class="tabla-contenedor">
                     <div class="table-responsive">
                         <span class="text-warning" th:if="${carrito.isEmpty()}">No tienes productos en tu carrito agrega uno</span>
+                        <p>No olvidar una vez cancelado no hay reembolso</p>
                         <table class="align-middle text-center w-100">
                             <thead>
                             <tr>
@@ -65,7 +66,8 @@
             <div class="modal-content-custom">
                 <span class="close" onclick="cerrarModal()">&times;</span>
                 <h5>Confirmar Pago</h5>
-                <form th:action="@{'/carrito/' + 1}" method="post" id="formPago" onsubmit="return false;">
+                <form th:action="@{/pedir}" method="post" id="formPago" > <!--onsubmit="return false;"-->
+                    <input type="hidden" id="idUsuario" name="idUsuario" th:value="1" />
                     <div th:if="${error}" class="alert alert-danger text-center">
                         <span th:text="${error}"></span>
                     </div>
@@ -90,12 +92,13 @@
 
                     <div class="mb-3">
                         <label for="horaRecojo" class="form-label">Hora de recojo</label>
-                        <input type="time" class="form-control" name="horaRecojo" id="horaRecojo" required />
+                        <input type="time" class="form-control" name="horaEntrega" id="horaRecojo" required />
                     </div>
 
                     <div class="d-flex justify-content-between">
                         <button type="button" class="btn btn-secondary" onclick="cerrarModal()">Cancelar</button>
-                        <button type="submit" class="btn btn-success">Confirmar pago</button>
+                        <button type="submit" class="btn btn-success" onclick="confirmarPago()">Confirmar
+                            pago</button>
                     </div>
                 </form>
             </div>

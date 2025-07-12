@@ -14,4 +14,6 @@ public interface CarritoService {
     void saveCarrito(int id,int idProducto,int cantidad,double total);
     int actualizarProductoAgregado(int idUsuario, int idProducto, int cantidad,double subTotal);
     int eliminarProductoAgregado(int idUsuario,int idProducto);
+
+    int limpiarCarrito(int idUsuario);
 }

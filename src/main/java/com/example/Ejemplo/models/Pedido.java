@@ -1,6 +1,7 @@
 package com.example.Ejemplo.models;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -26,7 +27,7 @@ public class Pedido {
     @Column(name = "fecha_pedido")
     private LocalDateTime fechaPedido;
     @Column(name = "fecha_entrega")
-    private LocalDateTime fechaEntrega;
+    private LocalTime fechaEntrega;
     @Column(name = "estado")
     private boolean estado;
 

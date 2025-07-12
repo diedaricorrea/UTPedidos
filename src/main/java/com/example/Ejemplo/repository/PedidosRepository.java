@@ -20,4 +20,6 @@ public interface PedidosRepository extends JpaRepository<Pedido, Integer> {
     @Transactional
     @Query(value = "UPDATE pedidos SET estado = 1 WHERE id_usuario = :idUsuario ",nativeQuery = true)
     int deleteByUsuarioId(@Param("idUsuario") int idUsuario);
+
+    List<Pedido> findAllByUsuario_IdUsuario(int idUsuario);
 }
