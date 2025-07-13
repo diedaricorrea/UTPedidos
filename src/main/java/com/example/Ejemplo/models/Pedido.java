@@ -24,6 +24,9 @@ public class Pedido {
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
+    @Column(name = "codigo_pedido")
+    private String codigoPedido;
+
     @Column(name = "fecha_pedido")
     private LocalDateTime fechaPedido;
     @Column(name = "fecha_entrega")
@@ -38,4 +41,6 @@ public class Pedido {
     protected void onCreate() {
         fechaPedido = LocalDateTime.now();
     }
+
+
 }

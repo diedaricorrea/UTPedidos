@@ -6,13 +6,16 @@ import com.example.Ejemplo.repository.PedidosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class PedidosServiceImpl implements PedidosService {
+
+    private static final String LETRAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private final Set<String> codigosGenerados = new HashSet<>();
+    private final Random random = new Random();
 
     private final PedidosRepository pedidosRepository;
 
@@ -52,17 +55,55 @@ public class PedidosServiceImpl implements PedidosService {
         return getPedidoResumenDTOS(pedidos);
     }
 
+    @Override
+    public String generarCodigoUnico() {
+        int intentos = 0;
+        int MAX_INTENTOS = 1000;
+
+        while (intentos < MAX_INTENTOS) {
+            String codigo = generarCodigoAleatorio();
+
+            if (!codigosGenerados.contains(codigo)) {
+                codigosGenerados.add(codigo);
+                return codigo;
+            }
+
+            intentos++;
+        }
+
+        throw new RuntimeException("No se pudo generar un código único tras varios intentos");
+    }
+
+    public List<String> obtenerTodosLosCodigos() {
+        return new ArrayList<>(codigosGenerados);
+    }
+
+    private String generarCodigoAleatorio() {
+        StringBuilder codigo = new StringBuilder();
+
+        for (int i = 0; i < 3; i++) {
+            codigo.append(LETRAS.charAt(random.nextInt(LETRAS.length())));
+        }
+
+        for (int i = 0; i < 3; i++) {
+            codigo.append(random.nextInt(10));
+        }
+
+        return codigo.toString();
+    }
+
     private List<PedidoResumenDTO> getPedidoResumenDTOS(List<Pedido> pedidos) {
         return pedidos.stream().map(pedido -> {
             String nombreUsuario = pedido.getUsuario().getNombre();
             int idUsuario = pedido.getUsuario().getIdUsuario();
             LocalTime fechaEntrega = pedido.getFechaEntrega();
             boolean estado = pedido.isEstado();
+            String codigoPedido = pedido.getCodigoPedido();
             List<String> productos = pedido.getDetallePedido().stream()
                     .map(d -> d.getProducto().getNombre())
                     .collect(Collectors.toList());
 
-            return new PedidoResumenDTO(idUsuario,nombreUsuario, productos, fechaEntrega,estado);
+            return new PedidoResumenDTO(idUsuario,codigoPedido,nombreUsuario, productos, fechaEntrega,estado);
         }).collect(Collectors.toList());
     }
 }

@@ -25,17 +25,16 @@ public class UsuariosController {
         System.out.println(user.getRol());
         if(user.getRol() == Rol.ADMINISTRADOR){
             model.addAttribute("usuario",new Usuario());
-            return "redirect:/usuarios/panelAdmin";
+            return "redirect:/usuarios/medio";
         }else{
             model.addAttribute("usuario",new Usuario());
             return "redirect:/catalogo/";
         }
     }
 
-    @GetMapping("/catalogo")
-    public String catalogo(Model model) {
-        model.addAttribute("usuario",new Usuario());
-        return "usuario/catalogo";
+    @GetMapping("/medio")
+    public String medio() {
+        return "login/medio";
     }
 
 
@@ -44,14 +43,9 @@ public class UsuariosController {
         return "login/login";
     }
 
-//    @GetMapping("/")
-//    public String usuarios(Model model) {
-//        model.addAttribute("usuario", new Usuario());
-//        model.addAttribute("usuarios",usuarioServiceImpl.findAllUsuariosByNotRol(Rol.USUARIO));
-//        return "administrador/usuariosAdmin";
-//    }
 
-    @PostMapping("/usuarios/save/")
+
+    @PostMapping("/save")
     public String saveUsuario(@ModelAttribute @Valid Usuario usuario,BindingResult resultado, RedirectAttributes redirectAttributes,Model model) {
 
         if(resultado.hasErrors()) {
@@ -62,7 +56,14 @@ public class UsuariosController {
         usuario.setEstado(true);
         usuarioServiceImpl.saveUser(usuario);
         redirectAttributes.addFlashAttribute("mensaje", "Usuario guardado correctamente");
-        return "redirect:/usuarios/";
+        return "redirect:/usuarios/panelAdmin";
+    }
+
+    @GetMapping("/panelAdmin")
+    public String panelAdmin(Model model) {
+        model.addAttribute("usuario",new Usuario());
+        model.addAttribute("usuarios",usuarioServiceImpl.findAllUsuariosByNotRol(Rol.USUARIO));
+        return "administrador/usuariosAdmin";
     }
 
     @PostMapping("/update")
@@ -85,10 +86,10 @@ public class UsuariosController {
         }
 
         redirectAttributes.addFlashAttribute("mensaje", "Usuario actualizado correctamente");
-        return "redirect:/usuarios/";
+        return "redirect:/usuarios/panelAdmin";
     }
 
-    @GetMapping("/search/")
+    @GetMapping("/search")
     public String usuariosSearch(@RequestParam(required = false) Integer id, Model model) {
         if (id == null) {
             model.addAttribute("errorId", "El id no puede ser vacio");

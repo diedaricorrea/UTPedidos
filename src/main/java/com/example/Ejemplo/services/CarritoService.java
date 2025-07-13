@@ -4,7 +4,6 @@ import com.example.Ejemplo.models.Carrito;
 import com.example.Ejemplo.models.Producto;
 
 import java.util.List;
-import java.util.Optional;
 
 
 public interface CarritoService {

@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <h5 class="card-title fw-bold">
                             Código de pedido:
-                            <span class="text-uppercase">PED-XXXXX</span>
+                            <span th:text="${pedido.codigoPedido}" class="text-uppercase">  </span>
                         </h5>
 
                         <p class="mb-1">
@@ -35,36 +35,63 @@
 
                         <div class="d-grid">
                             <button class="btn btn-primary"
-                                    th:attr="onclick=|abrirModalPedido('modalS-${iterStat.index}')|"
+                                    data-bs-toggle="modal"
+                                    th:attr="data-bs-target='#modalS-' + ${iterStat.index}"
                                     style="background-color: #5b4ef1; border-color: #5b4ef1;">
                                 Ver productos
                             </button>
                         </div>
                     </div>
+                </div>
+            </div> <!-- fin col -->
+        </div> <!-- fin row -->
+    </div>
 
-                    <!-- Modal individual por pedido -->
-                    <div th:id="'modalS-' + ${iterStat.index}" class="modal" style="display:none;">
-                        <div class="modal-content p-4 rounded shadow bg-white"
-                             style="width: 80%; margin: 10% auto; position: relative;">
-                    <span class="close"
-                          th:attr="onclick=|cerrarModalPedido('modalS-${iterStat.index}')|"
-                          style="position: absolute; top: 10px; right: 20px; font-size: 1.5rem; cursor: pointer;">&times;</span>
-
-                            <h4 class="mb-3">Detalles del Pedido</h4>
-                            <span>Productos</span>
-                            <div th:text="${pedido.productos}"></div>
-                        </div>
+    <!-- Modales Bootstrap -->
+    <div th:each="pedido, iterStat : ${pedidosDetalle}" 
+         th:id="'modalS-' + ${iterStat.index}"
+         class="modal"
+         data-bs-backdrop="false"
+         th:attr="aria-labelledby='modalLabel-' + ${iterStat.index}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" th:id="'modalLabel-' + ${iterStat.index}">
+                        Detalles del Pedido
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>Código:</strong> <span th:text="${pedido.codigoPedido}"></span></p>
+                    <p><strong>Fecha:</strong> <span th:text="${#temporals.format(pedido.fechaEntrega, 'HH:mm')}"></span></p>
+                    <p><strong>Estado:</strong>
+                        <span th:classappend="${pedido.estado} ? 'text-success' : 'text-danger'"
+                              th:text="${pedido.estado} ? 'Pagado' : 'Pendiente'"></span>
+                    </p>
+                    <hr>
+                    <h6>Productos:</h6>
+                    <div th:each="produ : ${pedido.productos}">
+                        <span th:text="${produ}"></span>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
 </main>
 
-
-
-
-<script></script>
+<script>
+// Asegurar que las modales de Bootstrap funcionen correctamente
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar todas las modales
+    var modals = document.querySelectorAll('.modal');
+    modals.forEach(function(modal) {
+        new bootstrap.Modal(modal);
+    });
+});
+</script>
 </body>
 
 </html>

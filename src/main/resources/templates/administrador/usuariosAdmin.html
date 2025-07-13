@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="https://www.thymeleaf.org"
-      th:replace="~{/fragments/layoutAdmin :: layout(~{::title}, 'usuarios' ,~{::main}, ~{::script})}">
+      th:replace="~{/fragments/layoutAdmin :: layoutA(~{::title}, 'usuarios' ,~{::main}, ~{::script})}">
 
 <head>
     <meta charset="UTF-8">
@@ -90,7 +90,7 @@
                                     <input hidden  id="actId" name="actId">
                                     <div class="mb-3">
                                         <label for="actNombre" class="form-label">Nombre</label>
-                                        <input type="text" t class="form-control" id="actNombre"  name="actNombre">
+                                        <input type="text" class="form-control" id="actNombre"  name="actNombre">
                                         <label class="text-danger" hidden id="actNombreIsEmpty"></label>
                                     </div>
                                     <div class="mb-3">
@@ -119,14 +119,14 @@
 
                 <!--barra de busqueda-->
                 <div class="">
-                    <form th:action="@{/usuario/search/}"  method="GET" class="d-flex gap-3 form-control  ">
+                    <form th:action="@{/usuarios/search}"  method="GET" class="d-flex gap-3 form-control  ">
                         <input type="text" class="form-control" placeholder="Buscar" name="id" id="id">
                         <div class="text-danger" th:if="${errorId}">Error el id no puede estar vacio</div>
                         <button type="submit" class="btn btn-primary">buscar</button>
                     </form>
 
                 </div>
-                <a th:href="@{/usuarios}" class="fs-4 btn btn-primary"><i class="fa-solid fa-arrows-rotate"></i></a>
+                <a th:href="@{/usuarios/panelAdmin}" class="fs-4 btn btn-primary"><i class="fa-solid fa-arrows-rotate"></i></a>
             </div>
 
         </div>

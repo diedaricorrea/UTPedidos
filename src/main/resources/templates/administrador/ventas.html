@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="https://www.thymeleaf.org"
-    th:replace="~{fragments/layoutAdmin :: layout(~{::title}, 'ventas' ,~{::main}, ~{::script})}">
+    th:replace="~{fragments/layoutAdmin :: layoutA(~{::title}, 'ventas' ,~{::main}, ~{::script})}">
 
 <head>
     <title>Ventas</title>
@@ -8,7 +8,10 @@
 
 <body>
     <main>
-
+        <div class="container main-content">
+            <h1>Ventas</h1>
+            <p>Panel de gestión de ventas</p>
+        </div>
     </main>
     <script></script>
 </body>

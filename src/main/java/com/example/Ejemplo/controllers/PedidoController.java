@@ -47,9 +47,9 @@ public class PedidoController {
     public String pedir(@RequestParam("idUsuario") int idUsuario, @RequestParam("horaEntrega") LocalTime horaEntrega, Model model) {
         Pedido pedido = new Pedido();
         DetallePedido detallePedido = new DetallePedido();
-        Producto producto = new Producto();
         pedido.setUsuario(usuarioServiceImpl.findUsuarioById(idUsuario).orElse(null));
         pedido.setFechaEntrega(horaEntrega);
+        pedido.setCodigoPedido(pedidoServiceImpl.generarCodigoUnico());
         Pedido pedidoGuardado = pedidoServiceImpl.guardarPedido(pedido);
         for (Producto pro: obtenerTodosProductos(idUsuario)){
             detallePedido.setPedido(pedidoGuardado);
@@ -57,7 +57,7 @@ public class PedidoController {
 
             DetallePedidoId detalleId = new DetallePedidoId(
                     pedidoGuardado.getIdPedido(),
-                    producto.getIdProducto()
+                    pro.getIdProducto()
             );
             detallePedido.setDetallepedidoId(detalleId);
             detallePedidoServiceImpl.saveDetallePedido(detallePedido);

@@ -12,4 +12,8 @@ public interface PedidosService {
     List<Pedido> findByUsuario_Id(int id);
 
     int deletePedido(int idUsuario);
+
+    String generarCodigoUnico();
+
+    List<String> obtenerTodosLosCodigos();
 }

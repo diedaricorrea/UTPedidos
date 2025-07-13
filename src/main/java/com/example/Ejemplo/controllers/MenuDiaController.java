@@ -27,8 +27,8 @@ public class MenuDiaController {
 
     @GetMapping("/")
     public String menuDia(Model model) {
-        List<Producto> productosMenuEconomico = productosServiceImpl.findAllByCategoriaNombre("MENU ECONOMICO");
-        model.addAttribute("menusEconomicos", productosMenuEconomico);
+        model.addAttribute("menusEconomicos", productosServiceImpl.findAllByCategoriaNombre("MENU ECONOMICO"));
+        model.addAttribute("menuDia", new MenuDia());
         return "administrador/menuDia";
     }
 

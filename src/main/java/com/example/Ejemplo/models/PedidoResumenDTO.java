@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 public class PedidoResumenDTO {
     private int idUsuario;
+    private String codigoPedido;
     private String nombreUsuario;
     private List<String> productos;
     private LocalTime fechaEntrega;

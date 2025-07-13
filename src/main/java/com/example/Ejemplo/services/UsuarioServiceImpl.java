@@ -31,6 +31,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Optional<Usuario> findUsuarioPorNombre(String nombre) {
+        // Método no implementado
         return Optional.empty();
     }
 
@@ -41,7 +42,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     public void updateUsuario(Integer id) {
-
+        // Método no implementado
     }
 
     @Override

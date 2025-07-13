@@ -4,6 +4,7 @@ package com.example.Ejemplo.repository;
 import java.util.List;
 
 import com.example.Ejemplo.models.Carrito;
+import com.example.Ejemplo.models.CarritoId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Repository;
 import jakarta.transaction.Transactional;
 
 @Repository
-public interface CarritoRepository extends JpaRepository<Carrito, Integer> {
+public interface CarritoRepository extends JpaRepository<Carrito, CarritoId> {
     @Modifying
     @Transactional
     @Query(value = "UPDATE carrito SET cantidad = :cantidad, total = :subTotal WHERE id_producto = :idProducto AND id_usuario = :idUsuario", nativeQuery = true)

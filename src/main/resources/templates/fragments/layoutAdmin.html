@@ -17,11 +17,13 @@
 </head>
 
 <body>
-    <!-- Barra de navegación -->
-    <div th:replace="~{/fragments/navbarAdmin :: navbarA(${activeTab})}"></div>
+    <div class="admin-layout">
+        <!-- Barra de navegación -->
+        <div th:replace="~{/fragments/navbarAdmin :: navbarA(${activeTab})}"></div>
 
-    <!-- Contenido principal -->
-    <div th:replace="${content}" class="contenido"></div>
+        <!-- Contenido principal -->
+        <div th:replace="${content}" class="contenido"></div>
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"

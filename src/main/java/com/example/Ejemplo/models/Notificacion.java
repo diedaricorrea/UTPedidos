@@ -15,6 +15,7 @@ public class Notificacion {
     private int idNotificacion;
 
     @ManyToOne
+    @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
     private String mensaje;

@@ -18,8 +18,15 @@ body {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     background-color: var(--cream);
     color: #333;
-    background-image: url(/src/main/resources/static/images/DAY.png);
+    background-image: url(/static/imagenes/DAY.png);
+    margin: 0;
+    padding: 0;
+}
+
+/* Layout específico para páginas de administrador */
+.admin-layout {
     display: flex;
+    min-height: 100vh;
 }
 
 thead {
@@ -34,7 +41,12 @@ thead {
     min-height: 100vh;
     padding: 10px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    width: 200px;
+    width: 250px;
+    flex-shrink: 0;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
 }
 
 
@@ -57,15 +69,27 @@ thead {
 
 .sidebar .nav-link {
     color: rgba(255, 255, 255, 0.8);
-    padding: 10px 20px;
-    border-radius: 0;
-    transition: all 0.3s;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: block;
 }
 
 .sidebar .nav-link:hover,
 .sidebar .nav-link.active {
     background-color: var(--light-brown);
     color: var(--white);
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar .nav-link i {
+    width: 20px;
+    text-align: center;
+    margin-right: 10px;
+    font-size: 1.1rem;
 }
 
 /* Estilos para el contenido principal */
@@ -73,6 +97,9 @@ thead {
     padding: 30px;
     background-color: var(--white);
     min-height: 100vh;
+    margin-left: 250px;
+    flex: 1;
+    width: calc(100% - 250px);
 }
 
 .header {
@@ -251,17 +278,36 @@ thead {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .admin-layout {
+        flex-direction: column;
+    }
+    
     .sidebar {
+        width: 100%;
+        position: relative;
         min-height: auto;
-        margin-bottom: 20px;
+        padding: 15px;
+        margin-bottom: 0;
     }
 
     .main-content {
+        margin-left: 0;
+        width: 100%;
         padding: 20px;
     }
 
     .preview-image-container {
         width: 60px;
         height: 60px;
+    }
+    
+    .sidebar-header {
+        text-align: center;
+        padding: 0 10px 15px;
+    }
+    
+    .sidebar .nav-link {
+        text-align: center;
+        margin: 8px 0;
     }
 }

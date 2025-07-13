@@ -32,21 +32,23 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public Optional<Producto> findProductoPorNombre(String nombre) {
+        // Método no implementado
         return Optional.empty();
     }
 
     @Override
     public Producto saveUser(Producto producto) {
+        // Método no implementado
         return null;
     }
 
     @Override
     public void deleteUserById(Long id) {
-
+        // Método no implementado
     }
 
     public List<Producto> findAllByCategoriaNombre(String nombre) {
-        return productoRepository.findAllByCategoriaNombre(nombre);
+        return productoRepository.findProductoByCategoria_Nombre(nombre);
     }
 
     @Override
@@ -102,7 +104,7 @@ public class ProductoServiceImpl implements ProductoService {
 
     @Override
     public void deleteProductById(Integer id) {
-        throw new UnsupportedOperationException("Unimplemented method 'deleteUserById'");
+        productoRepository.deleteById(id);
     }
 
     @Override

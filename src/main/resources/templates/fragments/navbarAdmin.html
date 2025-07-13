@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<html lang="es" xmlns:th="https://www.thymeleaf.org">
 
 <body>
 
     <!-- Barra lateral -->
-    <div th:fragment="navbarA(activeTab)" class="col-md-3 sidebar">
+    <div th:fragment="navbarA(activeTab)" class="sidebar">
         <div class="sidebar-header">
             <h3>UTPedidos</h3>
             <p>Panel de Administración</p>
@@ -15,27 +15,15 @@
                         class="fas fa-utensils me-2"></i> Gestión de Platos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'pendientes' ? 'active' : ''}" th:href="@{/pedidos/}"><i
+                <a class="nav-link" th:classappend="${activeTab == 'pendientes' ? 'active' : ''}" th:href="@{/pedidos/admin}"><i
                         class="fas fa-list me-2"></i>Pedidos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'espera' ? 'active' : ''}" href="#"><i
-                        class="fas fa-list me-2"></i> Lista de Espera</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'ventas' ? 'active' : ''}" href="#"><i
-                        class="fas fa-chart-bar me-2"></i>Ventas</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'config' ? 'active' : ''}" href="#"><i
-                        class="fas fa-cog me-2"></i> Configuración</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == 'productos' ? 'active' : ''}" th:href="@{/productos/}"><i
                         class="fas fa-cog me-2"></i>Productos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'usuarios' ? 'active' : ''}" th:href="@{/usuarios/}"><i
+                <a class="nav-link" th:classappend="${activeTab == 'usuarios' ? 'active' : ''}" th:href="@{/usuarios/panelAdmin}"><i
                         class="fas fa-cog me-2"></i>Usuarios</a>
             </li>
             <li class="nav-item">
@@ -44,7 +32,5 @@
             </li>
         </ul>
     </div>
-
 </body>
-
 </html>

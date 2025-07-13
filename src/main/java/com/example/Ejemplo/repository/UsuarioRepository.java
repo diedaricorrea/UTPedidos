@@ -2,8 +2,6 @@ package com.example.Ejemplo.repository;
 
 import com.example.Ejemplo.models.Rol;
 import com.example.Ejemplo.models.Usuario;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
