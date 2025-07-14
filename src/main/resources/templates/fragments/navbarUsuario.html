@@ -51,7 +51,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-                            <li><a class="dropdown-item text-danger" href="/logout">Cerrar sesión</a></li>
+                            <li><a class="dropdown-item text-danger" th:href="@{/logout}">Cerrar sesión</a></li>
                         </ul>
                     </div>
                 </div>
@@ -65,8 +65,14 @@
                 <h5 class="mb-0">Notificaciones</h5>
                 <span onclick="closeNotifications(event)" style="cursor: pointer;">&times;</span>
             </div>
-            <div class="notification-body">
-
+            <div class="notification-body" th:each="notificacion : ${notificaciones}">
+                <div class="d-flex align-items-start p-3 mb-2 rounded shadow-sm"
+                     th:classappend="${notificacion.estado} ? 'bg-light' : 'bg-warning-subtle border-start border-5 border-warning'">
+                    <i class="bi bi-bell-fill me-3 fs-4 text-warning"></i>
+                    <div>
+                        <p class="mb-1 fw-semibold" th:text="${notificacion.mensaje}">Mensaje</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

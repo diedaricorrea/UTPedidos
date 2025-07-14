@@ -2,6 +2,7 @@ package com.example.Ejemplo.controllers;
 
 import com.example.Ejemplo.models.Rol;
 import com.example.Ejemplo.models.Usuario;
+import com.example.Ejemplo.services.NotificacionServiceImpl;
 import com.example.Ejemplo.services.UsuarioServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class UsuariosController {
 
     @Autowired
     private UsuarioServiceImpl usuarioServiceImpl;
+    @Autowired
+    private NotificacionServiceImpl notificacionServiceImpl;
 
 
     @GetMapping("/login")
@@ -28,6 +31,7 @@ public class UsuariosController {
             return "redirect:/usuarios/medio";
         }else{
             model.addAttribute("usuario",new Usuario());
+            model.addAttribute("notificaciones", notificacionServiceImpl.findAllByUsuario_IdUsuario(1));
             return "redirect:/catalogo/";
         }
     }
@@ -36,13 +40,6 @@ public class UsuariosController {
     public String medio() {
         return "login/medio";
     }
-
-
-    @GetMapping("/")
-    public String usuarios(Model model) {
-        return "login/login";
-    }
-
 
 
     @PostMapping("/save")

@@ -29,9 +29,6 @@ public class NotificacionController {
         return "redirect:/pedidos/";
     }
 
-    @GetMapping("/")
-    public String index(@RequestParam int idUsuario, Model model) {
-        model.addAttribute("notificaciones", "s");
-        return "index";
-    }
+
+
 }
