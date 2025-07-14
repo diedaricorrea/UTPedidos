@@ -5,19 +5,29 @@ import com.example.Ejemplo.models.Producto;
 import com.example.Ejemplo.repository.CarritoRepository;
 import com.example.Ejemplo.repository.ProductoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
+@Primary
 public class ProductoServiceImpl implements ProductoService {
 
     private final CarritoRepository carritoRepository;
 
     private final ProductoRepository productoRepository;
+
+    private final Path rootLocation = Paths.get("src/main/resources/static/images/");
 
     @Autowired
     public ProductoServiceImpl(ProductoRepository productosRepository, CarritoRepository carritoRepository) {
@@ -118,5 +128,41 @@ public class ProductoServiceImpl implements ProductoService {
         } else {
             return productoRepository.findByCategoriaNombreAndNombreContainingIgnoreCase(categoria, nombre, pageable);
         }
+    }
+
+    @Override
+    public List<Producto> findAll() {
+        return productoRepository.findAll();
+    }
+
+    @Override
+    public List<Producto> findRecent() {
+        List<Producto> productos = productoRepository.findAll();
+        System.out.println("Productos encontrados en el servicio: " + productos.size());
+        return productos;
+    }
+
+    @Override
+    public Producto findById(Integer id) {
+        return productoRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public Producto save(Producto producto, MultipartFile imagen) {
+        if (imagen != null && !imagen.isEmpty()) {
+            String filename = UUID.randomUUID().toString() + "_" + imagen.getOriginalFilename();
+            try {
+                Files.copy(imagen.getInputStream(), this.rootLocation.resolve(filename));
+                producto.setImagenUrl("/images/" + filename);
+            } catch (IOException e) {
+                throw new RuntimeException("Error al guardar la imagen: " + e.getMessage());
+            }
+        }
+        return productoRepository.save(producto);
+    }
+
+    @Override
+    public void delete(Integer id) {
+        productoRepository.deleteById(id);
     }
 }

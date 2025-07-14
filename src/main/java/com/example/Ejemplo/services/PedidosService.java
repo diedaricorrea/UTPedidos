@@ -11,7 +11,7 @@ public interface PedidosService {
     
     List<Pedido> findByUsuario_Id(int id);
 
-    int deletePedido(int idUsuario);
+    int deletePedido(String codigoPedido);
 
     String generarCodigoUnico();
 

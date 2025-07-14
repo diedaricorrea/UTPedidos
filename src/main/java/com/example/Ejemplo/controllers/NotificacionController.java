@@ -20,15 +20,13 @@ public class NotificacionController {
     private PedidosServiceImpl pedidosServiceImpl;
 
     @PostMapping("/notificar")
-    public String notificar(@RequestParam("idUsuario") int idUsuario) {
+    public String notificar(@RequestParam("idUsuario") int idUsuario, @RequestParam("codigoPedido") String codigoPedido, Model model) {
         String message = "Tu pedido esta listo";
         //envio de notificacion al usuario
         notificacionServiceImpl.sendNotificacion(idUsuario, message);
         //eliminacion del pedido de la lista de pendientes del usuario
-        pedidosServiceImpl.deletePedido(idUsuario);
-        return "redirect:/pedidos/";
+        pedidosServiceImpl.deletePedido(codigoPedido);
+        return "redirect:/pedidos/2";
     }
-
-
 
 }

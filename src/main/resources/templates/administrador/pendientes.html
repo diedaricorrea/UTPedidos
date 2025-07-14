@@ -17,19 +17,20 @@
                         <th>Estado</th>
                         <th>Productos</th>
                         <th>Tiempo</th>
-                        <td>Acciones</td>
+                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
                     <tr th:each="pedido : ${pedidosPendientes}">
-                        <td>1</td>
+                        <td th:text="${pedido.codigoPedido}"></td>
                         <td th:text="${pedido.getNombreUsuario()}"></td>
                         <td th:text="${pedido.estado ? 'ENTREGADO' : 'PENDIENTE'}"></td>
                         <td th:text="${pedido.getProductos()}"></td>
-                        <td th:text="${pedido.fechaEntrega != null} ? ${#temporals.format(pedido.fechaEntrega,'HH:mm')} : 'No programada'">
+                        <td th:text="${pedido.fechaEntrega != null} ? ${#temporals.format(pedido.fechaEntrega,'HH:mm')} : 'No programada'"></td>
                         <td>
                             <form th:action="@{/notificacion/notificar}" method="POST">
-                                <input type="hidden" name="idUsuario" th:value="${pedido.getNombreUsuario()}">
+                                <input type="hidden" name="idUsuario" th:value="${pedido.idUsuario}">
+                                <input type="hidden" name="idUsuario" th:value="${pedido.codigoPedido}">
                                 <button class="btn btn-primary" type="submit">Enviar notifiacion</button>
                             </form>
                         </td>

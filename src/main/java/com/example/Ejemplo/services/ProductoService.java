@@ -4,6 +4,7 @@ import com.example.Ejemplo.models.Carrito;
 import com.example.Ejemplo.models.Producto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -34,4 +35,9 @@ public interface ProductoService {
     void deleteProductById(Integer id);
 
     Page<Producto> buscarPorCategoriaYNombre(String categoria, String nombre, Pageable pageable);
+    List<Producto> findAll();
+    List<Producto> findRecent();
+    Producto findById(Integer id);
+    Producto save(Producto producto, MultipartFile imagen);
+    void delete(Integer id);
 }

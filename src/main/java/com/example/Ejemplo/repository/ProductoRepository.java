@@ -16,7 +16,8 @@ import java.util.List;
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     List<Producto> findProductoByCategoria_Nombre(String categoriaNombre);
 
-    @Override
+    List<Producto> findByNombreContaining(String nombre);
+    List<Producto> findByEstadoTrue();    @Override
     @Query("SELECT p FROM Producto p WHERE p.stock > 0")
     Page<Producto> findAll(Pageable pageable);
 

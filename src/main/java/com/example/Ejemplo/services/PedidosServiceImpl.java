@@ -38,9 +38,10 @@ public class PedidosServiceImpl implements PedidosService {
     public List<Pedido> findByUsuario_Id(int id){
         return pedidosRepository.findAllByUsuario_IdUsuario(id);
     }
+
     @Override
-    public int deletePedido(int idUsuario) {
-        return pedidosRepository.deleteByUsuarioId(idUsuario);
+    public int deletePedido(String codigoPedido) {
+        return pedidosRepository.deleteByCodigoPedido(codigoPedido);
     }
 
     public List<PedidoResumenDTO> obtenerDetallePedidos() {

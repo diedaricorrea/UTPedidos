@@ -30,6 +30,10 @@
                 <a class="nav-link" th:classappend="${activeTab == 'menuDia' ? 'active' : ''}" th:href="@{/menuDia/}"><i
                         class="fas fa-cog me-2"></i>Menu del dia</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == '' ? 'active' : ''}" th:href="@{/usuarios/medio}"><i
+                        class="bi bi-box-arrow-right"></i>Salir</a>
+            </li>
         </ul>
     </div>
 </body>
