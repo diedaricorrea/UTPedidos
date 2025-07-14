@@ -8,8 +8,35 @@
 
 <body>
     <main class="container main-content">
-        <h1>Gestión de Productos</h1>
-        <p>Panel para administrar productos del menú</p>
+        <!-- Contenido principal -->
+        <div class="col-md-9 main-content">
+            <div class="header">
+                <h2>Añadir Nuevo Producto</h2>
+                <p>Completa el formulario para añadir un nuevo producto a la carta</p>
+                <div th:if="${mensaje}" class="alert alert-success" role="alert" th:text="${mensaje}"></div>
+            </div>
+
+            <div class="row mt-4">
+                <!-- Formulario para añadir producto -->
+                <div class="col-md-6">
+                    <div class="card form-card">
+                        <div class="card-body">
+                            <div th:replace="~{fragments/productoForm :: productoFormFragment}"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vista previa del producto y lista de productos recientes -->
+                <div class="col-md-6">
+                    <div th:replace="~{fragments/productoPreview :: productoPreviewFragment}"></div>
+                    <div th:if="${#lists.isEmpty(productos)}" class="text-muted text-center">
+                        No hay productos añadidos recientemente.
+                    </div>
+                    <!-- Lista de productos recientes como fragmento -->
+                    <div th:replace="~{fragments/productoLista :: productoListaFragment}"></div>
+                </div>
+            </div>
+        </div>
     </main>
     <script th:src="@{/js/previewPlato.js}"></script>
 </body>

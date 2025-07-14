@@ -1,0 +1,44 @@
+<!-- fragments/productoPreview.html -->
+<div th:fragment="productoPreviewFragment">
+  <div class="card preview-card">
+    <div class="card-header">
+      <h5>Vista Previa en la Carta</h5>
+    </div>
+    <div class="card-body">
+      <div class="preview-container">
+        <div class="preview-item">
+          <div class="d-flex align-items-center mb-2">
+            <div class="preview-image-container me-3">
+              <img id="previewImagen"
+                   th:src="${producto.imagenUrl != null ? producto.imagenUrl : ''}"
+                   alt="Vista previa del producto" class="preview-image">
+            </div>
+            <h4 id="previewNombre"
+                th:text="${producto.nombre != null ? producto.nombre : 'Nombre del Producto'}">
+              Nombre del Producto
+            </h4>
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <p id="previewDescripcion" class="preview-descripcion"
+               th:text="${producto.descripcion != null ? producto.descripcion : 'Descripción breve del producto...'}">
+              Descripción breve del producto...
+            </p>
+            <span id="previewPrecio" class="preview-precio"
+                  th:text="${producto.precio != null ? 'S/ ' + producto.precio : 'S/ 0.00'}">
+                            S/ 0.00
+                        </span>
+          </div>
+          <span id="previewCategoria" class="badge categoria-badge"
+                th:text="${producto.categoria != null ? producto.categoria.nombre : 'Categoría'}">
+                        Categoría
+                    </span>
+          <span id="previewDisponibilidad" class="badge"
+                th:classappend="${producto.estado != null && producto.estado ? 'disponible-badge' : 'no-disponible-badge'}"
+                th:text="${producto.estado != null && producto.estado ? 'Disponible' : 'No Disponible'}">
+                        Disponible
+                    </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

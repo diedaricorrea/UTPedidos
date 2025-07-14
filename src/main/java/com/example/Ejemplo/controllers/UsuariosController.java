@@ -16,11 +16,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/usuarios")
 public class UsuariosController {
 
-    @Autowired
-    private UsuarioServiceImpl usuarioServiceImpl;
-    @Autowired
-    private NotificacionServiceImpl notificacionServiceImpl;
+    private final UsuarioServiceImpl usuarioServiceImpl;
+    private final NotificacionServiceImpl notificacionServiceImpl;
 
+    @Autowired
+    public UsuariosController(UsuarioServiceImpl usuarioServiceImpl, NotificacionServiceImpl notificacionServiceImpl) {
+        this.usuarioServiceImpl = usuarioServiceImpl;
+        this.notificacionServiceImpl = notificacionServiceImpl;
+    }
 
     @GetMapping("/login")
     public String login(@RequestParam String correo, @RequestParam String password, Model model) {

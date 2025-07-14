@@ -20,15 +20,18 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/pedidos")
 public class PedidoController {
-    @Autowired
-    private PedidosServiceImpl pedidoServiceImpl;
-    @Autowired
-    private UsuarioServiceImpl usuarioServiceImpl;
-    @Autowired
-    private CarritoServiceImpl carritoServiceImpl;
-    @Autowired
-    private DetallePedidoServiceImpl detallePedidoServiceImpl;
+    private final PedidosServiceImpl pedidoServiceImpl;
+    private final UsuarioServiceImpl usuarioServiceImpl;
+    private final CarritoServiceImpl carritoServiceImpl;
+    private final DetallePedidoServiceImpl detallePedidoServiceImpl;
 
+    @Autowired
+    public PedidoController(PedidosServiceImpl pedidoServiceImpl, UsuarioServiceImpl usuarioServiceImpl, CarritoServiceImpl carritoServiceImpl, DetallePedidoServiceImpl detallePedidoServiceImpl) {
+        this.pedidoServiceImpl = pedidoServiceImpl;
+        this.usuarioServiceImpl = usuarioServiceImpl;
+        this.carritoServiceImpl = carritoServiceImpl;
+        this.detallePedidoServiceImpl = detallePedidoServiceImpl;
+    }
 
     @GetMapping("/pedido/{idUsuario}")
     public String verPagos(@PathVariable Integer idUsuario, Model model) {

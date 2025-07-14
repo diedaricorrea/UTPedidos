@@ -23,11 +23,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/catalogo")
 public class ProductoController {
 
-    @Autowired
-    private ProductoServiceImpl productosServiceImpl;
+    private final ProductoServiceImpl productosServiceImpl;
+
+    private final CarritoServiceImpl carritoServiceImpl;
 
     @Autowired
-    private CarritoServiceImpl carritoServiceImpl;
+    public ProductoController(ProductoServiceImpl productosServiceImpl, CarritoServiceImpl carritoServiceImpl) {
+        this.productosServiceImpl = productosServiceImpl;
+        this.carritoServiceImpl = carritoServiceImpl;
+    }
 
     @GetMapping("/")
     public String index(

@@ -11,8 +11,12 @@ import java.util.List;
 @ControllerAdvice
 public class GlobalModelAttributes {
 
+    private final NotificacionService servicioNotificacion;
+
     @Autowired
-    private NotificacionService servicioNotificacion;
+    public GlobalModelAttributes(NotificacionService servicioNotificacion) {
+        this.servicioNotificacion = servicioNotificacion;
+    }
 
     @ModelAttribute("notificaciones")
     public List<Notificacion> notificacionesActuales() {

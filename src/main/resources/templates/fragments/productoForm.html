@@ -1,0 +1,53 @@
+<!-- fragments/productoForm.html -->
+<div th:fragment="productoFormFragment">
+    <form th:action="@{/productos/subirproductos}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:if="${producto.id != null}" name="id" th:value="${producto.id}">
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre del Producto</label>
+            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Hamburguesa Especial" required th:value="${producto.nombre}">
+        </div>
+        <div class="mb-3">
+            <label for="precio" class="form-label">Precio (S/)</label>
+            <div class="input-group">
+                <span class="input-group-text">S/</span>
+                <input type="number" class="form-control" id="precio" name="precio" placeholder="0.00" step="0.01" min="0" required th:value="${producto.precio}">
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción Breve</label>
+            <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Describe brevemente el producto..." required th:text="${producto.descripcion}"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoría</label>
+            <select class="form-select" id="categoria" name="categoria" required>
+                <option value="">Seleccionar categoría</option>
+                <option th:each="cat : ${categorias}" th:value="${cat.nombre}" th:text="${cat.nombre}" th:selected="${producto.categoria != null && producto.categoria.nombre == cat.nombre}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="stock" class="form-label">Stock</label>
+            <input type="number" class="form-control" id="stock" name="stock" placeholder="Cantidad en stock" min="0" required th:value="${producto.stock}">
+        </div>
+        <div class="mb-3">
+            <label for="imagen" class="form-label">Imagen del Producto</label>
+            <input class="form-control" type="file" id="imagen" name="imagen" accept="image/*">
+            <div class="form-text">Sube una imagen para mostrar en la carta (opcional)</div>
+            <div th:if="${producto.imagenUrl != null}" class="mt-2">
+                <img th:src="${producto.imagenUrl}" alt="Imagen actual" style="max-width: 100px;">
+                <p class="small">Imagen actual</p>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="disponible" class="form-label">Disponibilidad</label>
+            <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="disponible" name="disponible" th:checked="${producto.estado}">
+                <label class="form-check-label" for="disponible">Disponible para ordenar</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+            <span th:if="${producto.id == null}">Añadir Producto</span>
+            <span th:if="${producto.id != null}">Actualizar Producto</span>
+        </button>
+    </form>
+</div>

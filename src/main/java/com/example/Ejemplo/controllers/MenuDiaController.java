@@ -20,10 +20,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/menuDia")
 public class MenuDiaController {
+    private final ProductoServiceImpl productosServiceImpl;
+    private final MenuDiaServiceImpl menuDiaServiceImpl;
+
     @Autowired
-    private ProductoServiceImpl productosServiceImpl;
-    @Autowired
-    private MenuDiaServiceImpl menuDiaServiceImpl;
+    public MenuDiaController(ProductoServiceImpl productosServiceImpl, MenuDiaServiceImpl menuDiaServiceImpl) {
+        this.productosServiceImpl = productosServiceImpl;
+        this.menuDiaServiceImpl = menuDiaServiceImpl;
+    }
 
     @GetMapping("/")
     public String menuDia(Model model) {

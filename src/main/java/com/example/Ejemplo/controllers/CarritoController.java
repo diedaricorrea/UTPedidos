@@ -12,8 +12,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/carrito")
 public class CarritoController {
 
+    private final CarritoServiceImpl carritoServiceImpl;
+
     @Autowired
-    private CarritoServiceImpl carritoServiceImpl;
+    public CarritoController(CarritoServiceImpl carritoServiceImpl) {
+        this.carritoServiceImpl = carritoServiceImpl;
+    }
 
     @GetMapping("/{idUsuario}")
     public String verCarrito(@PathVariable Integer idUsuario, Model model) {

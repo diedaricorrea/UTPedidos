@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/notificacion")
 public class NotificacionController {
 
-    @Autowired
-    private NotificacionServiceImpl notificacionServiceImpl;
-    @Autowired
-    private PedidosServiceImpl pedidosServiceImpl;
+    private final NotificacionServiceImpl notificacionServiceImpl;
+
+    private final PedidosServiceImpl pedidosServiceImpl;
+
+    public NotificacionController(NotificacionServiceImpl notificacionServiceImpl, PedidosServiceImpl pedidosServiceImpl) {
+        this.notificacionServiceImpl = notificacionServiceImpl;
+        this.pedidosServiceImpl = pedidosServiceImpl;
+    }
 
     @PostMapping("/notificar")
     public String notificar(@RequestParam("idUsuario") int idUsuario, @RequestParam("codigoPedido") String codigoPedido, Model model) {
