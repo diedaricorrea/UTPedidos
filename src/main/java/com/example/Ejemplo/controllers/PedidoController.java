@@ -1,14 +1,10 @@
 package com.example.Ejemplo.controllers;
 
-import com.example.Ejemplo.models.DetallePedido;
-import com.example.Ejemplo.models.DetallePedidoId;
-import com.example.Ejemplo.models.Pedido;
-import com.example.Ejemplo.models.Producto;
-import com.example.Ejemplo.services.CarritoServiceImpl;
-import com.example.Ejemplo.services.DetallePedidoServiceImpl;
-import com.example.Ejemplo.services.PedidosServiceImpl;
-import com.example.Ejemplo.services.UsuarioServiceImpl;
+import com.example.Ejemplo.models.*;
+import com.example.Ejemplo.security.UsuarioDetails;
+import com.example.Ejemplo.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,17 +20,21 @@ public class PedidoController {
     private final UsuarioServiceImpl usuarioServiceImpl;
     private final CarritoServiceImpl carritoServiceImpl;
     private final DetallePedidoServiceImpl detallePedidoServiceImpl;
+    private final ProductoServiceImpl productoServiceImpl;
 
     @Autowired
-    public PedidoController(PedidosServiceImpl pedidoServiceImpl, UsuarioServiceImpl usuarioServiceImpl, CarritoServiceImpl carritoServiceImpl, DetallePedidoServiceImpl detallePedidoServiceImpl) {
+    public PedidoController(PedidosServiceImpl pedidoServiceImpl, UsuarioServiceImpl usuarioServiceImpl, CarritoServiceImpl carritoServiceImpl, DetallePedidoServiceImpl detallePedidoServiceImpl, ProductoServiceImpl productoServiceImpl) {
         this.pedidoServiceImpl = pedidoServiceImpl;
         this.usuarioServiceImpl = usuarioServiceImpl;
         this.carritoServiceImpl = carritoServiceImpl;
         this.detallePedidoServiceImpl = detallePedidoServiceImpl;
+        this.productoServiceImpl = productoServiceImpl;
     }
 
-    @GetMapping("/pedido/{idUsuario}")
-    public String verPagos(@PathVariable Integer idUsuario, Model model) {
+    @GetMapping("/pedido")
+    public String verPagos(@AuthenticationPrincipal UsuarioDetails userDetails, Model model) {
+        Usuario usuario = userDetails.getUsuario();
+        int idUsuario = usuario.getIdUsuario();
         model.addAttribute("pedidos", pedidoServiceImpl.findByUsuario_Id(idUsuario));
         model.addAttribute("pedidosDetalle", pedidoServiceImpl.obtenerDetallePedidosPorId(idUsuario));
         return "usuario/pedido";
@@ -47,14 +47,16 @@ public class PedidoController {
     }
 
     @PostMapping("/pedir")
-    public String pedir(@RequestParam("idUsuario") int idUsuario, @RequestParam("horaEntrega") LocalTime horaEntrega, Model model) {
+    public String pedir(@AuthenticationPrincipal UsuarioDetails userDetails, @RequestParam("horaEntrega") LocalTime horaEntrega, Model model) {
         Pedido pedido = new Pedido();
-        DetallePedido detallePedido = new DetallePedido();
+        Usuario usuario = userDetails.getUsuario();
+        int idUsuario = usuario.getIdUsuario();
         pedido.setUsuario(usuarioServiceImpl.findUsuarioById(idUsuario).orElse(null));
         pedido.setFechaEntrega(horaEntrega);
         pedido.setCodigoPedido(pedidoServiceImpl.generarCodigoUnico());
         Pedido pedidoGuardado = pedidoServiceImpl.guardarPedido(pedido);
         for (Producto pro: obtenerTodosProductos(idUsuario)){
+            DetallePedido detallePedido = new DetallePedido();
             detallePedido.setPedido(pedidoGuardado);
             detallePedido.setProducto(pro);
 
@@ -63,11 +65,12 @@ public class PedidoController {
                     pro.getIdProducto()
             );
             detallePedido.setDetallepedidoId(detalleId);
+            //disminuir stock de los productos adquiridos
+            productoServiceImpl.disminuirStock();
             detallePedidoServiceImpl.saveDetallePedido(detallePedido);
-            System.out.println(pedidoGuardado.getIdPedido());
         }
         carritoServiceImpl.limpiarCarrito(idUsuario);
-        return "redirect:/pedidos/pedido/1";
+        return "redirect:/pedidos/pedido/";
     }
 
 

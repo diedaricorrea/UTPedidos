@@ -4,12 +4,15 @@ import java.util.List;
 
 import com.example.Ejemplo.models.Carrito;
 import com.example.Ejemplo.models.Producto;
+import com.example.Ejemplo.models.Usuario;
+import com.example.Ejemplo.security.UsuarioDetails;
 import com.example.Ejemplo.services.CarritoServiceImpl;
 import com.example.Ejemplo.services.ProductoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,10 +70,11 @@ public class ProductoController {
     @PostMapping("/subir")
     public String subirAlCarrito(
             @RequestParam Integer idProducto,
-            @RequestParam Integer idUsuario,
+            @AuthenticationPrincipal UsuarioDetails userDetails,
             @RequestParam int cantidad,
             RedirectAttributes redirectAttributes) {
-
+        Usuario usuario = userDetails.getUsuario();
+        int idUsuario = usuario.getIdUsuario();
         int nuevaCantidad = 0;
         double nuevoTotal = 0;
         Producto producto = productosServiceImpl.findProductoById(idProducto).orElse(null);

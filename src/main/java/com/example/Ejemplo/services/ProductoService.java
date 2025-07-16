@@ -37,6 +37,7 @@ public interface ProductoService {
     List<Producto> findRecent();
     Producto findById(Integer id);
 
+    void disminuirStock(int stock, int idProducto);
 
     Producto save(Producto producto, MultipartFile imagen);
 

@@ -20,11 +20,13 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     List<Producto> findByEstadoTrue();    @Override
     @Query("SELECT p FROM Producto p WHERE p.stock > 0")
     Page<Producto> findAll(Pageable pageable);
-
     @Query("SELECT p FROM Producto p WHERE p.stock > 0 AND p.categoria.nombre = :nombre")
     Page<Producto> findByCategoriaNombre(@Param("nombre") String nombre, Pageable pageable);
     @Query("SELECT p FROM Producto p WHERE p.stock > 0 AND LOWER(p.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))")
     Page<Producto> findByNombreContainingIgnoreCase(@Param("nombre") String nombre, Pageable pageable);
     @Query(" SELECT p FROM Producto p WHERE p.stock > 0 AND p.categoria.nombre = :categoria AND LOWER(p.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))")
     Page<Producto> findByCategoriaNombreAndNombreContainingIgnoreCase(String categoria, String nombre, Pageable pageable);
+
+    @Query("UPDATE Producto p set p.stock = :stock WHERE p.idProducto = :idProducto")
+    int reducirStock(int stock, int idProducto);
 }

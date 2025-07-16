@@ -138,6 +138,13 @@ public class ProductoServiceImpl implements ProductoService {
         return productoRepository.findById(id).orElse(null);
     }
 
+    @Override
+    public void disminuirStock(int stock,int idProducto) {
+        Producto p = productoRepository.findById(idProducto).orElse(null);
+        int nuevoStock = p.getStock() - stock;
+        productoRepository.reducirStock(nuevoStock,idProducto);
+    }
+
 
     @Override
     public Producto save(Producto producto, MultipartFile imagen) {try {
