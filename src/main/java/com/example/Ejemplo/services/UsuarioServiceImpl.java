@@ -37,7 +37,6 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario saveUser(Usuario usuario) {
-
         return usuarioRepository.save(usuario);
     }
 
@@ -50,9 +49,11 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findByRolNot(rol);
     }
 
+
+
     @Override
-    public Usuario isExistUsuario(String correo, String password) {
-        return  usuarioRepository.findByCorreoAndPassword(correo, password);
+    public Optional<Usuario> findUsuarioByCorreo(String correo) {
+        return usuarioRepository.findByCorreo(correo);
     }
 
 }

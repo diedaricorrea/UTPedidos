@@ -1,7 +1,7 @@
 <!-- fragments/productoForm.html -->
 <div th:fragment="productoFormFragment">
     <form th:action="@{/productos/subirproductos}" method="post" enctype="multipart/form-data">
-        <input type="hidden" th:if="${producto.id != null}" name="id" th:value="${producto.id}">
+
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre del Producto</label>
             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Hamburguesa Especial" required th:value="${producto.nombre}">
@@ -46,8 +46,8 @@
         </div>
 
         <button type="submit" class="btn btn-primary w-100">
-            <span th:if="${producto.id == null}">Añadir Producto</span>
-            <span th:if="${producto.id != null}">Actualizar Producto</span>
+            <span th:if="${producto.idProducto == null}">Añadir Producto</span>
+            <span th:if="${producto.idProducto != null}">Actualizar Producto</span>
         </button>
     </form>
 </div>

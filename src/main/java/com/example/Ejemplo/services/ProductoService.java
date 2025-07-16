@@ -13,8 +13,6 @@ public interface ProductoService {
     List<Producto> findAllProductos();
     Optional<Producto> findProductoById(Integer id);
     Optional<Producto> findProductoPorNombre(String nombre);
-    Producto saveUser(Producto producto);
-    void deleteUserById(Long id);
 
     List<Producto> findAllProductosById(int id);
 
@@ -38,6 +36,9 @@ public interface ProductoService {
     List<Producto> findAll();
     List<Producto> findRecent();
     Producto findById(Integer id);
+
+
     Producto save(Producto producto, MultipartFile imagen);
+
     void delete(Integer id);
 }

@@ -12,12 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 @Primary
@@ -29,10 +27,13 @@ public class ProductoServiceImpl implements ProductoService {
 
     private final Path rootLocation = Paths.get("src/main/resources/static/images/");
 
+    private final ImgBBUploader uploader;
+
     @Autowired
-    public ProductoServiceImpl(ProductoRepository productosRepository, CarritoRepository carritoRepository) {
+    public ProductoServiceImpl(ProductoRepository productosRepository, CarritoRepository carritoRepository, ImgBBUploader uploader) {
         this.productoRepository = productosRepository;
         this.carritoRepository = carritoRepository;
+        this.uploader = uploader;
     }
 
     @Override
@@ -46,16 +47,6 @@ public class ProductoServiceImpl implements ProductoService {
         return Optional.empty();
     }
 
-    @Override
-    public Producto saveUser(Producto producto) {
-        // Método no implementado
-        return null;
-    }
-
-    @Override
-    public void deleteUserById(Long id) {
-        // Método no implementado
-    }
 
     public List<Producto> findAllByCategoriaNombre(String nombre) {
         return productoRepository.findProductoByCategoria_Nombre(nombre);
@@ -147,22 +138,22 @@ public class ProductoServiceImpl implements ProductoService {
         return productoRepository.findById(id).orElse(null);
     }
 
+
     @Override
-    public Producto save(Producto producto, MultipartFile imagen) {
+    public Producto save(Producto producto, MultipartFile imagen) {try {
         if (imagen != null && !imagen.isEmpty()) {
-            String filename = UUID.randomUUID().toString() + "_" + imagen.getOriginalFilename();
-            try {
-                Files.copy(imagen.getInputStream(), this.rootLocation.resolve(filename));
-                producto.setImagenUrl("/images/" + filename);
-            } catch (IOException e) {
-                throw new RuntimeException("Error al guardar la imagen: " + e.getMessage());
-            }
+            String url = uploader.subirImagen(imagen);
+            producto.setImagenUrl(url); // ← guardas solo la URL pública
         }
-        return productoRepository.save(producto);
+            return productoRepository.save(producto);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al subir imagen", e);
+    }
     }
 
     @Override
     public void delete(Integer id) {
         productoRepository.deleteById(id);
     }
+
 }

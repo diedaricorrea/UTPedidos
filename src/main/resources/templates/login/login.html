@@ -10,17 +10,20 @@
 <main class="container d-flex justify-content-center align-items-center vh-100">
     <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
         <h3 class="text-center mb-4">Iniciar Sesión</h3>
-        <form th:action="@{/usuarios/login}" method="get">
+        <form th:action="@{/login}" method="POST">
             <div class="mb-3">
-                <label for="correo" class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" name="correo" id="correo" placeholder="ejemplo@correo.com" required>
+                <label for="username" class="form-label">Correo electrónico</label>
+                <input type="email" class="form-control" name="username" id="username" placeholder="U000000000@utp.edu.pe" required>
             </div>
             <div class="mb-3">
-                <label for="contrasena" class="form-label">Contraseña</label>
+                <label for="password" class="form-label">Contraseña</label>
                 <input type="password" class="form-control" name="password" id="password" placeholder="Tu contraseña" required>
             </div>
             <div class="d-grid">
                 <button type="submit" class="btn btn-primary">Ingresar</button>
+            </div>
+            <div class="d-grid mt-3">
+                <a th:href="@{/register}" class="btn btn-outline-secondary">Si no tienes cuenta crea una</a>
             </div>
         </form>
     </div>

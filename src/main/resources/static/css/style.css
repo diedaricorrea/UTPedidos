@@ -13,7 +13,6 @@
     --gray: #6c757d;
 }
 
-
 body {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     background-color: var(--cream);
@@ -95,7 +94,7 @@ thead {
 /* Estilos para el contenido principal */
 .main-content {
     padding: 30px;
-    background-color: var(--white);
+    background-color: var(--cream);
     min-height: 100vh;
     margin-left: 250px;
     flex: 1;

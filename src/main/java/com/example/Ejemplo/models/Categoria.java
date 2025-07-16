@@ -22,7 +22,7 @@ public class Categoria {
     @OneToMany(mappedBy = "categoria")
     private List<Producto> productos;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private String nombre;
 
 }

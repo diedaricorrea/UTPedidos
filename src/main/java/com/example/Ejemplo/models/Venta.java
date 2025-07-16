@@ -12,9 +12,10 @@ import lombok.NoArgsConstructor;
 @Table(name = "ventas")
 public class Venta {
     @Id
-    private long id_venta;
-    private long id_detalle_venta;
-    private long id_user;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id_venta;
+    private int id_detalle_venta;
+    private int id_user;
     private String fecha;
     private String estado;
 }

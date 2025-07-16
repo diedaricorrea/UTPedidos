@@ -25,26 +25,6 @@ public class UsuariosController {
         this.notificacionServiceImpl = notificacionServiceImpl;
     }
 
-    @GetMapping("/login")
-    public String login(@RequestParam String correo, @RequestParam String password, Model model) {
-        Usuario user = usuarioServiceImpl.isExistUsuario(correo, password);
-        System.out.println(user.getRol());
-        if(user.getRol() == Rol.ADMINISTRADOR){
-            model.addAttribute("usuario",new Usuario());
-            return "redirect:/usuarios/medio";
-        }else{
-            model.addAttribute("usuario",new Usuario());
-            model.addAttribute("notificaciones", notificacionServiceImpl.findAllByUsuario_IdUsuario(1));
-            return "redirect:/catalogo/";
-        }
-    }
-
-    @GetMapping("/medio")
-    public String medio() {
-        return "login/medio";
-    }
-
-
     @PostMapping("/save")
     public String saveUsuario(@ModelAttribute @Valid Usuario usuario,BindingResult resultado, RedirectAttributes redirectAttributes,Model model) {
 

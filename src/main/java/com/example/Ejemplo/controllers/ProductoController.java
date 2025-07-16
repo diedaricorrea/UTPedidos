@@ -33,7 +33,7 @@ public class ProductoController {
         this.carritoServiceImpl = carritoServiceImpl;
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public String index(
             @RequestParam(required = false) String categoria,
             @RequestParam(required = false) String busqueda,

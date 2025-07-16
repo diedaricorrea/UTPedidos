@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     List<Usuario> findByRolNot(Rol rol);
 
-    Usuario findByCorreoAndPassword(String correo,String password);
+
 
     Optional<Usuario> findByCorreo(String correo);
 }

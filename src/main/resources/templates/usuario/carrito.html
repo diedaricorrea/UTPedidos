@@ -37,8 +37,8 @@
                                 <td class="subtotal" th:text="${item.total}"></td>
                                 <td>
                                     <form th:action="@{/carrito/eliminar}" method="POST">
-                                        <input type="text" hidden name="idUsuario" th:value="${item.getIdUsuario().idUsuario}">
-                                        <input type="text" hidden name="idProducto" th:value="${item.getIdProducto().idProducto}">
+                                        <input type="hidden" name="idUsuario" th:value="${item.getIdUsuario().idUsuario}">
+                                        <input type="hidden" name="idProducto" th:value="${item.getIdProducto().idProducto}">
                                         <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                                     </form>
                                 </td>

@@ -11,16 +11,12 @@
         </div>
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'inicio' ? 'active' : ''}" href="#"><i
-                        class="fas fa-utensils me-2"></i> Gestión de Platos</a>
+                <a class="nav-link" th:classappend="${activeTab == 'productos' ? 'active' : ''}" th:href="@{/productos}"><i
+                        class="fas fa-cog me-2"></i>Productos</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == 'pendientes' ? 'active' : ''}" th:href="@{/pedidos/admin}"><i
                         class="fas fa-list me-2"></i>Pedidos</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == 'productos' ? 'active' : ''}" th:href="@{/productos/}"><i
-                        class="fas fa-cog me-2"></i>Productos</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == 'usuarios' ? 'active' : ''}" th:href="@{/usuarios/panelAdmin}"><i
@@ -31,7 +27,7 @@
                         class="fas fa-cog me-2"></i>Menu del dia</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == '' ? 'active' : ''}" th:href="@{/usuarios/medio}"><i
+                <a class="nav-link" th:classappend="${activeTab == '' ? '' : ''}" th:href="@{/usuarios/medio}"><i
                         class="bi bi-box-arrow-right"></i>Salir</a>
             </li>
         </ul>

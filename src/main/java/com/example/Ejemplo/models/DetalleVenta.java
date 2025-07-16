@@ -23,13 +23,11 @@ public class DetalleVenta {
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_venta", nullable = false)
-    @jakarta.validation.constraints.NotNull
     private Venta venta;
 
     @Id
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_producto", nullable = false)
-    @jakarta.validation.constraints.NotNull
     private Producto producto;
 
     @Column(nullable = false)
