@@ -20,9 +20,9 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/register","/catalogo", "/login","register/save", "/css/**", "/js/**").permitAll()
-                    .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
+                    .requestMatchers("/productos/**","/api/estadisticas/**","/notificacion/**","/pedidos/**", "/usuarios/**","/menuDia/**").hasRole("ADMINISTRADOR")
                     .requestMatchers("/trabajador/**").hasRole("TRABAJADOR")
-                    .requestMatchers("/catalogo/**").hasRole("USUARIO")
+                    .requestMatchers("/catalogo/**","/carrito/**","/pedidos/**").hasRole("USUARIO")
                     .anyRequest().authenticated()
             )
             .formLogin(form -> form
