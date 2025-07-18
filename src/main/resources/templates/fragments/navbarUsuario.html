@@ -27,10 +27,10 @@
                         <a class="nav-link nav-link-custom" th:href="@{/catalogo}">MENÚ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" th:href="@{/carrito/1}">CARRITO</a>
+                        <a class="nav-link nav-link-custom" th:href="@{/carrito}">CARRITO</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom" th:href="@{/pedidos/pedido/1}">PEDIDOS</a>
+                        <a class="nav-link nav-link-custom" th:href="@{/pedidos}">PEDIDOS</a>
                     </li>
                 </ul>
                 <div class="d-flex align-items-center ms-auto">
@@ -51,6 +51,7 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
+                            <li th:if="${usuarioAdmins != 'USUARIO'}"><a class="dropdown-item text-danger" th:href="@{/login/medio}">Salir</a></li>
                             <li><a class="dropdown-item text-danger" th:href="@{/logout}">Cerrar sesión</a></li>
                         </ul>
                     </div>

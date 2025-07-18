@@ -3,6 +3,7 @@ package com.example.Ejemplo.services;
 import com.example.Ejemplo.models.Pedido;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PedidosService {
     Pedido guardarPedido(Pedido pedido);
@@ -14,6 +15,6 @@ public interface PedidosService {
     int deletePedido(String codigoPedido);
 
     String generarCodigoUnico();
-
+    Optional<Pedido> buscarPorCodigoPedido(String codigo);
     List<String> obtenerTodosLosCodigos();
 }

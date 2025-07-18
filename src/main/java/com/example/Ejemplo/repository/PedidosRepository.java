@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PedidosRepository extends JpaRepository<Pedido, Integer> {
@@ -20,6 +21,6 @@ public interface PedidosRepository extends JpaRepository<Pedido, Integer> {
     @Transactional
     @Query("UPDATE Pedido p SET p.estado = true WHERE p.codigoPedido = :idPedido")
     int deleteByCodigoPedido(@Param("idPedido") String codigoPedido );
-
+    Optional<Pedido> findByCodigoPedido(String codigo);
     List<Pedido> findAllByUsuario_IdUsuario(int idUsuario);
 }

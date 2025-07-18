@@ -9,8 +9,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.beans.Customizer;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -19,10 +17,15 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/register","/catalogo", "/login","register/save", "/css/**", "/js/**").permitAll()
-                    .requestMatchers("/productos/**","/api/estadisticas/**","/notificacion/**","/pedidos/**", "/usuarios/**","/menuDia/**").hasRole("ADMINISTRADOR")
-                    .requestMatchers("/trabajador/**").hasRole("TRABAJADOR")
-                    .requestMatchers("/catalogo/**","/carrito/**","/pedidos/**").hasRole("USUARIO")
+                    .requestMatchers("/register", "/catalogo", "/login", "/register/save", "/css/**", "/js/**").permitAll()
+
+                    .requestMatchers("/catalogo/**", "/carrito/**",
+                            "/pedidos","/pedidos/pedir","/notificacion").hasAnyRole("ADMINISTRADOR", "USUARIO","TRABAJADOR")
+
+                    .requestMatchers("/productos/**", "/api/estadisticas/**",
+                            "/notificacion/notificar","/notificacion", "/pedidos","/pedidos/**",
+                            "/usuarios/**","/usuarios/save","/usuarios/panelAdmin",
+                            "/menuDia/**","/login/**").hasAnyRole("ADMINISTRADOR","TRABAJADOR")
                     .anyRequest().authenticated()
             )
             .formLogin(form -> form

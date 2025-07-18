@@ -4,6 +4,7 @@ import com.example.Ejemplo.models.Carrito;
 import com.example.Ejemplo.models.Producto;
 import com.example.Ejemplo.repository.CarritoRepository;
 import com.example.Ejemplo.repository.ProductoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
@@ -138,6 +139,7 @@ public class ProductoServiceImpl implements ProductoService {
         return productoRepository.findById(id).orElse(null);
     }
 
+    @Transactional
     @Override
     public void disminuirStock(int stock,int idProducto) {
         Producto p = productoRepository.findById(idProducto).orElse(null);

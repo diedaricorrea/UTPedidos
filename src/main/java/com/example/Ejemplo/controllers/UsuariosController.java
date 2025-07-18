@@ -2,10 +2,13 @@ package com.example.Ejemplo.controllers;
 
 import com.example.Ejemplo.models.Rol;
 import com.example.Ejemplo.models.Usuario;
+import com.example.Ejemplo.security.UsuarioDetails;
 import com.example.Ejemplo.services.NotificacionServiceImpl;
 import com.example.Ejemplo.services.UsuarioServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,7 +21,8 @@ public class UsuariosController {
 
     private final UsuarioServiceImpl usuarioServiceImpl;
     private final NotificacionServiceImpl notificacionServiceImpl;
-
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     public UsuariosController(UsuarioServiceImpl usuarioServiceImpl, NotificacionServiceImpl notificacionServiceImpl) {
         this.usuarioServiceImpl = usuarioServiceImpl;
@@ -27,20 +31,23 @@ public class UsuariosController {
 
     @PostMapping("/save")
     public String saveUsuario(@ModelAttribute @Valid Usuario usuario,BindingResult resultado, RedirectAttributes redirectAttributes,Model model) {
-
         if(resultado.hasErrors()) {
             model.addAttribute("showModal", true); // 🔸 Esto activa el modal
             model.addAttribute("usuarios",usuarioServiceImpl.findAllUsuariosByNotRol(Rol.USUARIO));
-            return "administrador/usuariosAdmin";
+            return "redirect:/usuarios/panelAdmin";
         }
         usuario.setEstado(true);
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         usuarioServiceImpl.saveUser(usuario);
         redirectAttributes.addFlashAttribute("mensaje", "Usuario guardado correctamente");
         return "redirect:/usuarios/panelAdmin";
     }
 
     @GetMapping("/panelAdmin")
-    public String panelAdmin(Model model) {
+    public String panelAdmin(Model model, @AuthenticationPrincipal UsuarioDetails userDetails){
+        Usuario usuario = userDetails.getUsuario();
+
+        model.addAttribute("usuarioAdmins", usuario.getRol().toString());
         model.addAttribute("usuario",new Usuario());
         model.addAttribute("usuarios",usuarioServiceImpl.findAllUsuariosByNotRol(Rol.USUARIO));
         return "administrador/usuariosAdmin";

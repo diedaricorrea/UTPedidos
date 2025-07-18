@@ -1,14 +1,20 @@
 package com.example.Ejemplo.controllers;
 
+import com.example.Ejemplo.models.Usuario;
+import com.example.Ejemplo.security.UsuarioDetails;
 import com.example.Ejemplo.services.NotificacionServiceImpl;
 import com.example.Ejemplo.services.PedidosServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.Collections;
 
 @Controller
 @RequestMapping("/notificacion")
@@ -30,7 +36,7 @@ public class NotificacionController {
         notificacionServiceImpl.sendNotificacion(idUsuario, message);
         //eliminacion del pedido de la lista de pendientes del usuario
         pedidosServiceImpl.deletePedido(codigoPedido);
-        return "redirect:/pedidos/2";
+        return "redirect:/pedidos/admin";
     }
 
 }

@@ -36,11 +36,18 @@ public class LoginController {
         return "login/login";
     }
 
+    @GetMapping("/login/medio")
+    public String login3() {
+        return "login/medio";
+    }
+
     @GetMapping("/login2")
     public String login3(Authentication authentication) {
         String rol = authentication.getAuthorities().iterator().next().getAuthority();
         return switch (rol){
-            case "USUARIO" -> "redirect:/catalogo";
+            case "ROLE_ADMINISTRADOR" -> "redirect:/login/medio";
+            case "ROLE_TRABAJADOR" -> "redirect:/login/medio";
+            case "ROLE_USUARIO" -> "redirect:/catalogo";
             default -> "login/login";
         };
     }

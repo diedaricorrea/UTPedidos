@@ -2,10 +2,13 @@ package com.example.Ejemplo.controllers;
 
 import com.example.Ejemplo.models.MenuDia;
 import com.example.Ejemplo.models.Producto;
+import com.example.Ejemplo.models.Usuario;
+import com.example.Ejemplo.security.UsuarioDetails;
 import com.example.Ejemplo.services.MenuDiaServiceImpl;
 import com.example.Ejemplo.services.ProductoServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,9 +33,12 @@ public class MenuDiaController {
     }
 
     @GetMapping("/")
-    public String menuDia(Model model) {
+    public String menuDia(Model model, @AuthenticationPrincipal UsuarioDetails userDetails) {
         model.addAttribute("menusEconomicos", productosServiceImpl.findAllByCategoriaNombre("MENU ECONOMICO"));
         model.addAttribute("menuDia", new MenuDia());
+        Usuario usuario = userDetails.getUsuario();
+
+        model.addAttribute("usuarioAdmins", usuario.getRol().toString());
         return "administrador/menuDia";
     }
 

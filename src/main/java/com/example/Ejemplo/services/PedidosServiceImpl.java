@@ -1,7 +1,6 @@
 package com.example.Ejemplo.services;
 
-import com.example.Ejemplo.models.Pedido;
-import com.example.Ejemplo.models.PedidoResumenDTO;
+import com.example.Ejemplo.models.*;
 import com.example.Ejemplo.repository.PedidosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,6 +49,12 @@ public class PedidosServiceImpl implements PedidosService {
         return getPedidoResumenDTOS(pedidos);
     }
 
+    public List<PedidoResumenDTO> obtenerDetallePedidosEnviados() {
+        List<Pedido> pedidos = pedidosRepository.findAllByEstado(true);
+
+        return getPedidoResumenDTOS(pedidos);
+    }
+
     public List<PedidoResumenDTO> obtenerDetallePedidosPorId(int id) {
         List<Pedido> pedidos = pedidosRepository.findAllByUsuario_IdUsuario(id);
 
@@ -73,6 +78,11 @@ public class PedidosServiceImpl implements PedidosService {
         }
 
         throw new RuntimeException("No se pudo generar un código único tras varios intentos");
+    }
+
+    @Override
+    public Optional<Pedido> buscarPorCodigoPedido(String codigo) {
+        return pedidosRepository.findByCodigoPedido(codigo);
     }
 
     public List<String> obtenerTodosLosCodigos() {
@@ -100,8 +110,8 @@ public class PedidosServiceImpl implements PedidosService {
             LocalTime fechaEntrega = pedido.getFechaEntrega();
             boolean estado = pedido.isEstado();
             String codigoPedido = pedido.getCodigoPedido();
-            List<String> productos = pedido.getDetallePedido().stream()
-                    .map(d -> d.getProducto().getNombre())
+            List<DetallePedido> productos =  pedidos.stream()
+                    .flatMap(pe-> pe.getDetallePedido().stream()) // "Aplana" todas las listas
                     .collect(Collectors.toList());
 
             return new PedidoResumenDTO(idUsuario,codigoPedido,nombreUsuario, productos, fechaEntrega,estado);

@@ -2,8 +2,11 @@ package com.example.Ejemplo.controllers;
 
 import java.util.List;
 
+import com.example.Ejemplo.models.Usuario;
+import com.example.Ejemplo.security.UsuarioDetails;
 import com.example.Ejemplo.services.ProductoServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +37,9 @@ public class AdminController {
     }
 
     @GetMapping
-    public String panelAdmin(Model model) {
+    public String panelAdmin(Model model, @AuthenticationPrincipal UsuarioDetails userDetails) {
+        Usuario usuario = userDetails.getUsuario();
+
         List<Producto> productos = productoServiceImpl.findAll();
         if (productos.isEmpty()) {
             System.out.println("No se encontraron productos en la base de datos.");
@@ -44,6 +49,7 @@ public class AdminController {
                 System.out.println("Producto: " + p.getNombre() + ", Categoria: " + (p.getCategoria() != null ? p.getCategoria().getNombre() : "null"));
             }
         }
+        model.addAttribute("usuarioAdmins", usuario.getRol().toString());
         model.addAttribute("productos", productos);
         model.addAttribute("producto", new Producto());
         model.addAttribute("categorias",categoriaRepository.findAll());
@@ -58,9 +64,13 @@ public class AdminController {
             @RequestParam("categoria") String categoriaNombre,
             @RequestParam("imagen") MultipartFile imagen,
             @RequestParam(value = "disponible", defaultValue = "false") boolean disponible,
+            @RequestParam(value = "id", required = false) Integer id,
             @RequestParam("stock") Integer stock,
             RedirectAttributes redirectAttributes) {
         Producto producto = new Producto();
+        if (id != null) {
+            producto.setIdProducto(id);
+        }
         producto.setNombre(nombre);
         producto.setPrecio(precio);
         producto.setDescripcion(descripcion);
@@ -73,7 +83,7 @@ public class AdminController {
         producto.setCategoria(categoria);
         producto.setEstado(disponible);
         producto.setStock(stock);
-        productoServiceImpl.save(producto,imagen);
+        productoServiceImpl.save(producto, imagen);
         redirectAttributes.addFlashAttribute("mensaje", "Producto guardado correctamente");
         return "redirect:/productos";
     }
@@ -86,7 +96,7 @@ public class AdminController {
             model.addAttribute("productos", productoServiceImpl.findRecent());
             List<Categoria> categorias = categoriaRepository.findAll();
             model.addAttribute("categorias", categorias);
-            return "panelAdmin";
+            return "administrador/productos";
         }
         return "redirect:/productos";
     }

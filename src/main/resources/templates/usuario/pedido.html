@@ -23,7 +23,7 @@
                         </h5>
 
                         <p class="mb-1">
-                            <strong>Fecha:</strong>
+                            <strong>Hora de entrega:</strong>
                             <span th:text="${#temporals.format(pedido.fechaEntrega, 'HH:mm')}"></span>
                         </p>
 
@@ -63,7 +63,7 @@
                 </div>
                 <div class="modal-body">
                     <p><strong>Código:</strong> <span th:text="${pedido.codigoPedido}"></span></p>
-                    <p><strong>Fecha:</strong> <span th:text="${#temporals.format(pedido.fechaEntrega, 'HH:mm')}"></span></p>
+                    <p><strong>Hora:</strong> <span th:text="${#temporals.format(pedido.fechaEntrega, 'HH:mm')}"></span></p>
                     <p><strong>Estado:</strong>
                         <span th:classappend="${pedido.estado} ? 'text-success' : 'text-danger'"
                               th:text="${pedido.estado} ? 'Pagado' : 'Pendiente'"></span>
@@ -71,7 +71,32 @@
                     <hr>
                     <h6>Productos:</h6>
                     <div th:each="produ : ${pedido.productos}">
-                        <span th:text="${produ}"></span>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>NOMBRE</th>
+                                <th>PRECIO NETO</th>
+                                <th>IGV</th>
+                                <th>CANTIDAD</th>
+                                <th>TOTAL</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td th:text="${produ.getProducto().nombre}"></td>
+                                <td class="precio" th:text="${produ.getProducto().precio}"></td>
+                                <td class="igv">S/ 0.00</td>
+                                <td th:text="${produ.getCantidad()}"></td>
+                                <td class="subtotal" th:text="${produ.subtotal}"></td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="4"><strong>Total:</strong></td>
+                                <td><strong id="total">S/ 0.00</strong></td>
+                            </tr>
+                            </tfoot>
+                        </table>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -82,15 +107,52 @@
     </div>
 </main>
 
-<script>
-// Asegurar que las modales de Bootstrap funcionen correctamente
-document.addEventListener('DOMContentLoaded', function() {
-    // Inicializar todas las modales
-    var modals = document.querySelectorAll('.modal');
-    modals.forEach(function(modal) {
-        new bootstrap.Modal(modal);
+<script >
+    document.addEventListener('DOMContentLoaded', function() {
+        // Calcular IGV para cada producto
+        document.querySelectorAll('tbody tr').forEach(row => {
+            const precioCell = row.querySelector('.precio');
+            const igvCell = row.querySelector('.igv');
+            const subtotalCell = row.querySelector('.subtotal');
+
+            // Extraer valores numéricos (eliminando "S/ ")
+            const precio = parseFloat(precioCell.textContent.replace('S/ ', ''));
+            const subtotal = parseFloat(subtotalCell.textContent.replace('S/ ', ''));
+
+            // Calcular IGV (18% del subtotal)
+            precioCell.textContent = precio - ((subtotal*1.18) - precio );
+            const igv = (subtotal*1.18) - precio ;
+
+            // Mostrar IGV formateado
+            igvCell.textContent = 'S/ ' + igv.toFixed(2);
+        });
+
+        // Calcular totales
+        const subtotales = Array.from(document.querySelectorAll('.subtotal')).map(
+            el => parseFloat(el.textContent.replace('S/ ', ''))
+        );
+
+        const igvs = Array.from(document.querySelectorAll('.igv')).map(
+            el => parseFloat(el.textContent.replace('S/ ', ''))
+        );
+
+        const totalSinIgv = subtotales.reduce((sum, val) => sum + val, 0);
+        const totalIgv = igvs.reduce((sum, val) => sum + val, 0);
+        const totalConIgv = totalSinIgv + totalIgv;
+
+        // Actualizar totales
+        document.getElementById('total').textContent = 'S/ ' + totalSinIgv.toFixed(2);
+        document.getElementById('total-con-igv').textContent = 'S/ ' + totalConIgv.toFixed(2);
     });
-});
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar todas las modales
+        var modals = document.querySelectorAll('.modal');
+        modals.forEach(function(modal) {
+            new bootstrap.Modal(modal);
+        });
+    });
+
+
 </script>
 </body>
 

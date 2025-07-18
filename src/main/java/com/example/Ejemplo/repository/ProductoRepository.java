@@ -2,6 +2,7 @@ package com.example.Ejemplo.repository;
 
 import com.example.Ejemplo.models.Producto;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,6 +28,9 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     @Query(" SELECT p FROM Producto p WHERE p.stock > 0 AND p.categoria.nombre = :categoria AND LOWER(p.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))")
     Page<Producto> findByCategoriaNombreAndNombreContainingIgnoreCase(String categoria, String nombre, Pageable pageable);
 
+
+    @Modifying
+    @Transactional
     @Query("UPDATE Producto p set p.stock = :stock WHERE p.idProducto = :idProducto")
     int reducirStock(int stock, int idProducto);
 }

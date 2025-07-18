@@ -19,9 +19,7 @@ public class DetallePedidoServiceImpl implements DetallePedidoService {
 
     @Override
     public int saveDetallePedido(DetallePedido detallePedido) {
-        if (detallePedidoRepository.save(detallePedido) == null) {
-            return 0;
-        }
+        detallePedidoRepository.save(detallePedido);
         return 1;
     }
 

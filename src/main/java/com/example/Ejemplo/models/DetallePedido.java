@@ -19,4 +19,12 @@ public class DetallePedido {
     @MapsId("idProducto")
     @JoinColumn(name = "id_producto")
     private Producto producto;
+    @Column(nullable = false)
+    @jakarta.validation.constraints.NotNull
+    @jakarta.validation.constraints.Min(1)
+    private Integer cantidad;
+
+    @Column(nullable = false)
+    @jakarta.validation.constraints.NotNull
+    private double subtotal;
 }

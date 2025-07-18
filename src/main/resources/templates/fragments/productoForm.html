@@ -1,7 +1,7 @@
 <!-- fragments/productoForm.html -->
 <div th:fragment="productoFormFragment">
     <form th:action="@{/productos/subirproductos}" method="post" enctype="multipart/form-data">
-
+        <input type="hidden" name="id" th:value="${producto.idProducto}">
         <div class="mb-3">
             <label for="nombre" class="form-label">Nombre del Producto</label>
             <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Hamburguesa Especial" required th:value="${producto.nombre}">
@@ -9,13 +9,17 @@
         <div class="mb-3">
             <label for="precio" class="form-label">Precio (S/)</label>
             <div class="input-group">
+                <span class="input-group-text">IGV</span>
+                <input type="number" class="form-control" id="IGV" name="IGV" placeholder="1.18" value="1.18" disabled min="0" required>
+            </div>
+            <div class="input-group">
                 <span class="input-group-text">S/</span>
                 <input type="number" class="form-control" id="precio" name="precio" placeholder="0.00" step="0.01" min="0" required th:value="${producto.precio}">
             </div>
         </div>
         <div class="mb-3">
             <label for="descripcion" class="form-label">Descripción Breve</label>
-            <textarea class="form-control" id="descripcion" name="descripcion" rows="3" placeholder="Describe brevemente el producto..." required th:text="${producto.descripcion}"></textarea>
+            <textarea class="form-control" id="descripcion" min="10" name="descripcion" rows="3" placeholder="Describe brevemente el producto..." required th:text="${producto.descripcion}"></textarea>
         </div>
         <div class="mb-3">
             <label for="categoria" class="form-label">Categoría</label>

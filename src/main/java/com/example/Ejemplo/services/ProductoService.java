@@ -2,6 +2,7 @@ package com.example.Ejemplo.services;
 
 import com.example.Ejemplo.models.Carrito;
 import com.example.Ejemplo.models.Producto;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +38,7 @@ public interface ProductoService {
     List<Producto> findRecent();
     Producto findById(Integer id);
 
+    @Transactional
     void disminuirStock(int stock, int idProducto);
 
     Producto save(Producto producto, MultipartFile imagen);

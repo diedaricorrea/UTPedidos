@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{/fragments/layoutAdmin :: layoutA(~{::title}, 'enviados' ,~{::main}, ~{::script})}">
+<head>
+    <title>Pedidos Pendientes</title>
+</head>
+<body>
+    <main class="container main-content text-center">
+        <h1>Pedidos Enviados</h1>
+        <div class="container mb-2">
+            <div class="d-flex flex-column align-items-end"> <!-- Columna alineada a la derecha -->
+                <!-- Título arriba -->
+                <h2 class="mb-3">Acciones</h2> <!-- mb-3 para margen inferior -->
+
+                <!-- Barra de búsqueda abajo -->
+                <form class="d-flex" role="search" th:action="@{/pedidos/buscar}">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white border-end-0">
+                            <i class="bi bi-search text-secondary"></i>
+                        </span>
+                        <input type="search"
+                               class="form-control border-start-0 ps-0"
+                               placeholder="BUSCAR POR CÓDIGO"
+                               style="height: 45px;"
+                                name="codigo">
+                        <button class="btn btn-primary px-4"
+                                type="submit"
+                                style="border-radius: 0 5px 5px 0;">
+                            Buscar
+                        </button>
+                    </div>
+                </form>
+                <a th:href="@{/pedidos/enviados}" class="fs-4 btn btn-primary"><i class="fa-solid fa-arrows-rotate"></i></a>
+            </div>
+        </div>
+
+        <div>
+            <table class="table table-responsive">
+                <thead class="text-center">
+                <tr>
+                    <th>Id pedido</th>
+                    <th>Nombre</th>
+                    <th>Estado</th>
+                    <th>Productos</th>
+                    <th>Tiempo</th>
+                </tr>
+                </thead>
+                <tbody class="text-center">
+                <tr th:each="pedido : ${pedidosEnviados}">
+                    <td th:text="${pedido.getCodigoPedido()}"></td>
+                    <td th:text="${pedido.getNombreUsuario()}"></td>
+                    <td th:text="${pedido.isEstado() ? 'ENVIADO' : 'PENDIENTE'}"></td>
+                    <td>
+                        <div th:each="producto : ${pedido.getProductos()}">
+                            <p th:text="${producto.getProducto().nombre}"></p>
+                        </div>
+                    </td>
+                    <td th:text="${pedido.getFechaEntrega()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+    <script></script>
+</body>
+</html>

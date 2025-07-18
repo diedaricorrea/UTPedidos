@@ -12,22 +12,26 @@
         <ul class="nav flex-column">
             <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == 'productos' ? 'active' : ''}" th:href="@{/productos}"><i
-                        class="fas fa-cog me-2"></i>Productos</a>
+                        class="bi bi-tag"></i>Productos</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == 'pendientes' ? 'active' : ''}" th:href="@{/pedidos/admin}"><i
                         class="fas fa-list me-2"></i>Pedidos</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == 'enviados' ? 'active' : ''}" th:href="@{/pedidos/enviados}"><i
+                        class="fas fa-list me-2"></i>Pedidos Enviados</a>
+            </li>
+            <li class="nav-item" th:if="${usuarioAdmins == 'ADMINISTRADOR'}">
                 <a class="nav-link" th:classappend="${activeTab == 'usuarios' ? 'active' : ''}" th:href="@{/usuarios/panelAdmin}"><i
                         class="fas fa-cog me-2"></i>Usuarios</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == 'menuDia' ? 'active' : ''}" th:href="@{/menuDia/}"><i
-                        class="fas fa-cog me-2"></i>Menu del dia</a>
+                        class="bi bi-list-ul"></i>Menu del dia</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" th:classappend="${activeTab == '' ? '' : ''}" th:href="@{/usuarios/medio}"><i
+                <a class="nav-link" th:classappend="${activeTab == '' ? '' : ''}" th:href="@{/login/medio}"><i
                         class="bi bi-box-arrow-right"></i>Salir</a>
             </li>
         </ul>

@@ -14,7 +14,7 @@ public class PedidoResumenDTO {
     private int idUsuario;
     private String codigoPedido;
     private String nombreUsuario;
-    private List<String> productos;
+    private List<DetallePedido> productos;
     private LocalTime fechaEntrega;
     private boolean estado;
 }

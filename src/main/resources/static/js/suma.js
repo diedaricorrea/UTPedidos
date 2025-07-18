@@ -12,6 +12,7 @@ function calcularTotal() {
     document.getElementById('totalCarrito').innerText = 'S/ ' + total.toFixed(2);
 }
 
+
 // Ejecutar al cargar la página
 document.addEventListener('DOMContentLoaded', calcularTotal);
 

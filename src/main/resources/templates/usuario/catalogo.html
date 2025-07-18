@@ -12,7 +12,6 @@
             <span th:text="${message}"></span>
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-
         <!-- Sección de filtros de categoría -->
         <section class="text-center my-4">
             <div class="d-flex justify-content-center gap-3 flex-wrap">
@@ -22,15 +21,15 @@
                 </a>
 
                 <!-- Otras categorías -->
-                <a class="btn-filtro rounded-pill filtro-general" th:href="@{/catalogo/(categoria='Bebidas')}"
+                <a class="btn-filtro rounded-pill filtro-general" th:href="@{/catalogo(categoria='Bebidas')}"
                    th:classappend="${param.categoria} == 'Bebidas' ? ' activo' : ''">
                     BEBIDAS
                 </a>
-                <a class="btn-filtro rounded-pill filtro-general" th:href="@{/catalogo/(categoria='Snack')}"
+                <a class="btn-filtro rounded-pill filtro-general" th:href="@{/catalogo(categoria='Snack')}"
                    th:classappend="${param.categoria} == 'Snack' ? ' activo' : ''">
                     SNACKS
                 </a>
-                <a class="btn-filtro rounded-pill filtro-general" th:href="@{/catalogo/(categoria='Postres')}"
+                <a class="btn-filtro rounded-pill filtro-general" th:href="@{/catalogo(categoria='Postres')}"
                    th:classappend="${param.categoria} == 'Postres' ? ' activo' : ''">
                     POSTRES
                 </a>
@@ -38,15 +37,15 @@
 
             <!-- Subcategorías del menú del día -->
             <div id="botones-menu-dia" class="d-none d-flex justify-content-center gap-3 mt-3 flex-wrap">
-                <a class="btn-filtro btn-menu-extra rounded-pill" th:href="@{/catalogo/(categoria='MENU ECONOMICO')}"
+                <a class="btn-filtro btn-menu-extra rounded-pill" th:href="@{/catalogo(categoria='MENU ECONOMICO')}"
                    th:classappend="${param.categoria} == 'MENU ECONOMICO' ? ' activo' : ''">
                     Económico
                 </a>
-                <a class="btn-filtro btn-menu-extra rounded-pill" th:href="@{/catalogo/(categoria='MENU EJECUTIVO')}"
+                <a class="btn-filtro btn-menu-extra rounded-pill" th:href="@{/catalogo(categoria='MENU EJECUTIVO')}"
                    th:classappend="${param.categoria} == 'MENU EJECUTIVO' ? ' activo' : ''">
                     Ejecutivo
                 </a>
-                <a class="btn-filtro btn-menu-extra rounded-pill" th:href="@{/catalogo/(categoria='MENU UNIVERSITARIO')}"
+                <a class="btn-filtro btn-menu-extra rounded-pill" th:href="@{/catalogo(categoria='MENU UNIVERSITARIO')}"
                    th:classappend="${param.categoria} == 'MENU UNIVERSITARIO' ? ' activo' : ''">
                     Universitario
                 </a>

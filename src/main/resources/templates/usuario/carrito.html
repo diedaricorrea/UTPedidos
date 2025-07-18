@@ -53,7 +53,7 @@
                             </tfoot>
                         </table>
                         <div class="botones d-grid gap-2 d-md-flex justify-content-md-end mt-3">
-                            <a class="btn1 btn w-100 w-md-auto" th:href="@{/catalogo/}">Añadir producto</a>
+                            <a class="btn1 btn w-100 w-md-auto" th:href="@{/catalogo}">Añadir producto</a>
                             <button type="button" class="btn btn-success btn-lg"
                                     onclick="abrirModal()">Pagar</button>
 
@@ -67,7 +67,6 @@
                 <span class="close" onclick="cerrarModal()">&times;</span>
                 <h5>Confirmar Pago</h5>
                 <form th:action="@{/pedidos/pedir}" method="post" id="formPago" > <!--onsubmit="return false;"-->
-                    <input type="hidden" id="idUsuario" name="idUsuario" th:value="1" />
                     <div th:if="${error}" class="alert alert-danger text-center">
                         <span th:text="${error}"></span>
                     </div>

@@ -14,14 +14,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const previewCategoria = document.getElementById('previewCategoria');
     const previewImagen = document.getElementById('previewImagen');
     const previewDisponibilidad = document.getElementById('previewDisponibilidad');
-
+    const IGV = 0.18;
     // Función para actualizar la vista previa
     function actualizarVistaPrevia() {
         // Actualizar nombre
         previewNombre.textContent = nombreInput.value || 'Nombre del Plato';
 
         // Actualizar precio
-        previewPrecio.textContent = 'S/ ' + (precioInput.value || '0.00');
+        previewPrecio.textContent = 'S/ ' + (((precioInput.value) - (precioInput.value * IGV)).toFixed(2) || '0.00');
 
         // Actualizar descripción
         previewDescripcion.textContent = descripcionInput.value || 'Descripción breve del plato...';
