@@ -21,6 +21,9 @@ public interface PedidosRepository extends JpaRepository<Pedido, Integer> {
     @Transactional
     @Query("UPDATE Pedido p SET p.estado = true WHERE p.codigoPedido = :idPedido")
     int deleteByCodigoPedido(@Param("idPedido") String codigoPedido );
-    Optional<Pedido> findByCodigoPedido(String codigo);
+
+    @Query("SELECT p FROM Pedido p WHERE p.codigoPedido = :codigo")
+    List<Pedido> findByCodigoPedido(@Param("codigo") String codigo);
+
     List<Pedido> findAllByUsuario_IdUsuario(int idUsuario);
 }

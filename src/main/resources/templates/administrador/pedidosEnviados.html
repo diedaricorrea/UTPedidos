@@ -13,7 +13,7 @@
                 <h2 class="mb-3">Acciones</h2> <!-- mb-3 para margen inferior -->
 
                 <!-- Barra de búsqueda abajo -->
-                <form class="d-flex" role="search" th:action="@{/pedidos/buscar}">
+                <form class="d-flex" method="POST" th:action="@{/pedidos/buscar}">
                     <div class="input-group">
                         <span class="input-group-text bg-white border-end-0">
                             <i class="bi bi-search text-secondary"></i>
@@ -22,7 +22,7 @@
                                class="form-control border-start-0 ps-0"
                                placeholder="BUSCAR POR CÓDIGO"
                                style="height: 45px;"
-                                name="codigo">
+                               name="codigo">
                         <button class="btn btn-primary px-4"
                                 type="submit"
                                 style="border-radius: 0 5px 5px 0;">

@@ -80,9 +80,9 @@ public class PedidosServiceImpl implements PedidosService {
         throw new RuntimeException("No se pudo generar un código único tras varios intentos");
     }
 
-    @Override
-    public Optional<Pedido> buscarPorCodigoPedido(String codigo) {
-        return pedidosRepository.findByCodigoPedido(codigo);
+    public List<PedidoResumenDTO> buscarPorCodigoPedido(String codigo) {
+        List<Pedido> pedidos = pedidosRepository.findByCodigoPedido(codigo);
+        return getPedidoResumenDTOS(pedidos) ;
     }
 
     public List<String> obtenerTodosLosCodigos() {

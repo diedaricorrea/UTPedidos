@@ -56,17 +56,16 @@ public class PedidoController {
     @GetMapping("/enviados")
     public String verPedidosEnviados(Model model, @AuthenticationPrincipal UsuarioDetails userDetails) {
         Usuario usuario = userDetails.getUsuario();
-
         model.addAttribute("usuarioAdmins", usuario.getRol().toString());
         model.addAttribute("pedidosEnviados", pedidoServiceImpl.obtenerDetallePedidosEnviados());
         return "administrador/pedidosEnviados";
     }
 
-    @GetMapping("/buscar")
+    @PostMapping("/buscar")
     public String buscarPedido(Model model, @AuthenticationPrincipal UsuarioDetails userDetails, @RequestParam("codigo") String codigo) {
         Usuario usuario = userDetails.getUsuario();
         model.addAttribute("usuarioAdmins", usuario.getRol().toString());
-        model.addAttribute("pedidosEnviados", pedidoServiceImpl.buscarPorCodigoPedido(codigo));
+        model.addAttribute("pedidosEnviados", pedidoServiceImpl.buscarPorCodigoPedido(codigo.toUpperCase()));
         return "administrador/pedidosEnviados";
     }
 

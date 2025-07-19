@@ -70,7 +70,7 @@
                     </p>
                     <hr>
                     <h6>Productos:</h6>
-                    <div th:each="produ : ${pedido.productos}">
+                    <div>
                         <table>
                             <thead>
                             <tr>
@@ -82,7 +82,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                            <tr th:each="produ : ${pedido.productos}">
                                 <td th:text="${produ.getProducto().nombre}"></td>
                                 <td class="precio" th:text="${produ.getProducto().precio}"></td>
                                 <td class="igv">S/ 0.00</td>
@@ -118,7 +118,6 @@
             // Extraer valores numéricos (eliminando "S/ ")
             const precio = parseFloat(precioCell.textContent.replace('S/ ', ''));
             const subtotal = parseFloat(subtotalCell.textContent.replace('S/ ', ''));
-
             // Calcular IGV (18% del subtotal)
             precioCell.textContent = precio - ((subtotal*1.18) - precio );
             const igv = (subtotal*1.18) - precio ;
