@@ -310,3 +310,31 @@ thead {
         margin: 8px 0;
     }
 }
+
+@media (max-width: 768px) {
+    .table-responsive-custom thead {
+        display: none;
+    }
+
+    .table-responsive-custom tbody tr {
+        display: block;
+        margin-bottom: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        background-color: white;
+    }
+
+    .table-responsive-custom td {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border: none;
+    }
+
+    .table-responsive-custom td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #555;
+    }
+}

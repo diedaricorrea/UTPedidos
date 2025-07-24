@@ -25,5 +25,8 @@ public interface PedidosRepository extends JpaRepository<Pedido, Integer> {
     @Query("SELECT p FROM Pedido p WHERE p.codigoPedido = :codigo")
     List<Pedido> findByCodigoPedido(@Param("codigo") String codigo);
 
-    List<Pedido> findAllByUsuario_IdUsuario(int idUsuario);
+    @Query("SELECT DISTINCT p FROM Pedido p JOIN FETCH p.detallePedido dp JOIN FETCH dp.producto WHERE p.usuario.idUsuario = :idUsuario")
+    List<Pedido> findAllByUsuario_IdUsuario(@Param("idUsuario") int idUsuario);
+
+    //    @Query("SELECT p FROM Pedido p JOIN FETCH p.detallePedido WHERE p.usuario.idUsuario = :idUsuario")
 }

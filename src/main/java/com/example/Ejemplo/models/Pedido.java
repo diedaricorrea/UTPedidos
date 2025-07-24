@@ -7,6 +7,7 @@ import java.util.List;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
@@ -33,8 +34,8 @@ public class Pedido {
     private LocalTime fechaEntrega;
     @Column(name = "estado")
     private boolean estado;
-
-    @OneToMany(mappedBy = "pedido")
+    
+    @OneToMany(mappedBy = "pedido", fetch = FetchType.LAZY)
     private List<DetallePedido> detallePedido;
 
     @PrePersist

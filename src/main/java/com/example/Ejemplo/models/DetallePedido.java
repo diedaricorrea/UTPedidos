@@ -2,9 +2,11 @@ package com.example.Ejemplo.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "detalle_pedido")
 public class DetallePedido {
     @EmbeddedId

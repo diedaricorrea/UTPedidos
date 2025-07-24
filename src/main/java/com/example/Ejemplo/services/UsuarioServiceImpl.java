@@ -56,4 +56,8 @@ public class UsuarioServiceImpl implements UsuarioService {
         return usuarioRepository.findByCorreo(correo);
     }
 
+    public List<Integer> findAllIdUsuario(int idUsuario) {
+        return usuarioRepository.findAllIdPedidosByUsuario(idUsuario);
+    };
+
 }

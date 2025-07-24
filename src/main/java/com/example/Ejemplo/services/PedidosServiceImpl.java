@@ -111,6 +111,7 @@ public class PedidosServiceImpl implements PedidosService {
             boolean estado = pedido.isEstado();
             String codigoPedido = pedido.getCodigoPedido();
             List<DetallePedido> productos =  pedidos.stream()
+                    .filter(pe -> pe.getCodigoPedido().equals(codigoPedido))
                     .flatMap(pe-> pe.getDetallePedido().stream()) // "Aplana" todas las listas
                     .collect(Collectors.toList());
 

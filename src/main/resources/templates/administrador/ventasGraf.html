@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es" xlmns:th="http://thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ventas por Mes</title>
+  <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+  />
+  <style>
+    body {
+      padding: 20px;
+    }
+    .bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 15px;
+      height: 300px;
+      border-left: 2px solid #333;
+      border-bottom: 2px solid #333;
+      padding: 10px;
+      margin-bottom: 40px;
+    }
+    .bar {
+      width: 40px;
+      background-color: #0d6efd;
+      text-align: center;
+      color: #fff;
+      font-size: 12px;
+      transition: height 0.3s;
+    }
+    .bar-label {
+      writing-mode: vertical-lr;
+      transform: rotate(180deg);
+      margin-top: 5px;
+    }
+    .bar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- Gráfico -->
+  <h1 class="mb-4">Resumen de Ventas por Mes</h1>
+  <div class="bar-chart" id="graficoVentas"></div>
+
+  <!-- Filtro -->
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <label for="fechaBusqueda" class="form-label">Filtrar por mes:</label>
+      <input type="month" id="fechaBusqueda" class="form-control" />
+    </div>
+  </div>
+
+  <!-- Tabla -->
+  <div class="table-responsive mb-5">
+    <table class="table table-bordered table-hover" id="tablaVentas">
+      <thead class="table-light">
+      <tr>
+        <th>#</th>
+        <th>Cliente</th>
+        <th>Producto</th>
+        <th>Fecha</th>
+        <th>Total</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr><td>1</td><td>Juan Pérez</td><td>Café Latte</td><td>2025-01-12</td><td>$3.50</td></tr>
+      <tr><td>2</td><td>Ana López</td><td>Capuchino</td><td>2025-01-25</td><td>$4.00</td></tr>
+      <tr><td>3</td><td>Marco Díaz</td><td>Espresso</td><td>2025-02-14</td><td>$2.00</td></tr>
+      <tr><td>4</td><td>Lucía Rojas</td><td>Americano</td><td>2025-02-21</td><td>$3.00</td></tr>
+      <tr><td>5</td><td>Mario Silva</td><td>Mocha</td><td>2025-03-03</td><td>$4.50</td></tr>
+      <tr><td>6</td><td>Isabel Torres</td><td>Frapuccino</td><td>2025-03-18</td><td>$5.00</td></tr>
+      <tr><td>7</td><td>Carlos Luna</td><td>Cold Brew</td><td>2025-04-09</td><td>$3.80</td></tr>
+      <tr><td>8</td><td>Paula Vega</td><td>Macchiato</td><td>2025-04-20</td><td>$4.20</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  const inputMes = document.getElementById("fechaBusqueda");
+  const tabla = document.querySelector("#tablaVentas tbody");
+  const grafico = document.getElementById("graficoVentas");
+
+  inputMes.addEventListener("input", function () {
+    const mesFiltro = this.value;
+    const filas = tabla.querySelectorAll("tr");
+
+    filas.forEach((fila) => {
+      const fecha = fila.children[3].textContent;
+      const mes = fecha.substring(0, 7);
+      fila.style.display = !mesFiltro || mes === mesFiltro ? "" : "none";
+    });
+
+    actualizarGrafico();
+  });
+
+  function actualizarGrafico() {
+    const filas = tabla.querySelectorAll("tr");
+    const ventasPorMes = {};
+
+    filas.forEach((fila) => {
+      if (fila.style.display === "none") return;
+
+      const fecha = fila.children[3].textContent;
+      const mes = fecha.substring(0, 7); // YYYY-MM
+      const totalStr = fila.children[4].textContent.replace("$", "");
+      const total = parseFloat(totalStr) || 0;
+
+      ventasPorMes[mes] = (ventasPorMes[mes] || 0) + total;
+    });
+
+    // Limpiar gráfico
+    grafico.innerHTML = "";
+
+    // Calcular máximo para escalar
+    const maxTotal = Math.max(...Object.values(ventasPorMes), 1);
+
+    Object.keys(ventasPorMes)
+            .sort()
+            .forEach((mes) => {
+              const height = (ventasPorMes[mes] / maxTotal) * 100;
+
+              const bar = document.createElement("div");
+              bar.className = "bar-container";
+              bar.innerHTML = `
+            <div class="bar" style="height: ${height}%;"><small>$${ventasPorMes[mes].toFixed(2)}</small></div>
+            <div class="bar-label">${mes}</div>
+          `;
+              grafico.appendChild(bar);
+            });
+  }
+
+  window.addEventListener("load", actualizarGrafico);
+</script>
+</body>
+</html>

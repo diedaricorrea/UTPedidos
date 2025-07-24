@@ -38,6 +38,7 @@ public class PedidoController {
     public String verPedidos(@AuthenticationPrincipal UsuarioDetails userDetails, Model model) {
         Usuario usuario = userDetails.getUsuario();
         int idUsuario = usuario.getIdUsuario();
+        model.addAttribute("usuarioAdmins", usuario.getRol().toString());
         model.addAttribute("pedidos", pedidoServiceImpl.findByUsuario_Id(idUsuario));
         model.addAttribute("notificaciones",notificacionServiceImpl.findAllByUsuario_IdUsuario(idUsuario));
         model.addAttribute("pedidosDetalle", pedidoServiceImpl.obtenerDetallePedidosPorId(idUsuario));
@@ -100,7 +101,6 @@ public class PedidoController {
             for (int i = 0; i < productos.size(); i++) {
                 Producto pro = productos.get(i);
                 int cantidad = cantidades.get(i); // Ahora sí accedes al índice correcto
-
                 DetallePedido detallePedido = new DetallePedido();
                 detallePedido.setPedido(pedidoGuardado);
                 detallePedido.setProducto(pro);

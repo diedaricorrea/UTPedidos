@@ -14,8 +14,21 @@ public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_venta;
-    private int id_detalle_venta;
-    private int id_user;
+
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name = "detalleventa_id_venta", referencedColumnName = "id_venta"),
+            @JoinColumn(name = "detalleventa_id_producto", referencedColumnName = "id_producto")
+    })
+    private DetalleVenta detalleventa;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario")
+    private Usuario usuario;
+
+    private String tipoPago;
+
+    private double total;
+
     private String fecha;
-    private String estado;
 }

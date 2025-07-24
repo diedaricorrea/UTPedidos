@@ -30,6 +30,7 @@ public class CarritoController {
     public String verCarrito(@AuthenticationPrincipal UsuarioDetails userDetails, Model model) {
         Usuario usuario = userDetails.getUsuario();
         int idUsuario = usuario.getIdUsuario();
+        model.addAttribute("usuarioAdmins", usuario.getRol().toString());
         model.addAttribute("notificaciones",notificacionServiceImpl.findAllByUsuario_IdUsuario(idUsuario));
         model.addAttribute("carrito", carritoServiceImpl.obtenerCarritosPorUsuario(idUsuario));
         return "usuario/carrito";
