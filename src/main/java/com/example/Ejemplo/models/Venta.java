@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -16,19 +19,18 @@ public class Venta {
     private int id_venta;
 
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "detalleventa_id_venta", referencedColumnName = "id_venta"),
-            @JoinColumn(name = "detalleventa_id_producto", referencedColumnName = "id_producto")
-    })
-    private DetalleVenta detalleventa;
-
-    @ManyToOne
     @JoinColumn(name = "id_usuario")
     private Usuario usuario;
 
-    private String tipoPago;
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<DetalleVenta> detalleVentas;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_pago", nullable = false)
+    private TipoPago tipoPago;
+
+    @Column(name = "total")
     private double total;
 
-    private String fecha;
+    private LocalDateTime fecha;
 }

@@ -12,4 +12,9 @@ public class VentasController {
         return "administrador/ventasGraf";
     }
 
+    @GetMapping("/ventas2")
+    public String ventas12(Model model) {
+        return "administrador/ventas";
+    }
+
 }

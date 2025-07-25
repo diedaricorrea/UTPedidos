@@ -49,4 +49,7 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario")
     private List<Pedido> pedidos;
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Venta> ventas;
 }

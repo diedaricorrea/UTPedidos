@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{/fragments/layoutAdmin :: layoutA(~{::title}, 'pendientes' ,~{::main}, ~{::script})}">
 
-<header>
+<head>
     <title>Pedidos Pendientes</title>
-</header>
+</head>
 
 <body>
     <main class="container main-content text-center">
         <div>
             <h1>Pedidos Recibidos</h1>
+            <div class="temp">
+                <p>Tiempo para recargar: <span class="timer">00:30</span></p>
+                <a th:href="@{/pedidos/admin}"  class="fs-4 btn btn-primary"><i class="fa-solid fa-arrows-rotate"></i></a>
+            </div>
             <table class="table table-responsive">
                 <thead class="text-center">
                     <tr>
@@ -43,7 +47,32 @@
             </table>
         </div>
     </main>
-    <script></script>
+    <script>
+        // Obtener el elemento del temporizador
+        const timerElement = document.querySelector('.timer');
+
+        // Tiempo en segundos (30 minutos)
+        let totalSeconds = 30;
+
+        function updateTimer() {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+
+            // Mostrar el tiempo en formato mm:ss
+            timerElement.textContent =
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            // Cuando el tiempo llega a 0, recargar la página
+            if (totalSeconds <= 0) {
+                location.reload(); // Recargar la página
+            } else {
+                totalSeconds--; // Reducir 1 segundo
+            }
+        }
+
+        // Llamar a updateTimer cada segundo
+        setInterval(updateTimer, 1000);
+    </script>
 </body>
 
 </html>
