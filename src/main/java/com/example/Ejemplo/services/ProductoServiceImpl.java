@@ -165,4 +165,7 @@ public class ProductoServiceImpl implements ProductoService {
         productoRepository.deleteById(id);
     }
 
+    public List<Producto> obtenerProductosIgnore(String nombre){
+        return productoRepository.findByNombreContainingIgnoreCase(nombre.toLowerCase());
+    }
 }

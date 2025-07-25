@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Integer> {
@@ -28,6 +29,8 @@ public interface ProductoRepository extends JpaRepository<Producto, Integer> {
     @Query(" SELECT p FROM Producto p WHERE p.stock > 0 AND p.categoria.nombre = :categoria AND LOWER(p.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))")
     Page<Producto> findByCategoriaNombreAndNombreContainingIgnoreCase(String categoria, String nombre, Pageable pageable);
 
+    @Query("SELECT p FROM Producto p WHERE LOWER(p.nombre) LIKE concat('%',:nombre,'%')")
+    List<Producto> findByNombreContainingIgnoreCase(@Param("nombre") String nombre);
 
     @Modifying
     @Transactional

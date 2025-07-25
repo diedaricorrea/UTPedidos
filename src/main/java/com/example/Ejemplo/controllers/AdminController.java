@@ -56,6 +56,37 @@ public class AdminController {
         return "administrador/productos";
     }
 
+    @GetMapping("/edicion")
+    public String edicion(Model model, @AuthenticationPrincipal UsuarioDetails userDetails) {
+        Usuario usuario = userDetails.getUsuario();
+        model.addAttribute("usuarioAdmins", usuario.getRol().toString());
+        model.addAttribute("productos", productoServiceImpl.findAll());
+        return  "administrador/accionesProducto";
+    }
+
+    @GetMapping("/search")
+    public String buscar(Model model,@RequestParam("nombre") String nombre) {
+        model.addAttribute("productos", productoServiceImpl.obtenerProductosIgnore(nombre));
+        return  "administrador/accionesProducto";
+    }
+
+    @PostMapping("/actualizar")
+    public String actualizar(RedirectAttributes redirectAttribute,
+                             @RequestParam("idProducto") Integer idProducto,
+                             @RequestParam("nombre") String nombre,
+                             @RequestParam("precio") double precio,
+                             @RequestParam("descripcion") String descripcion,
+                             @RequestParam("stock") Integer stock) {
+        Producto producto = productoServiceImpl.findById(idProducto);
+        producto.setNombre(nombre);
+        producto.setPrecio(precio);
+        producto.setDescripcion(descripcion);
+        producto.setStock(producto.getStock() + stock);
+        productoServiceImpl.saveProduct(producto);
+        redirectAttribute.addFlashAttribute("message","El producto se actualizo correctamente");
+        return  "redirect:/productos/edicion";
+    }
+
     @PostMapping("/subirproductos")
     public String guardarProducto(
             @RequestParam("nombre") String nombre,

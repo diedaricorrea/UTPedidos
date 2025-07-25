@@ -15,6 +15,10 @@
                         class="bi bi-tag"></i>Productos</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == 'edicion' ? 'active' : ''}" th:href="@{/productos/edicion}"><i
+                        class="bi bi-tag"></i>Edicion de productos</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == 'pendientes' ? 'active' : ''}" th:href="@{/pedidos/admin}"><i
                         class="fas fa-list me-2"></i>Pedidos</a>
             </li>
@@ -29,6 +33,14 @@
             <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == 'menuDia' ? 'active' : ''}" th:href="@{/menuDia/}"><i
                         class="bi bi-list-ul"></i>Menu del dia</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == 'ventas' ? 'active' : ''}" th:href="@{/menuDia/}"><i
+                        class="bi bi-list-ul"></i>Ventas</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == 'board' ? 'active' : ''}" th:href="@{/ventas}"><i
+                        class="bi bi-list-ul"></i>DashBoard</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == '' ? '' : ''}" th:href="@{/login/medio}"><i
