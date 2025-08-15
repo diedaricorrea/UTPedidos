@@ -52,6 +52,7 @@ public class ProductoController {
         Usuario usuario = userDetails.getUsuario();
 
         model.addAttribute("usuarioAdmins", usuario.getRol().toString());
+        model.addAttribute("usuarioNombre", usuario.getNombre());
 
         int pageSize = 6;
         Pageable pageable = PageRequest.of(page, pageSize);

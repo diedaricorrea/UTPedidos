@@ -2,51 +2,24 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layoutAdmin :: layoutA(~{::title}, 'ventasG', ~{::main}, ~{::script})}">
 <head>
   <title>Ventas por Mes</title>
-  <style>
-    body {
-      padding: 20px;
-    }
-    .bar-chart {
-      display: flex;
-      align-items: flex-end;
-      gap: 15px;
-      height: 300px;
-      border-left: 2px solid #333;
-      border-bottom: 2px solid #333;
-      padding: 10px;
-      margin-bottom: 40px;
-    }
-    .bar {
-      width: 40px;
-      background-color: #0d6efd;
-      text-align: center;
-      color: #fff;
-      font-size: 12px;
-      transition: height 0.3s;
-    }
-    .bar-label {
-      writing-mode: vertical-lr;
-      transform: rotate(180deg);
-      margin-top: 5px;
-    }
-    .bar-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-  </style>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<main class="container main-content">
-  <!-- Gráfico -->
+<main class="container mt-5 main-content">
   <h1 class="mb-4">Resumen de Ventas por Mes</h1>
-  <div class="bar-chart" id="graficoVentas"></div>
 
   <!-- Filtro -->
-  <div class="row mb-3">
+  <div class="row mb-4">
     <div class="col-md-4">
       <label for="fechaBusqueda" class="form-label">Filtrar por mes:</label>
       <input type="month" id="fechaBusqueda" class="form-control" />
+    </div>
+  </div>
+
+  <!-- Gráfico -->
+  <div class="card mb-5">
+    <div class="card-body">
+      <canvas id="graficoVentasCanvas" height="100"></canvas>
     </div>
   </div>
 
@@ -76,10 +49,14 @@
   </div>
 </main>
 
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   const inputMes = document.getElementById("fechaBusqueda");
   const tabla = document.querySelector("#tablaVentas tbody");
-  const grafico = document.getElementById("graficoVentas");
+  const ctx = document.getElementById("graficoVentasCanvas").getContext("2d");
+
+  let chart; // gráfico global
 
   inputMes.addEventListener("input", function () {
     const mesFiltro = this.value;
@@ -102,38 +79,47 @@
       if (fila.style.display === "none") return;
 
       const fecha = fila.children[3].textContent;
-      const mes = fecha.substring(0, 7); // YYYY-MM
+      const mes = fecha.substring(0, 7);
       const totalStr = fila.children[4].textContent.replace("$", "");
       const total = parseFloat(totalStr) || 0;
 
       ventasPorMes[mes] = (ventasPorMes[mes] || 0) + total;
     });
 
-    // Limpiar gráfico
-    grafico.innerHTML = "";
+    const labels = Object.keys(ventasPorMes).sort();
+    const data = labels.map(mes => ventasPorMes[mes]);
 
-    // Calcular máximo para escalar
-    const maxTotal = Math.max(...Object.values(ventasPorMes), 1);
+    // Si ya existe un gráfico, lo destruimos
+    if (chart) chart.destroy();
 
-    Object.keys(ventasPorMes)
-            .sort()
-            .forEach((mes) => {
-              const height = (ventasPorMes[mes] / maxTotal) * 100;
-
-              const bar = document.createElement("div");
-              bar.className = "bar-container";
-              bar.innerHTML = `
-            <div class="bar" style="height: ${height}%;"><small>$${ventasPorMes[mes].toFixed(2)}</small></div>
-            <div class="bar-label">${mes}</div>
-          `;
-              grafico.appendChild(bar);
-            });
+    chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Total ventas ($)',
+          data: data,
+          backgroundColor: 'rgba(13, 110, 253, 0.6)',
+          borderColor: 'rgba(13, 110, 253, 1)',
+          borderWidth: 1,
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: value => `$${value}`
+            }
+          }
+        }
+      }
+    });
   }
 
   window.addEventListener("load", actualizarGrafico);
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
