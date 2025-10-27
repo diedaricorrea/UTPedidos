@@ -15,8 +15,12 @@
                         class="bi bi-tag"></i>Productos</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" th:classappend="${activeTab == 'categorias' ? 'active' : ''}" th:href="@{/categorias}"><i
+                        class="bi bi-folder"></i>Categorías</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == 'edicion' ? 'active' : ''}" th:href="@{/productos/edicion}"><i
-                        class="bi bi-tag"></i>Edicion de productos</a>
+                        class="bi bi-pencil-square"></i>Edición de productos</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" th:classappend="${activeTab == 'pendientes' ? 'active' : ''}" th:href="@{/pedidos/admin}"><i

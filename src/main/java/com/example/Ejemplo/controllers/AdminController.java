@@ -98,24 +98,68 @@ public class AdminController {
             @RequestParam(value = "id", required = false) Integer id,
             @RequestParam("stock") Integer stock,
             RedirectAttributes redirectAttributes) {
-        Producto producto = new Producto();
-        if (id != null) {
-            producto.setIdProducto(id);
+        
+        try {
+            // Validaciones básicas
+            if (nombre == null || nombre.trim().isEmpty()) {
+                redirectAttributes.addFlashAttribute("mensaje", "El nombre del producto es obligatorio");
+                redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
+                return "redirect:/productos";
+            }
+            
+            if (categoriaNombre == null || categoriaNombre.trim().isEmpty()) {
+                redirectAttributes.addFlashAttribute("mensaje", "Debes seleccionar o crear una categoría");
+                redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
+                return "redirect:/productos";
+            }
+            
+            if (precio <= 0) {
+                redirectAttributes.addFlashAttribute("mensaje", "El precio debe ser mayor a 0");
+                redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
+                return "redirect:/productos";
+            }
+            
+            if (stock < 0) {
+                redirectAttributes.addFlashAttribute("mensaje", "El stock no puede ser negativo");
+                redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
+                return "redirect:/productos";
+            }
+            
+            // Crear o actualizar el producto
+            Producto producto = new Producto();
+            if (id != null) {
+                producto.setIdProducto(id);
+            }
+            
+            producto.setNombre(nombre.trim());
+            producto.setPrecio(precio);
+            producto.setDescripcion(descripcion.trim());
+            producto.setEstado(disponible);
+            producto.setStock(stock);
+            
+            // Buscar o crear la categoría
+            Categoria categoria = categoriaRepository.findByNombre(categoriaNombre.trim());
+            if (categoria == null) {
+                categoria = new Categoria();
+                categoria.setNombre(categoriaNombre.trim());
+                categoria = categoriaRepository.save(categoria);
+                System.out.println("Nueva categoría creada: " + categoriaNombre);
+            }
+            producto.setCategoria(categoria);
+            
+            // Guardar el producto
+            productoServiceImpl.save(producto, imagen);
+            
+            String mensaje = id != null ? "Producto actualizado correctamente" : "Producto guardado correctamente";
+            redirectAttributes.addFlashAttribute("mensaje", mensaje);
+            redirectAttributes.addFlashAttribute("tipoMensaje", "success");
+            
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("mensaje", "Error al guardar el producto: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
+            e.printStackTrace();
         }
-        producto.setNombre(nombre);
-        producto.setPrecio(precio);
-        producto.setDescripcion(descripcion);
-        Categoria categoria = categoriaRepository.findByNombre(categoriaNombre);
-        if (categoria == null) {
-            categoria = new Categoria();
-            categoria.setNombre(categoriaNombre);
-            categoria = categoriaRepository.save(categoria);
-        }
-        producto.setCategoria(categoria);
-        producto.setEstado(disponible);
-        producto.setStock(stock);
-        productoServiceImpl.save(producto, imagen);
-        redirectAttributes.addFlashAttribute("mensaje", "Producto guardado correctamente");
+        
         return "redirect:/productos";
     }
 

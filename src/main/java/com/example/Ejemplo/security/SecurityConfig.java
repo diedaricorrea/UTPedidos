@@ -23,7 +23,7 @@ public class SecurityConfig {
                             "/pedidos","/pedidos/pedir","/notificacion").hasAnyRole("ADMINISTRADOR", "USUARIO","TRABAJADOR")
 
                     .requestMatchers("/productos/**", "/api/estadisticas/**",
-                            "/notificacion/notificar","/notificacion", "/pedidos","/pedidos/**",
+                            "/categorias/**","/notificacion/notificar","/notificacion", "/pedidos","/pedidos/**",
                             "/usuarios/**","/usuarios/save","/usuarios/panelAdmin",
                             "/menuDia/**","/login/**").hasAnyRole("ADMINISTRADOR","TRABAJADOR")
                     .anyRequest().authenticated()

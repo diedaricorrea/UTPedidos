@@ -23,10 +23,33 @@
         </div>
         <div class="mb-3">
             <label for="categoria" class="form-label">Categoría</label>
-            <select class="form-select" id="categoria" name="categoria" required>
-                <option value="">Seleccionar categoría</option>
-                <option th:each="cat : ${categorias}" th:value="${cat.nombre}" th:text="${cat.nombre}" th:selected="${producto.categoria != null && producto.categoria.nombre == cat.nombre}"></option>
-            </select>
+            <div class="input-group">
+                <select class="form-select" id="categoria" name="categoria" required>
+                    <option value="">Seleccionar categoría</option>
+                    <option th:each="cat : ${categorias}" th:value="${cat.nombre}" th:text="${cat.nombre}" th:selected="${producto.categoria != null && producto.categoria.nombre == cat.nombre}"></option>
+                </select>
+                <button class="btn btn-outline-secondary" type="button" id="btnNuevaCategoria" title="Agregar nueva categoría">
+                    <i class="bi bi-plus-circle"></i>
+                </button>
+                <a th:href="@{/categorias}" class="btn btn-outline-primary" title="Gestionar categorías" target="_blank">
+                    <i class="bi bi-gear"></i>
+                </a>
+            </div>
+            <div class="form-text">Selecciona una categoría existente o agrega una nueva</div>
+            
+            <!-- Campo para nueva categoría (oculto por defecto) -->
+            <div id="divNuevaCategoria" class="mt-2" style="display: none;">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="nuevaCategoria" placeholder="Nombre de la nueva categoría" maxlength="100">
+                    <button class="btn btn-success" type="button" id="btnGuardarCategoria">
+                        <i class="bi bi-check-circle me-1"></i>Guardar
+                    </button>
+                    <button class="btn btn-secondary" type="button" id="btnCancelarCategoria">
+                        <i class="bi bi-x-circle"></i>
+                    </button>
+                </div>
+                <small class="text-muted">La categoría se agregará automáticamente al select</small>
+            </div>
         </div>
         <div class="mb-3">
             <label for="stock" class="form-label">Stock</label>
