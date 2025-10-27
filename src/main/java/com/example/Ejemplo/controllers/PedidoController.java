@@ -1,8 +1,8 @@
 package com.example.Ejemplo.controllers;
 
+import com.example.Ejemplo.config.UsuarioDetails;
 import com.example.Ejemplo.models.*;
-import com.example.Ejemplo.security.UsuarioDetails;
-import com.example.Ejemplo.services.*;
+import com.example.Ejemplo.services.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -113,7 +113,7 @@ public class PedidoController {
                 );
                 detallePedido.setDetallepedidoId(detalleId);
 
-                productoServiceImpl.disminuirStock(cantidad, pro.getIdProducto());
+                productoServiceImpl.reducirStock(pro.getIdProducto(), cantidad);
                 detallePedidoServiceImpl.saveDetallePedido(detallePedido);
             }
 

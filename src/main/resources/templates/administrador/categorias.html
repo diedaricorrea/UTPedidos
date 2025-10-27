@@ -83,9 +83,14 @@
                                    class="form-control" 
                                    id="nombre" 
                                    th:field="*{nombre}"
+                                   th:class="${#fields.hasErrors('nombre')} ? 'form-control is-invalid' : 'form-control'"
                                    placeholder="Ej: Bebidas Calientes" 
                                    required 
+                                   minlength="2"
                                    maxlength="100">
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">
+                                Error en el nombre
+                            </div>
                             <div class="form-text">Ingresa un nombre descriptivo para la categoría</div>
                         </div>
 
@@ -148,7 +153,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <span class="badge-productos" 
-                                                      th:text="${cat.productos != null ? #lists.size(cat.productos) : 0}">
+                                                      th:text="${cat.cantidadProductos != null ? cat.cantidadProductos : 0}">
                                                     0
                                                 </span>
                                             </td>
@@ -162,13 +167,13 @@
                                                    class="btn btn-sm btn-danger btn-action"
                                                    title="Eliminar"
                                                    th:attr="onclick='return confirm(\'¿Estás seguro de eliminar esta categoría?\')'"
-                                                   th:if="${cat.productos == null || #lists.isEmpty(cat.productos)}">
+                                                   th:if="${cat.cantidadProductos == null || cat.cantidadProductos == 0}">
                                                     <i class="bi bi-trash"></i>
                                                 </a>
                                                 <button class="btn btn-sm btn-secondary btn-action" 
                                                         title="No se puede eliminar (tiene productos asociados)"
                                                         disabled
-                                                        th:if="${cat.productos != null && !#lists.isEmpty(cat.productos)}">
+                                                        th:if="${cat.cantidadProductos != null && cat.cantidadProductos > 0}">
                                                     <i class="bi bi-lock"></i>
                                                 </button>
                                             </td>
@@ -194,7 +199,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h3 class="text-success" 
-                                    th:text="${#lists.isEmpty(categorias) ? 0 : #aggregates.sum(categorias.![productos != null ? #lists.size(productos) : 0])}">
+                                    th:text="${#lists.isEmpty(categorias) ? 0 : #aggregates.sum(categorias.![cantidadProductos != null ? cantidadProductos : 0])}">
                                     0
                                 </h3>
                                 <p class="mb-0 text-muted">Total de Productos</p>

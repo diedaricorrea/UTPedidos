@@ -1,23 +1,20 @@
-package com.example.Ejemplo.services;
+package com.example.Ejemplo.services.impl;
 
 import com.example.Ejemplo.models.Rol;
 import com.example.Ejemplo.models.Usuario;
 import com.example.Ejemplo.repository.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.Ejemplo.services.UsuarioService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
-
-    @Autowired
-    public UsuarioServiceImpl(UsuarioRepository usuarioRepository) {
-        this.usuarioRepository = usuarioRepository;
-    }
 
     @Override
     public List<Usuario> findAllUsuarios() {

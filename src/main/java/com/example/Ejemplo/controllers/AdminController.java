@@ -1,190 +1,274 @@
 package com.example.Ejemplo.controllers;
 
-import java.util.List;
-
+import com.example.Ejemplo.config.UsuarioDetails;
+import com.example.Ejemplo.dto.*;
 import com.example.Ejemplo.models.Usuario;
-import com.example.Ejemplo.security.UsuarioDetails;
-import com.example.Ejemplo.services.ProductoServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.Ejemplo.services.CategoriaService;
+import com.example.Ejemplo.services.ProductoService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.Ejemplo.models.Categoria;
-import com.example.Ejemplo.models.Producto;
-import com.example.Ejemplo.repository.CategoriaRepository;
+import java.util.List;
 
+/**
+ * Controlador para gestión de productos (Administración)
+ * REFACTORIZADO: Usa DTOs en lugar de Entities
+ */
 @Controller
 @RequestMapping("/productos")
+@RequiredArgsConstructor
+@Slf4j
 public class AdminController {
 
-    private final ProductoServiceImpl productoServiceImpl;
+    private final ProductoService productoService;
+    private final CategoriaService categoriaService;
 
-    private final CategoriaRepository categoriaRepository;
-
-
-    @Autowired
-    public AdminController(ProductoServiceImpl productoServiceImpl, CategoriaRepository categoriaRepository) {
-        this.productoServiceImpl = productoServiceImpl;
-        this.categoriaRepository = categoriaRepository;
-    }
-
+    /**
+     * Panel principal de administración de productos
+     */
     @GetMapping
     public String panelAdmin(Model model, @AuthenticationPrincipal UsuarioDetails userDetails) {
         Usuario usuario = userDetails.getUsuario();
 
-        List<Producto> productos = productoServiceImpl.findAll();
-        if (productos.isEmpty()) {
-            System.out.println("No se encontraron productos en la base de datos.");
-        } else {
-            System.out.println("Productos encontrados: " + productos.size());
-            for (Producto p : productos) {
-                System.out.println("Producto: " + p.getNombre() + ", Categoria: " + (p.getCategoria() != null ? p.getCategoria().getNombre() : "null"));
-            }
-        }
+        List<ProductoResponseDTO> productos = productoService.findAllWithDetails();
+        List<CategoriaDTO> categorias = categoriaService.findAll();
+        
+        log.debug("Panel de productos. Total productos: {}, Total categorías: {}", 
+                productos.size(), categorias.size());
+
         model.addAttribute("usuarioAdmins", usuario.getRol().toString());
         model.addAttribute("productos", productos);
-        model.addAttribute("producto", new Producto());
-        model.addAttribute("categorias",categoriaRepository.findAll());
+        model.addAttribute("producto", new ProductoCreateDTO());
+        model.addAttribute("categorias", categorias);
+        
         return "administrador/productos";
     }
 
+    /**
+     * Panel de edición de productos
+     */
     @GetMapping("/edicion")
     public String edicion(Model model, @AuthenticationPrincipal UsuarioDetails userDetails) {
         Usuario usuario = userDetails.getUsuario();
+        List<ProductoResponseDTO> productos = productoService.findAllWithDetails();
+        
         model.addAttribute("usuarioAdmins", usuario.getRol().toString());
-        model.addAttribute("productos", productoServiceImpl.findAll());
-        return  "administrador/accionesProducto";
+        model.addAttribute("productos", productos);
+        
+        log.debug("Panel de edición. Total productos: {}", productos.size());
+        return "administrador/accionesProducto";
     }
 
+    /**
+     * Búsqueda de productos por nombre
+     */
     @GetMapping("/search")
-    public String buscar(Model model,@RequestParam("nombre") String nombre) {
-        model.addAttribute("productos", productoServiceImpl.obtenerProductosIgnore(nombre));
-        return  "administrador/accionesProducto";
+    public String buscar(Model model, @RequestParam("nombre") String nombre) {
+        List<ProductoDTO> productos = productoService.findByNombreContaining(nombre);
+        model.addAttribute("productos", productos);
+        
+        log.debug("Búsqueda de productos con nombre: '{}'. Resultados: {}", nombre, productos.size());
+        return "administrador/accionesProducto";
     }
 
+    /**
+     * Actualizar stock de un producto
+     */
     @PostMapping("/actualizar")
     public String actualizar(RedirectAttributes redirectAttribute,
                              @RequestParam("idProducto") Integer idProducto,
                              @RequestParam("nombre") String nombre,
-                             @RequestParam("precio") double precio,
+                             @RequestParam("precio") Double precio,
                              @RequestParam("descripcion") String descripcion,
-                             @RequestParam("stock") Integer stock) {
-        Producto producto = productoServiceImpl.findById(idProducto);
-        producto.setNombre(nombre);
-        producto.setPrecio(precio);
-        producto.setDescripcion(descripcion);
-        producto.setStock(producto.getStock() + stock);
-        productoServiceImpl.saveProduct(producto);
-        redirectAttribute.addFlashAttribute("message","El producto se actualizo correctamente");
-        return  "redirect:/productos/edicion";
+                             @RequestParam("stock") Integer stockAAgregar) {
+        try {
+            ProductoDTO producto = productoService.findById(idProducto)
+                    .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
+            
+            // Crear DTO de actualización
+            ProductoCreateDTO updateDTO = ProductoCreateDTO.builder()
+                    .idProducto(idProducto)
+                    .nombre(nombre)
+                    .precio(precio)
+                    .descripcion(descripcion)
+                    .stock(producto.getStock() + stockAAgregar) // Agregar al stock existente
+                    .estado(producto.getEstado())
+                    .imagenUrl(producto.getImagenUrl())
+                    .idCategoria(producto.getIdCategoria())
+                    .build();
+            
+            productoService.update(idProducto, updateDTO, null);
+            
+            log.info("Producto actualizado: ID={}, Stock agregado={}", idProducto, stockAAgregar);
+            redirectAttribute.addFlashAttribute("mensaje", "El producto se actualizó correctamente");
+            redirectAttribute.addFlashAttribute("tipoMensaje", "success");
+            
+        } catch (Exception e) {
+            log.error("Error al actualizar producto", e);
+            redirectAttribute.addFlashAttribute("mensaje", "Error al actualizar: " + e.getMessage());
+            redirectAttribute.addFlashAttribute("tipoMensaje", "danger");
+        }
+        
+        return "redirect:/productos/edicion";
     }
 
+    /**
+     * Guardar o actualizar producto completo
+     */
     @PostMapping("/subirproductos")
     public String guardarProducto(
             @RequestParam("nombre") String nombre,
-            @RequestParam("precio") double precio,
+            @RequestParam("precio") Double precio,
             @RequestParam("descripcion") String descripcion,
             @RequestParam("categoria") String categoriaNombre,
             @RequestParam("imagen") MultipartFile imagen,
-            @RequestParam(value = "disponible", defaultValue = "false") boolean disponible,
+            @RequestParam(value = "disponible", defaultValue = "false") Boolean disponible,
             @RequestParam(value = "id", required = false) Integer id,
             @RequestParam("stock") Integer stock,
             RedirectAttributes redirectAttributes) {
         
         try {
+            log.info("Guardando producto. Nombre: {}, ID: {}", nombre, id);
+            
             // Validaciones básicas
             if (nombre == null || nombre.trim().isEmpty()) {
-                redirectAttributes.addFlashAttribute("mensaje", "El nombre del producto es obligatorio");
-                redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
-                return "redirect:/productos";
+                throw new IllegalArgumentException("El nombre del producto es obligatorio");
             }
             
             if (categoriaNombre == null || categoriaNombre.trim().isEmpty()) {
-                redirectAttributes.addFlashAttribute("mensaje", "Debes seleccionar o crear una categoría");
-                redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
-                return "redirect:/productos";
+                throw new IllegalArgumentException("Debes seleccionar o crear una categoría");
             }
             
-            if (precio <= 0) {
-                redirectAttributes.addFlashAttribute("mensaje", "El precio debe ser mayor a 0");
-                redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
-                return "redirect:/productos";
+            if (precio == null || precio <= 0) {
+                throw new IllegalArgumentException("El precio debe ser mayor a 0");
             }
             
-            if (stock < 0) {
-                redirectAttributes.addFlashAttribute("mensaje", "El stock no puede ser negativo");
-                redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
-                return "redirect:/productos";
+            if (stock == null || stock < 0) {
+                throw new IllegalArgumentException("El stock no puede ser negativo");
             }
             
-            // Crear o actualizar el producto
-            Producto producto = new Producto();
-            if (id != null) {
-                producto.setIdProducto(id);
+            // Obtener o crear categoría
+            CategoriaDTO categoria = categoriaService.findByNombre(categoriaNombre.trim())
+                    .orElseGet(() -> {
+                        CategoriaCreateDTO newCat = CategoriaCreateDTO.builder()
+                                .nombre(categoriaNombre.trim())
+                                .build();
+                        return categoriaService.create(newCat);
+                    });
+            
+            // Crear DTO del producto
+            ProductoCreateDTO productoDTO = ProductoCreateDTO.builder()
+                    .idProducto(id)
+                    .nombre(nombre.trim())
+                    .precio(precio)
+                    .descripcion(descripcion.trim())
+                    .stock(stock)
+                    .estado(disponible)
+                    .idCategoria(categoria.getIdCategoria())
+                    .nombreCategoria(categoria.getNombre())
+                    .build();
+            
+            // Guardar o actualizar
+            if (id == null) {
+                productoService.create(productoDTO, imagen);
+                log.info("Producto creado exitosamente");
+                redirectAttributes.addFlashAttribute("mensaje", "Producto guardado correctamente");
+            } else {
+                productoService.update(id, productoDTO, imagen);
+                log.info("Producto actualizado exitosamente");
+                redirectAttributes.addFlashAttribute("mensaje", "Producto actualizado correctamente");
             }
             
-            producto.setNombre(nombre.trim());
-            producto.setPrecio(precio);
-            producto.setDescripcion(descripcion.trim());
-            producto.setEstado(disponible);
-            producto.setStock(stock);
-            
-            // Buscar o crear la categoría
-            Categoria categoria = categoriaRepository.findByNombre(categoriaNombre.trim());
-            if (categoria == null) {
-                categoria = new Categoria();
-                categoria.setNombre(categoriaNombre.trim());
-                categoria = categoriaRepository.save(categoria);
-                System.out.println("Nueva categoría creada: " + categoriaNombre);
-            }
-            producto.setCategoria(categoria);
-            
-            // Guardar el producto
-            productoServiceImpl.save(producto, imagen);
-            
-            String mensaje = id != null ? "Producto actualizado correctamente" : "Producto guardado correctamente";
-            redirectAttributes.addFlashAttribute("mensaje", mensaje);
             redirectAttributes.addFlashAttribute("tipoMensaje", "success");
             
+        } catch (IllegalArgumentException e) {
+            log.warn("Error de validación al guardar producto", e);
+            redirectAttributes.addFlashAttribute("mensaje", e.getMessage());
+            redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
         } catch (Exception e) {
+            log.error("Error inesperado al guardar producto", e);
             redirectAttributes.addFlashAttribute("mensaje", "Error al guardar el producto: " + e.getMessage());
             redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
-            e.printStackTrace();
         }
         
         return "redirect:/productos";
     }
 
+    /**
+     * Cargar producto para edición
+     */
     @GetMapping("/{id}")
-    public String editarProducto(@PathVariable Integer id, Model model) {
-        Producto producto = productoServiceImpl.findById(id);
-        if (producto != null) {
-            model.addAttribute("producto", producto);
-            model.addAttribute("productos", productoServiceImpl.findRecent());
-            List<Categoria> categorias = categoriaRepository.findAll();
+    public String editarProducto(@PathVariable Integer id,
+                                 Model model,
+                                 @AuthenticationPrincipal UsuarioDetails userDetails,
+                                 RedirectAttributes redirectAttributes) {
+        try {
+            ProductoResponseDTO producto = productoService.findByIdWithDetails(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
+            
+            List<ProductoResponseDTO> productosRecientes = productoService.findAllWithDetails()
+                    .stream()
+                    .limit(5)
+                    .toList();
+            
+            List<CategoriaDTO> categorias = categoriaService.findAll();
+            Usuario usuario = userDetails.getUsuario();
+            
+            // Convertir a CreateDTO para el formulario
+            ProductoCreateDTO productoParaEditar = ProductoCreateDTO.builder()
+                    .idProducto(producto.getIdProducto())
+                    .nombre(producto.getNombre())
+                    .precio(producto.getPrecio())
+                    .descripcion(producto.getDescripcion())
+                    .stock(producto.getStock())
+                    .estado(producto.getEstado())
+                    .imagenUrl(producto.getImagenUrl())
+                    .idCategoria(producto.getCategoria().getIdCategoria())
+                    .nombreCategoria(producto.getCategoria().getNombre())
+                    .build();
+            
+            model.addAttribute("usuarioAdmins", usuario.getRol().toString());
+            model.addAttribute("producto", productoParaEditar);
+            model.addAttribute("productos", productosRecientes);
             model.addAttribute("categorias", categorias);
+            
+            log.debug("Cargando producto para editar: ID={}", id);
             return "administrador/productos";
+            
+        } catch (Exception e) {
+            log.error("Error al cargar producto para editar: ID={}", id, e);
+            redirectAttributes.addFlashAttribute("mensaje", e.getMessage());
+            redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
+            return "redirect:/productos";
         }
-        return "redirect:/productos";
     }
 
+    /**
+     * Eliminar (desactivar) producto
+     */
     @GetMapping("/eliminar/{id}")
     public String eliminarProducto(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
-        Producto producto = productoServiceImpl.findById(id);
-        if (producto != null) {
-            producto.setEstado(false);
-            productoServiceImpl.save(producto, null); // O un método específico para actualizar solo el estado
+        try {
+            productoService.deleteById(id);
+            
+            log.info("Producto desactivado: ID={}", id);
             redirectAttributes.addFlashAttribute("mensaje", "Producto marcado como no disponible");
+            redirectAttributes.addFlashAttribute("tipoMensaje", "success");
+            
+        } catch (Exception e) {
+            log.error("Error al eliminar producto: ID={}", id, e);
+            redirectAttributes.addFlashAttribute("mensaje", "Error al eliminar: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("tipoMensaje", "danger");
         }
+        
         return "redirect:/productos";
     }
 }
-

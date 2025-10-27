@@ -1,6 +1,6 @@
 package com.example.Ejemplo.controllers;
 
-import com.example.Ejemplo.services.UsuarioServiceImpl;
+import com.example.Ejemplo.services.impl.UsuarioServiceImpl;
 import com.example.Ejemplo.models.Usuario;
 import com.example.Ejemplo.models.Rol;
 import org.springframework.beans.factory.annotation.Autowired;

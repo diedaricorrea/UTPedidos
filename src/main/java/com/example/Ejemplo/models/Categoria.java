@@ -1,17 +1,26 @@
 package com.example.Ejemplo.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Entidad Categoria - Representa las categorías de productos del sistema
+ * Relación: Una categoría puede tener muchos productos (1:N)
+ */
 @Entity
-@Data
+@Table(name = "categorias")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "categorias")
+@Builder
 public class Categoria {
 
     @Id
@@ -19,10 +28,28 @@ public class Categoria {
     @Column(name = "id_categoria")
     private Integer idCategoria;
 
-    @OneToMany(mappedBy = "categoria")
-    private List<Producto> productos;
-
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true, length = 100)
     private String nombre;
 
+    /**
+     * Relación bidireccional con Producto
+     * NOTA: Para evitar lazy loading issues, esta lista NO se expone directamente en DTOs
+     * Se usa fetch = LAZY para optimizar consultas
+     */
+    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @Builder.Default
+    private List<Producto> productos = new ArrayList<>();
+    
+    // Constructor de conveniencia
+    public Categoria(String nombre) {
+        this.nombre = nombre;
+        this.productos = new ArrayList<>();
+    }
+    
+    /**
+     * Método helper para obtener la cantidad de productos sin cargar toda la lista
+     */
+    public int getCantidadProductos() {
+        return productos != null ? productos.size() : 0;
+    }
 }

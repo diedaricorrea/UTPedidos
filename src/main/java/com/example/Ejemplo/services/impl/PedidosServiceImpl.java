@@ -1,8 +1,9 @@
-package com.example.Ejemplo.services;
+package com.example.Ejemplo.services.impl;
 
 import com.example.Ejemplo.models.*;
 import com.example.Ejemplo.repository.PedidosRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.Ejemplo.services.PedidosService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
@@ -18,7 +19,6 @@ public class PedidosServiceImpl implements PedidosService {
 
     private final PedidosRepository pedidosRepository;
 
-    @Autowired
     public PedidosServiceImpl(PedidosRepository pedidosRepository) {
         this.pedidosRepository = pedidosRepository;
     }

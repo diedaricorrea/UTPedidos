@@ -1,20 +1,18 @@
-package com.example.Ejemplo.services;
+package com.example.Ejemplo.services.impl;
 
 import com.example.Ejemplo.models.MenuDia;
 import com.example.Ejemplo.repository.MenuDiaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.Ejemplo.services.MenuDiaService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class MenuDiaServiceImpl implements MenuDiaService {
 
     private final MenuDiaRepository menuDia;
-    @Autowired
-    public MenuDiaServiceImpl(MenuDiaRepository menuDia) {
-        this.menuDia = menuDia;
-    }
 
     @Override
     public List<MenuDia> findAllMenuDias() {

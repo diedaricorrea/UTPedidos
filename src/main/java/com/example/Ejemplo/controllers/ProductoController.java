@@ -2,15 +2,15 @@ package com.example.Ejemplo.controllers;
 
 import java.util.List;
 
+import com.example.Ejemplo.config.UsuarioDetails;
 import com.example.Ejemplo.models.Carrito;
 import com.example.Ejemplo.models.Producto;
 import com.example.Ejemplo.models.Rol;
 import com.example.Ejemplo.models.Usuario;
-import com.example.Ejemplo.security.UsuarioDetails;
-import com.example.Ejemplo.services.CarritoServiceImpl;
-import com.example.Ejemplo.services.NotificacionServiceImpl;
-import com.example.Ejemplo.services.ProductoServiceImpl;
-import com.example.Ejemplo.services.UsuarioServiceImpl;
+import com.example.Ejemplo.services.impl.CarritoServiceImpl;
+import com.example.Ejemplo.services.impl.NotificacionServiceImpl;
+import com.example.Ejemplo.services.impl.ProductoServiceImpl;
+import com.example.Ejemplo.services.impl.UsuarioServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -59,9 +59,27 @@ public class ProductoController {
         Page<Producto> productosPage;
 
         if ((categoria != null && !categoria.isEmpty()) || (busqueda != null && !busqueda.isEmpty())) {
-            productosPage = productosServiceImpl.buscarPorCategoriaYNombre(categoria, busqueda, pageable);
+            productosPage = productosServiceImpl.buscarPorCategoriaYNombre(categoria, busqueda, pageable).map(dto -> {
+                Producto p = new Producto();
+                p.setIdProducto(dto.getIdProducto());
+                p.setNombre(dto.getNombre());
+                p.setDescripcion(dto.getDescripcion());
+                p.setPrecio(dto.getPrecio());
+                p.setStock(dto.getStock());
+                p.setImagenUrl(dto.getImagenUrl());
+                return p;
+            });
         } else {
-            productosPage = productosServiceImpl.findAllProductosPaginado(pageable);
+            productosPage = productosServiceImpl.findAllPaginado(pageable).map(dto -> {
+                Producto p = new Producto();
+                p.setIdProducto(dto.getIdProducto());
+                p.setNombre(dto.getNombre());
+                p.setDescripcion(dto.getDescripcion());
+                p.setPrecio(dto.getPrecio());
+                p.setStock(dto.getStock());
+                p.setImagenUrl(dto.getImagenUrl());
+                return p;
+            });
         }
 
         if (busqueda != null && !busqueda.isEmpty() && productosPage.isEmpty()) {
@@ -89,7 +107,14 @@ public class ProductoController {
         int idUsuario = usuario.getIdUsuario();
         int nuevaCantidad = 0;
         double nuevoTotal = 0;
-        Producto producto = productosServiceImpl.findProductoById(idProducto).orElse(null);
+        Producto producto = productosServiceImpl.findById(idProducto).map(dto -> {
+            Producto p = new Producto();
+            p.setIdProducto(dto.getIdProducto());
+            p.setNombre(dto.getNombre());
+            p.setPrecio(dto.getPrecio());
+            p.setStock(dto.getStock());
+            return p;
+        }).orElse(null);
 
         if (producto == null) {
             redirectAttributes.addFlashAttribute("message", "Producto no encontrado.");

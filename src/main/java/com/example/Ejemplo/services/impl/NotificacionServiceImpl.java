@@ -1,21 +1,18 @@
-package com.example.Ejemplo.services;
+package com.example.Ejemplo.services.impl;
 
 import com.example.Ejemplo.models.Notificacion;
 import com.example.Ejemplo.repository.NotificacionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.Ejemplo.services.NotificacionService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class NotificacionServiceImpl implements NotificacionService {
 
     private final NotificacionRepository notificacionRepository;
-
-    @Autowired
-    public NotificacionServiceImpl(NotificacionRepository notificacionRepository) {
-        this.notificacionRepository = notificacionRepository;
-    }
 
     @Override
     public void sendNotificacion(int idUsuario, String mensaje) {

@@ -1,4 +1,4 @@
-package com.example.Ejemplo.security;
+package com.example.Ejemplo.config;
 
 
 import com.example.Ejemplo.models.Usuario;

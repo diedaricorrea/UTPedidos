@@ -1,9 +1,10 @@
-package com.example.Ejemplo.services;
+package com.example.Ejemplo.services.impl;
 
 import com.example.Ejemplo.models.Carrito;
 import com.example.Ejemplo.models.Producto;
 import com.example.Ejemplo.repository.CarritoRepository;
 import com.example.Ejemplo.repository.ProductoRepository;
+import com.example.Ejemplo.services.CarritoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

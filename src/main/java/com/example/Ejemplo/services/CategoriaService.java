@@ -1,30 +1,50 @@
 package com.example.Ejemplo.services;
 
-import com.example.Ejemplo.models.Categoria;
+import com.example.Ejemplo.dto.CategoriaCreateDTO;
+import com.example.Ejemplo.dto.CategoriaDTO;
+import com.example.Ejemplo.dto.CategoriaResponseDTO;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Servicio para gestión de categorías usando DTOs
+ */
 public interface CategoriaService {
     
     /**
-     * Obtiene todas las categorías
+     * Obtiene todas las categorías como DTOs simples
      */
-    List<Categoria> findAll();
+    List<CategoriaDTO> findAll();
     
     /**
-     * Busca una categoría por su ID
+     * Obtiene todas las categorías con información completa (cantidad de productos)
      */
-    Optional<Categoria> findById(Integer id);
+    List<CategoriaResponseDTO> findAllWithDetails();
+    
+    /**
+     * Busca una categoría por su ID y retorna DTO
+     */
+    Optional<CategoriaDTO> findById(Integer id);
+    
+    /**
+     * Busca una categoría por su ID y retorna DTO con detalles
+     */
+    Optional<CategoriaResponseDTO> findByIdWithDetails(Integer id);
     
     /**
      * Busca una categoría por su nombre
      */
-    Optional<Categoria> findByNombre(String nombre);
+    Optional<CategoriaDTO> findByNombre(String nombre);
     
     /**
-     * Guarda una nueva categoría o actualiza una existente
+     * Crea una nueva categoría desde un DTO
      */
-    Categoria save(Categoria categoria);
+    CategoriaDTO create(CategoriaCreateDTO createDTO);
+    
+    /**
+     * Actualiza una categoría existente
+     */
+    CategoriaDTO update(Integer id, CategoriaCreateDTO updateDTO);
     
     /**
      * Elimina una categoría por su ID
@@ -40,4 +60,9 @@ public interface CategoriaService {
      * Cuenta la cantidad de productos asociados a una categoría
      */
     long countProductosByCategoria(Integer idCategoria);
+    
+    /**
+     * Verifica si una categoría puede ser eliminada (no tiene productos)
+     */
+    boolean canBeDeleted(Integer idCategoria);
 }

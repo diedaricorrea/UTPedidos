@@ -1,9 +1,9 @@
 package com.example.Ejemplo.controllers;
 
+import com.example.Ejemplo.config.UsuarioDetails;
 import com.example.Ejemplo.models.Usuario;
-import com.example.Ejemplo.security.UsuarioDetails;
-import com.example.Ejemplo.services.NotificacionServiceImpl;
-import com.example.Ejemplo.services.PedidosServiceImpl;
+import com.example.Ejemplo.services.impl.NotificacionServiceImpl;
+import com.example.Ejemplo.services.impl.PedidosServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
