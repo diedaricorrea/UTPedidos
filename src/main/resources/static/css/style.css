@@ -17,7 +17,7 @@ body {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
     background-color: var(--cream);
     color: #333;
-    background-image: url(/static/imagenes/DAY.png);
+    /* background-image: url(/imagenes/DAY.png); */
     margin: 0;
     padding: 0;
 }
