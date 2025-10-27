@@ -34,7 +34,11 @@ public class Usuario {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Rol rol;
+    private Rol rol; // Mantener para compatibilidad
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_rol_entity")
+    private RolEntity rolEntity; // Nuevo sistema de roles
 
     @Column(name = "fecha_ingreso", updatable = false)
     private LocalDateTime fechaIngreso;
@@ -52,4 +56,25 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Venta> ventas;
+    
+    /**
+     * Obtiene el rol efectivo (prioriza RolEntity sobre Rol enum)
+     */
+    public String getRolNombre() {
+        if (rolEntity != null) {
+            return rolEntity.getNombre();
+        }
+        return rol != null ? rol.name() : "USUARIO";
+    }
+    
+    /**
+     * Verifica si el usuario tiene un permiso específico
+     */
+    public boolean tienePermiso(String nombrePermiso) {
+        if (rolEntity != null && rolEntity.getPermisos() != null) {
+            return rolEntity.getPermisos().stream()
+                .anyMatch(p -> p.getNombre().equals(nombrePermiso));
+        }
+        return false;
+    }
 }

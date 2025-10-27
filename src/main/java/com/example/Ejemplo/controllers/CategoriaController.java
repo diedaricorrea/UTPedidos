@@ -9,6 +9,7 @@ import com.example.Ejemplo.services.CategoriaService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,12 +34,14 @@ public class CategoriaController {
      * Muestra la página principal de gestión de categorías
      */
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('CATEGORIAS_VER', 'ROLE_ADMINISTRADOR', 'ROLE_TRABAJADOR')")
     public String index(Model model, @AuthenticationPrincipal UsuarioDetails userDetails) {
         Usuario usuario = userDetails.getUsuario();
         
         List<CategoriaResponseDTO> categorias = categoriaService.findAllWithDetails();
         
-        model.addAttribute("usuarioAdmins", usuario.getRol().toString());
+        String rolNombre = usuario.getRol() != null ? usuario.getRol().toString() : "USUARIO";
+        model.addAttribute("usuarioAdmins", rolNombre);
         model.addAttribute("usuarioNombre", usuario.getNombre());
         model.addAttribute("categorias", categorias);
         model.addAttribute("categoria", new CategoriaCreateDTO());
@@ -51,6 +54,7 @@ public class CategoriaController {
      * Guarda o actualiza una categoría
      */
     @PostMapping("/guardar")
+    @PreAuthorize("hasAnyAuthority('CATEGORIAS_CREAR', 'CATEGORIAS_EDITAR', 'ROLE_ADMINISTRADOR', 'ROLE_TRABAJADOR')")
     public String guardar(@Valid @ModelAttribute("categoria") CategoriaCreateDTO categoriaDTO,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes,
@@ -62,7 +66,8 @@ public class CategoriaController {
             
             // Recargar datos para mostrar la vista con errores
             Usuario usuario = userDetails.getUsuario();
-            model.addAttribute("usuarioAdmins", usuario.getRol().toString());
+            String rolNombre = usuario.getRol() != null ? usuario.getRol().toString() : "USUARIO";
+            model.addAttribute("usuarioAdmins", rolNombre);
             model.addAttribute("usuarioNombre", usuario.getNombre());
             model.addAttribute("categorias", categoriaService.findAllWithDetails());
             model.addAttribute("mensaje", "Por favor corrige los errores en el formulario");
@@ -102,6 +107,7 @@ public class CategoriaController {
      * Carga una categoría para editar
      */
     @GetMapping("/editar/{id}")
+    @PreAuthorize("hasAnyAuthority('CATEGORIAS_EDITAR', 'ROLE_ADMINISTRADOR', 'ROLE_TRABAJADOR')")
     public String editar(@PathVariable Integer id,
                         Model model,
                         @AuthenticationPrincipal UsuarioDetails userDetails,
@@ -121,7 +127,8 @@ public class CategoriaController {
             
             List<CategoriaResponseDTO> categorias = categoriaService.findAllWithDetails();
             
-            model.addAttribute("usuarioAdmins", usuario.getRol().toString());
+            String rolNombre = usuario.getRol() != null ? usuario.getRol().toString() : "USUARIO";
+            model.addAttribute("usuarioAdmins", rolNombre);
             model.addAttribute("usuarioNombre", usuario.getNombre());
             model.addAttribute("categorias", categorias);
             model.addAttribute("categoria", categoriaCreateDTO);
@@ -142,6 +149,7 @@ public class CategoriaController {
      * Elimina una categoría
      */
     @GetMapping("/eliminar/{id}")
+    @PreAuthorize("hasAnyAuthority('CATEGORIAS_ELIMINAR', 'ROLE_ADMINISTRADOR')")
     public String eliminar(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         try {
             long cantidadProductos = categoriaService.countProductosByCategoria(id);
@@ -175,6 +183,7 @@ public class CategoriaController {
      */
     @GetMapping("/api/listar")
     @ResponseBody
+    @PreAuthorize("hasAnyAuthority('CATEGORIAS_VER', 'ROLE_ADMINISTRADOR', 'ROLE_TRABAJADOR', 'ROLE_USUARIO')")
     public List<CategoriaDTO> listarCategorias() {
         log.debug("API: Listando todas las categorías");
         return categoriaService.findAll();
@@ -185,6 +194,7 @@ public class CategoriaController {
      */
     @GetMapping("/api/existe")
     @ResponseBody
+    @PreAuthorize("hasAnyAuthority('CATEGORIAS_VER', 'ROLE_ADMINISTRADOR', 'ROLE_TRABAJADOR')")
     public boolean existeCategoria(@RequestParam String nombre) {
         log.debug("API: Verificando existencia de categoría: {}", nombre);
         return categoriaService.existsByNombre(nombre);

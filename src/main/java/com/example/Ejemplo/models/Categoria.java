@@ -48,8 +48,16 @@ public class Categoria {
     
     /**
      * Método helper para obtener la cantidad de productos sin cargar toda la lista
+     * SEGURO: Verifica que la colección esté inicializada antes de acceder
      */
     public int getCantidadProductos() {
-        return productos != null ? productos.size() : 0;
+        try {
+            if (productos != null && org.hibernate.Hibernate.isInitialized(productos)) {
+                return productos.size();
+            }
+        } catch (Exception e) {
+            // Si hay error, retornar 0
+        }
+        return 0;
     }
 }

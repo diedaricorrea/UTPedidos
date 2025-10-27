@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,6 +44,7 @@ public class ProductoController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAnyAuthority('PRODUCTOS_VER', 'ROLE_ADMINISTRADOR', 'ROLE_USUARIO', 'ROLE_TRABAJADOR')")
     public String index(
             @RequestParam(required = false) String categoria,
             @RequestParam(required = false) String busqueda,
@@ -51,7 +53,8 @@ public class ProductoController {
             Model model) {
         Usuario usuario = userDetails.getUsuario();
 
-        model.addAttribute("usuarioAdmins", usuario.getRol().toString());
+        String rolNombre = usuario.getRol() != null ? usuario.getRol().toString() : "USUARIO";
+        model.addAttribute("usuarioAdmins", rolNombre);
         model.addAttribute("usuarioNombre", usuario.getNombre());
 
         int pageSize = 6;
@@ -98,6 +101,7 @@ public class ProductoController {
     }
 
     @PostMapping("/subir")
+    @PreAuthorize("hasAnyAuthority('CARRITO_GESTIONAR', 'ROLE_ADMINISTRADOR', 'ROLE_USUARIO', 'ROLE_TRABAJADOR')")
     public String subirAlCarrito(
             @RequestParam Integer idProducto,
             @AuthenticationPrincipal UsuarioDetails userDetails,

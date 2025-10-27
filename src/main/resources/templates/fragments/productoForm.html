@@ -26,7 +26,7 @@
             <div class="input-group">
                 <select class="form-select" id="categoria" name="categoria" required>
                     <option value="">Seleccionar categoría</option>
-                    <option th:each="cat : ${categorias}" th:value="${cat.nombre}" th:text="${cat.nombre}" th:selected="${producto.categoria != null && producto.categoria.nombre == cat.nombre}"></option>
+                    <option th:each="cat : ${categorias}" th:value="${cat.nombre}" th:text="${cat.nombre}" th:selected="${producto.nombreCategoria != null && producto.nombreCategoria == cat.nombre}"></option>
                 </select>
                 <button class="btn btn-outline-secondary" type="button" id="btnNuevaCategoria" title="Agregar nueva categoría">
                     <i class="bi bi-plus-circle"></i>

@@ -5,7 +5,7 @@
         <div>
             <strong th:text="${productoItem.nombre}">Nombre del Producto</strong>
             <span class="badge categoria-badge ms-2"
-                  th:text="${productoItem.categoria != null ? productoItem.categoria.nombre : 'Sin categoría'}">Categoría</span>
+                  th:text="${productoItem.nombreCategoria != null ? productoItem.nombreCategoria : 'Sin categoría'}">Categoría</span>
             <span class="badge ms-2"
                   th:classappend="${productoItem.estado} ? 'bg-success' : 'bg-secondary'"
                   th:text="${productoItem.estado} ? 'Disponible' : 'No disponible'">

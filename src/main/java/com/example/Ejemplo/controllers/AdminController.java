@@ -8,6 +8,7 @@ import com.example.Ejemplo.services.ProductoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,32 +36,44 @@ public class AdminController {
      * Panel principal de administración de productos
      */
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('PRODUCTOS_GESTIONAR', 'PRODUCTOS_VER', 'ROLE_ADMINISTRADOR', 'ROLE_TRABAJADOR')")
     public String panelAdmin(Model model, @AuthenticationPrincipal UsuarioDetails userDetails) {
-        Usuario usuario = userDetails.getUsuario();
+        try {
+            Usuario usuario = userDetails.getUsuario();
+            log.info("Usuario accediendo a /productos: {}, Rol: {}", usuario.getCorreo(), usuario.getRol());
 
-        List<ProductoResponseDTO> productos = productoService.findAllWithDetails();
-        List<CategoriaDTO> categorias = categoriaService.findAll();
-        
-        log.debug("Panel de productos. Total productos: {}, Total categorías: {}", 
-                productos.size(), categorias.size());
+            List<ProductoResponseDTO> productos = productoService.findAllWithDetails();
+            List<CategoriaDTO> categorias = categoriaService.findAll();
+            
+            log.debug("Panel de productos. Total productos: {}, Total categorías: {}", 
+                    productos.size(), categorias.size());
 
-        model.addAttribute("usuarioAdmins", usuario.getRol().toString());
-        model.addAttribute("productos", productos);
-        model.addAttribute("producto", new ProductoCreateDTO());
-        model.addAttribute("categorias", categorias);
-        
-        return "administrador/productos";
+            // Obtener rol de forma segura
+            String rolNombre = usuario.getRol() != null ? usuario.getRol().toString() : "USUARIO";
+            
+            model.addAttribute("usuarioAdmins", rolNombre);
+            model.addAttribute("productos", productos);
+            model.addAttribute("producto", new ProductoCreateDTO());
+            model.addAttribute("categorias", categorias);
+            
+            return "administrador/productos";
+        } catch (Exception e) {
+            log.error("Error en panelAdmin: ", e);
+            throw e;
+        }
     }
 
     /**
      * Panel de edición de productos
      */
     @GetMapping("/edicion")
+    @PreAuthorize("hasAnyAuthority('PRODUCTOS_GESTIONAR', 'PRODUCTOS_EDITAR', 'ROLE_ADMINISTRADOR', 'ROLE_TRABAJADOR')")
     public String edicion(Model model, @AuthenticationPrincipal UsuarioDetails userDetails) {
         Usuario usuario = userDetails.getUsuario();
         List<ProductoResponseDTO> productos = productoService.findAllWithDetails();
         
-        model.addAttribute("usuarioAdmins", usuario.getRol().toString());
+        String rolNombre = usuario.getRol() != null ? usuario.getRol().toString() : "USUARIO";
+        model.addAttribute("usuarioAdmins", rolNombre);
         model.addAttribute("productos", productos);
         
         log.debug("Panel de edición. Total productos: {}", productos.size());
@@ -71,6 +84,7 @@ public class AdminController {
      * Búsqueda de productos por nombre
      */
     @GetMapping("/search")
+    @PreAuthorize("hasAnyAuthority('PRODUCTOS_VER', 'PRODUCTOS_GESTIONAR', 'ROLE_ADMINISTRADOR', 'ROLE_TRABAJADOR')")
     public String buscar(Model model, @RequestParam("nombre") String nombre) {
         List<ProductoDTO> productos = productoService.findByNombreContaining(nombre);
         model.addAttribute("productos", productos);
@@ -83,6 +97,7 @@ public class AdminController {
      * Actualizar stock de un producto
      */
     @PostMapping("/actualizar")
+    @PreAuthorize("hasAnyAuthority('PRODUCTOS_EDITAR', 'PRODUCTOS_GESTIONAR', 'ROLE_ADMINISTRADOR', 'ROLE_TRABAJADOR')")
     public String actualizar(RedirectAttributes redirectAttribute,
                              @RequestParam("idProducto") Integer idProducto,
                              @RequestParam("nombre") String nombre,
@@ -124,6 +139,7 @@ public class AdminController {
      * Guardar o actualizar producto completo
      */
     @PostMapping("/subirproductos")
+    @PreAuthorize("hasAnyAuthority('PRODUCTOS_CREAR', 'PRODUCTOS_EDITAR', 'PRODUCTOS_GESTIONAR', 'ROLE_ADMINISTRADOR', 'ROLE_TRABAJADOR')")
     public String guardarProducto(
             @RequestParam("nombre") String nombre,
             @RequestParam("precio") Double precio,
@@ -206,6 +222,7 @@ public class AdminController {
      * Cargar producto para edición
      */
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('PRODUCTOS_VER', 'PRODUCTOS_EDITAR', 'PRODUCTOS_GESTIONAR', 'ROLE_ADMINISTRADOR', 'ROLE_TRABAJADOR')")
     public String editarProducto(@PathVariable Integer id,
                                  Model model,
                                  @AuthenticationPrincipal UsuarioDetails userDetails,
@@ -235,7 +252,8 @@ public class AdminController {
                     .nombreCategoria(producto.getCategoria().getNombre())
                     .build();
             
-            model.addAttribute("usuarioAdmins", usuario.getRol().toString());
+            String rolNombre = usuario.getRol() != null ? usuario.getRol().toString() : "USUARIO";
+            model.addAttribute("usuarioAdmins", rolNombre);
             model.addAttribute("producto", productoParaEditar);
             model.addAttribute("productos", productosRecientes);
             model.addAttribute("categorias", categorias);
@@ -255,6 +273,7 @@ public class AdminController {
      * Eliminar (desactivar) producto
      */
     @GetMapping("/eliminar/{id}")
+    @PreAuthorize("hasAnyAuthority('PRODUCTOS_ELIMINAR', 'PRODUCTOS_GESTIONAR', 'ROLE_ADMINISTRADOR')")
     public String eliminarProducto(@PathVariable Integer id, RedirectAttributes redirectAttributes) {
         try {
             productoService.deleteById(id);

@@ -25,14 +25,25 @@ public class CategoriaMapper {
     
     /**
      * Convierte una entidad Categoria a CategoriaResponseDTO
+     * NOTA: Usa un método seguro para contar productos sin inicializar la colección lazy
      */
     public CategoriaResponseDTO toResponseDTO(Categoria categoria) {
         if (categoria == null) {
             return null;
         }
         
-        long cantidadProductos = categoria.getProductos() != null ? 
-                categoria.getProductos().size() : 0L;
+        // Evitar cargar la colección lazy de productos
+        // Solo intenta contar si la colección ya está inicializada
+        long cantidadProductos = 0L;
+        try {
+            if (categoria.getProductos() != null && 
+                org.hibernate.Hibernate.isInitialized(categoria.getProductos())) {
+                cantidadProductos = categoria.getProductos().size();
+            }
+        } catch (Exception e) {
+            // Si hay error al acceder a productos, dejar en 0
+            cantidadProductos = 0L;
+        }
         
         return CategoriaResponseDTO.builder()
                 .idCategoria(categoria.getIdCategoria())

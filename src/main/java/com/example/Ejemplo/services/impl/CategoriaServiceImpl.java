@@ -39,8 +39,20 @@ public class CategoriaServiceImpl implements CategoriaService {
     @Override
     public List<CategoriaResponseDTO> findAllWithDetails() {
         log.debug("Obteniendo todas las categorías con detalles");
-        return categoriaRepository.findAll().stream()
-                .map(categoriaMapper::toResponseDTO)
+        List<Categoria> categorias = categoriaRepository.findAll();
+        
+        return categorias.stream()
+                .map(categoria -> {
+                    // Usar consulta optimizada para contar productos
+                    long cantidadProductos = categoriaRepository.countProductosByCategoria(categoria.getIdCategoria());
+                    
+                    return CategoriaResponseDTO.builder()
+                            .idCategoria(categoria.getIdCategoria())
+                            .nombre(categoria.getNombre())
+                            .cantidadProductos(cantidadProductos)
+                            .tieneProdutos(cantidadProductos > 0)
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
@@ -138,9 +150,8 @@ public class CategoriaServiceImpl implements CategoriaService {
 
     @Override
     public long countProductosByCategoria(Integer idCategoria) {
-        return categoriaRepository.findById(idCategoria)
-                .map(Categoria::getCantidadProductos)
-                .orElse(0);
+        // Usar el método optimizado del repositorio que no carga la colección
+        return categoriaRepository.countProductosByCategoria(idCategoria);
     }
 
     @Override
